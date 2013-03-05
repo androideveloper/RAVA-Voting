@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Insert title here</title>
+</head>
+<body>
+	<h:form>
+		<table>
+			<tr>
+				<td>Name:</td>
+				<td><h:inputText id="name" label="Name" value="#{create.candidate.name}" binding="#{nameComponent}" required="true"></h:inputText> 
+				<h:message for="name"></h:message> </td>
+			</tr>
+			<tr>
+				<td>Surname:</td>
+				<td><h:inputText id="surname" label="Surname" value="#{create.candidate.surname}" binding="#{surnameComponent}" required="true"></h:inputText>
+				<h:message for="surname"></h:message>
+				</td>
+			</tr>
+			<tr>
+				<td>Email:</td>
+				<td><h:inputText id="email" label="Email" value="#{create.candidate.email}"	required="true">
+						<f:validateRegex pattern="([^.@]+)(\.[^.@]+)*@([^.@]+\.)+([^.@]+)" />
+						<f:attribute name="nameComponent" value="#{nameComponent}"></f:attribute>
+						<f:attribute name="surnameComponent" value="#{surnameComponent}"></f:attribute>
+						<f:validator validatorId="addCandidateValidator"></f:validator>
+					</h:inputText>
+					<h:message for="email"  /></td>
+			</tr>
+			<tr>
+				<td>Date of Birth:</td>
+				<td><h:inputText id="dob" label="dob"
+						value="#{create.candidate.dateOfBirth}">
+						<f:convertDateTime pattern="MM-dd-yyyy" />
+						<f:validator validatorId="addCandidateValidator"></f:validator>
+					</h:inputText>(dd-mm-yyyy) <h:message for="dob"></h:message></td>
+			</tr>
+		</table>
+		<h:commandButton value="add" action="#{create.add}"></h:commandButton>
+		<h:commandButton value="cancel" action="#{create.cancel}" immediate="true"></h:commandButton>
+	</h:form>
+</body>
+</html>

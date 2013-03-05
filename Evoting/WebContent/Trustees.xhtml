@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Insert title here</title>
+</head>
+<body>
+<h:form>
+<div class="commandLinks">
+<h:commandButton value="Back" action="Election" ></h:commandButton>
+</div>
+<table>
+<ui:repeat var="tr" value="#{election.trustees}">
+<tr>
+<td><h:outputText value="#{tr.name}" style="margin-right: 10px;"></h:outputText></td>
+<td><h:graphicImage value="images/ok.jpg" rendered="#{tr.generated}" ></h:graphicImage></td>
+</tr>
+</ui:repeat>
+</table>
+<div class="commandLinks">
+<h:commandButton value="Add Trustee" action="AddTrustee"></h:commandButton>
+</div>
+</h:form>
+</body>
+</html>

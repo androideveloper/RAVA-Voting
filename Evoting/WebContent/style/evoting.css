@@ -1,0 +1,70 @@
+@CHARSET "UTF-8";
+
+.commandLinks {
+	margin: 5px;
+    padding: 5px 5px 5px 20px; /* 20px makes room for your background image */
+    /*border: 1px solid #aaa; */
+    
+}
+
+.commandLinks .create {
+	margin-right: 10px;
+	color: red;
+}
+
+.commandLinks .vote {
+	color: blue;
+}
+
+.commandLinks .link {
+	color: purple;
+	font-size: 22px;
+	margin: 10px 10px 10px 10px;
+}
+
+.button {
+	margin-right: 20px;
+}
+
+h1 {
+	color: grey;
+	font-size: 20;
+	text-align: center; 
+}
+
+table.pretty {
+    background: none repeat scroll 0 0 whitesmoke;
+    border-collapse: collapse;
+    margin: 0.5em;
+    width: 100%;
+}
+table.pretty th, td {
+    border: 1px solid silver;
+    padding: 0.3em;
+    vertical-align: top; 
+}
+
+.message {
+	color: red;
+}
+
+.main {
+	margin: 50px;
+	padding: 50px;
+}
+
+
+.marg {
+	margin-left: 30px;
+	border-collapse: collapse;
+}
+
+.marg td {
+	padding: 0;
+	border: none;
+}
+
+.margRight {
+	margin-right: 20px;
+}
+  

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<faces-config
+    xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+    version="2.0">
+    
+    <validator>
+        <validator-id>loginValidator</validator-id>
+        <validator-class>com.rau.evoting.validators.LoginValidator</validator-class>
+    </validator>
+    
+    <validator>
+        <validator-id>addCandidateValidator</validator-id>
+        <validator-class>com.rau.evoting.validators.AddCandidateValidator</validator-class>
+    </validator>
+    
+    <managed-bean>
+        <managed-bean-name>home</managed-bean-name>
+        <managed-bean-class>com.rau.evoting.beans.Home</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>candidates</managed-bean-name>
+        <managed-bean-class>com.rau.evoting.beans.Candidates</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>elect</managed-bean-name>
+        <managed-bean-class>com.rau.evoting.beans.Elections</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>election</managed-bean-name>
+        <managed-bean-class>com.rau.evoting.beans.OneElection</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>create</managed-bean-name>
+        <managed-bean-class>com.rau.evoting.beans.CreateElection</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>send</managed-bean-name>
+        <managed-bean-class>com.rau.evoting.beans.SendMail</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+ <!--   <navigation-rule>
+		<from-view-id>/home.xhtml</from-view-id>
+	 	<navigation-case>
+    		<from-outcome>login</from-outcome>
+    		<to-view-id>/Candidates.xhtml</to-view-id>
+    	</navigation-case>
+	</navigation-rule> -->
+	
+    <navigation-rule>
+		<from-view-id>/Login.xhtml</from-view-id>
+	 	<navigation-case>
+    		<from-outcome>login</from-outcome>
+    		<to-view-id>/Elections.xhtml</to-view-id>
+    	</navigation-case>
+    	<navigation-case>
+    		<from-outcome>create</from-outcome>
+    		<to-view-id>/NewVoting.xhtml</to-view-id>
+    	</navigation-case>
+	</navigation-rule>
+
+    <navigation-rule>
+		<from-view-id>/Elections.xhtml</from-view-id>
+	 	<navigation-case>
+    		<from-outcome>election</from-outcome>
+    		<to-view-id>/Candidates.xhtml</to-view-id>
+    	</navigation-case>
+    	<navigation-case>
+    	    <from-outcome>choose</from-outcome>
+    	    <to-view-id>/ChooseType.xhtml</to-view-id>
+    	</navigation-case>
+    	<navigation-case>
+    	    <from-outcome>send</from-outcome>
+    	    <to-view-id>/SendEmail.xhtml</to-view-id>
+    	</navigation-case>
+    	<navigation-case>
+    	    <from-outcome>create</from-outcome>
+    	    <to-view-id>/NewVoting.xhtml</to-view-id>
+    	</navigation-case>
+	</navigation-rule>
+	
+    <navigation-rule>
+		<from-view-id>/Candidates.xhtml</from-view-id>
+	 	<navigation-case>
+    		<from-outcome>back</from-outcome>
+    		<to-view-id>/Elections.xhtml</to-view-id>
+    	</navigation-case>
+	</navigation-rule>
+	
+      <navigation-rule>
+		<from-view-id>/NewVoting.xhtml</from-view-id>
+	 	<navigation-case>
+    		<from-outcome>next</from-outcome>
+    		<to-view-id>/Election.xhtml</to-view-id>
+    	</navigation-case>
+	</navigation-rule>    
+	
+      <navigation-rule>
+		<from-view-id>/AddCandidates.xhtml</from-view-id>
+	 	<navigation-case>
+    		<from-outcome>add</from-outcome>
+    		<to-view-id>/AddCandidate.xhtml</to-view-id>
+    	</navigation-case>
+    	<navigation-case>
+    	    <from-outcome>create</from-outcome>
+    	    <to-view-id>/Elections.xhtml</to-view-id>
+    	</navigation-case>
+	</navigation-rule>  
+	
+      <navigation-rule>
+		<from-view-id>/AddCandidate.xhtml</from-view-id>
+	 	<navigation-case>
+    		<from-outcome>candidate</from-outcome>
+    		<to-view-id>/AddCandidates.xhtml</to-view-id>
+    	</navigation-case>
+	</navigation-rule>  
+	
+    <navigation-rule>
+		<from-view-id>/Home.xhtml</from-view-id>
+	 	<navigation-case>
+    		<from-outcome>create</from-outcome>
+    		<to-view-id>/Login.xhtml</to-view-id>
+    	</navigation-case>
+	</navigation-rule>  
+	
+	  
+</faces-config>
