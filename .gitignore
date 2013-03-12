@@ -1,2 +1,5 @@
 # java specific files
-*class
+*.class
+
+# generated files
+build/
