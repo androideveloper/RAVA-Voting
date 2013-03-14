@@ -10,21 +10,23 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h:form>
-<div class="commandLinks">
-<h:commandButton value="Back" action="Election" ></h:commandButton>
-</div>
-<table>
-<ui:repeat var="tr" value="#{election.trustees}">
-<tr>
-<td><h:outputText value="#{tr.name}" style="margin-right: 10px;"></h:outputText></td>
-<td><h:graphicImage value="images/ok.jpg" rendered="#{tr.generated}" ></h:graphicImage></td>
-</tr>
-</ui:repeat>
-</table>
-<div class="commandLinks">
-<h:commandButton value="Add Trustee" action="AddTrustee"></h:commandButton>
-</div>
-</h:form>
+	<h:form>
+		<div class="commandLinks">
+			<h:commandButton value="Back" action="Election"></h:commandButton>
+		</div>
+		<table>
+			<ui:repeat var="tr" value="#{election.trustees}">
+				<tr>
+					<td><h:outputText value="#{tr.name}"
+							style="margin-right: 10px;"></h:outputText></td>
+					<td><h:graphicImage value="images/ok.jpg"
+							rendered="#{tr.generated}"></h:graphicImage></td>
+				</tr>
+			</ui:repeat>
+		</table>
+		<div class="commandLinks">
+			<h:commandButton value="Add Trustee" action="AddTrustee"></h:commandButton>
+		</div>
+	</h:form>
 </body>
 </html>
