@@ -10,22 +10,26 @@
 <title>Insert title here</title>
 
 <script type="text/javascript">
-//function a() {
-//	document.getElementById("form:checkBox").disabled = true;
-//}
+	//function a() {
+	//	document.getElementById("form:checkBox").disabled = true;
+	//}
 </script>
 </head>
 <body>
-<h:form id="form" >
-<h:selectManyCheckbox id="checkBox"  onclick=""  layout="pageDirection" >
-<f:selectItem itemLabel="aa"  itemValue="cc" value="#{candidates.selectedCandidate2}">
-</f:selectItem>
-<f:selectItem itemLabel="bb" value="#{candidates.selectedCandidate2}" itemValue="dd">
-</f:selectItem>
-<f:selectItem itemLabel="cc" itemValue="ee" itemDisabled="#{election.disabled}"> 
-</f:selectItem>
-<f:ajax listener="#{election.ajaxListener}" event="change" render="form"></f:ajax>
-</h:selectManyCheckbox>
-</h:form>
+	<h:form id="form">
+		<h:selectManyCheckbox id="checkBox" onclick="" layout="pageDirection">
+			<f:selectItem itemLabel="aa" itemValue="cc"
+				value="#{candidates.selectedCandidate2}">
+			</f:selectItem>
+			<f:selectItem itemLabel="bb" value="#{candidates.selectedCandidate2}"
+				itemValue="dd">
+			</f:selectItem>
+			<f:selectItem itemLabel="cc" itemValue="ee"
+				itemDisabled="#{election.disabled}">
+			</f:selectItem>
+			<f:ajax listener="#{election.ajaxListener}" event="change"
+				render="form"></f:ajax>
+		</h:selectManyCheckbox>
+	</h:form>
 </body>
 </html>
