@@ -13,16 +13,20 @@
 	<h:form>
 		<ui:remove>
 			<h:selectOneListbox>
-				<f:selectItems value="#{elect.els}" var="el" itemLabel="#{el.name}"
+				<f:selectItems value="#{elections.els}" var="el" itemLabel="#{el.name}"
 					itemValue="#{el.id}"></f:selectItems>
 			</h:selectOneListbox>
 		</ui:remove>
 
-		<h:commandButton id="crateElection" value="create election" action="create"></h:commandButton>
+		<h:commandButton id="createElection" value="create election" action="create"></h:commandButton>
 		<h:commandButton value="send message" action="send"></h:commandButton>
 		<br/>
-		<ui:repeat var="el" value="#{elect.els}">
+		<ui:repeat var="el" value="#{elections.els}">
+			<ui:remove>
 			<h:commandLink value="#{el.name}" action="#{candidates.init(el.id)}"></h:commandLink>
+			</ui:remove>
+			<h:commandLink value="#{el.name}" action="#{elect.fromElections(el.id)}">
+			</h:commandLink>
 			<br />
 		</ui:repeat>
 	</h:form>

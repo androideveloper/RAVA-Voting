@@ -9,7 +9,7 @@ import com.rau.evoting.data.SqlDataProvider;
 import com.rau.evoting.models.*;
 import com.rau.evoting.utils.MailService;
 
-public class OneElection {
+public class OpenElection {
 	private String name;
 	private String description;
 	private Election election;
@@ -24,7 +24,7 @@ public class OneElection {
 	private boolean canOpen;
 	private String openningMessage;
 	
-	public OneElection() {
+	public OpenElection() {
 		answers = new ArrayList<Answer>();
 		trustees = new ArrayList<Trustee>();
 		disabled = false;

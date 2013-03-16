@@ -91,8 +91,8 @@ public class Candidates {
 	}
 	
 	public String shuffle() {
-		Shuffle.shuffle(c1);
-		Shuffle.shuffle(c2);
+		//Shuffle.shuffle(c1);
+		//Shuffle.shuffle(c2);
 		return "Candidates.xhtml";
 	}
 	
