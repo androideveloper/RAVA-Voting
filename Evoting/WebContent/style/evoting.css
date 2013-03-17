@@ -32,6 +32,16 @@ h1 {
 	text-align: center; 
 }
 
+.center {
+	text-align: center;
+}
+.RAVA {
+	color: olive;
+	font-size: 36px;
+	text-decoration: none;
+	font-style: oblique;
+}
+
 table.pretty {
     background: none repeat scroll 0 0 whitesmoke;
     border-collapse: collapse;
