@@ -190,7 +190,7 @@ public class OpenElection {
 	
 	public String addAnswers() {
 		SqlDataProvider.getInstance().insertAnswers(election.getId(), answers);
-		return "Election";
+		return "OpenElection";
 	}
 	
 	public String addTrustee() {
