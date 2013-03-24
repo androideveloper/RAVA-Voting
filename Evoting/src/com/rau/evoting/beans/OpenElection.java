@@ -10,8 +10,6 @@ import com.rau.evoting.models.*;
 import com.rau.evoting.utils.MailService;
 
 public class OpenElection {
-	private String name;
-	private String description;
 	private Election election;
 	private ArrayList<Answer> answers;
 	private ArrayList<Trustee> trustees;
@@ -28,22 +26,6 @@ public class OpenElection {
 		answers = new ArrayList<Answer>();
 		trustees = new ArrayList<Trustee>();
 		disabled = false;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public Election getElection() {
@@ -168,8 +150,8 @@ public class OpenElection {
 		//answers = SqlDataProvider.getInstance().getElectionAnswers(election.getId());
 		return "Trustees";
 	}
-	
-	public String addElection(){
+		
+	public String createElection(String name, String description) {
 		int elId = SqlDataProvider.getInstance().insertElecttion(new Election(0, name, description));
 		election = new Election(elId, name, description);
 		return "next";
@@ -204,6 +186,11 @@ public class OpenElection {
 		trusteeName = "";
 		trusteeEmail = "";
 		return "Trustees";
+	}
+	
+	public String open() {
+		SqlDataProvider.getInstance().openElection(election.getId());
+		return "open";
 	}
 	
 	public void ajaxListener(AjaxBehaviorEvent event) {
