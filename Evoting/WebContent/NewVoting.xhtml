@@ -19,19 +19,20 @@
 			<tbody>
 				<tr>
 					<th>Name:</th>
-					<td><h:inputText id="name" value="#{election.name}"
+					<td><h:inputText id="name" value="#{newVoting.name}"
 							required="true" label="name" size="60"></h:inputText> <h:message
 							for="name" styleClass="message"></h:message></td>
 				</tr>
 				<tr>
 					<th>Description:</th>
-					<td><h:inputTextarea id="desc" value="#{election.description}"
+					<td><h:inputTextarea id="desc" value="#{newVoting.description}"
 							label="description" rows="10" cols="50">
 						</h:inputTextarea> <h:message for="desc"></h:message></td>
 				</tr>
 			</tbody>
 		</table>
-		<h:commandButton value="next" action="#{election.addElection}"></h:commandButton>
+		<h:commandButton value="next" action="#{election.createElection(newVoting.name, newVoting.description)}"></h:commandButton>
+		<h:commandButton value="cancel" action="Elections" immediate="true"></h:commandButton>
 	</h:form>
 </body>
 </html>

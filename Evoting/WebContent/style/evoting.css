@@ -54,6 +54,16 @@ table.pretty th, td {
     vertical-align: top; 
 }
 
+table.vote {
+	border-collapse: collapse;
+}
+
+table.vote th, td {
+	font-size:  25px;
+	padding:  20px;
+	border: none;
+}
+
 .message {
 	color: red;
 }

@@ -64,7 +64,13 @@
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
     
- <!--   <navigation-rule>
+    <managed-bean>
+        <managed-bean-name>newVoting</managed-bean-name>
+        <managed-bean-class>com.rau.evoting.beans.NewVoting</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+    <!--   <navigation-rule>
 		<from-view-id>/home.xhtml</from-view-id>
 	 	<navigation-case>
     		<from-outcome>login</from-outcome>
