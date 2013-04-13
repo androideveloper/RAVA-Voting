@@ -206,6 +206,11 @@ public class OpenElection {
 		return "Trustees";
 	}
 	
+	public String open() {
+		SqlDataProvider.getInstance().openElection(election.getId());
+		return "Elections";
+	}
+	
 	public void ajaxListener(AjaxBehaviorEvent event) {
 		System.out.println("event: " +  event.getSource().toString());
 		disabled = !disabled; 
