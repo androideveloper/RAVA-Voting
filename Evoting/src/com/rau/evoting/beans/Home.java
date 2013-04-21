@@ -25,7 +25,7 @@ public class Home {
 	}
 	
 	public String login(){
-		return "create";
+		return "login";
 //		SqlDataProvider dataprovider = SqlDataProvider.getInstance(); 
 //		User user = dataprovider.getUser(username);
 //		if(user != null){

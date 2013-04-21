@@ -149,7 +149,7 @@
     <navigation-rule>
 		<from-view-id>/Home.xhtml</from-view-id>
 	 	<navigation-case>
-    		<from-outcome>create</from-outcome>
+    		<from-outcome>login</from-outcome>
     		<to-view-id>/Login.xhtml</to-view-id>
     	</navigation-case>
 	</navigation-rule>  

@@ -26,6 +26,11 @@
 	margin-right: 20px;
 }
 
+.header {
+	font-size: 18;
+	font-weight: bold;
+}
+
 h1 {
 	color: grey;
 	font-size: 20;
@@ -87,6 +92,10 @@ table.vote th, td {
 	border-collapse: collapse;
 }
 
+.content {
+	margin-left:  20px;
+}
+
 .marg td {
 	padding: 0;
 	border: none;
@@ -94,5 +103,30 @@ table.vote th, td {
 
 .margRight {
 	margin-right: 20px;
+}
+
+/* #content {
+    background: none repeat scroll 0 0 white;
+    border: 1px solid #666666;
+    margin-left: 100px;
+    margin-top: 20px;
+    padding: 0;
+    top: 0;
+    width: 1100px;
+} 
+
+.highlight-box {
+    background: none repeat scroll 0 0 #EEEEEE;
+    border: 1px solid #888888;
+    color: black;
+    padding: 10px;
+} */
+
+.highlight-box-margin {
+    background: none repeat scroll 0 0 #EEEEEE;
+    border: 1px solid #888888;
+    color: black;
+    margin-right: 300px;
+    padding: 10px;
 }
   

@@ -8,7 +8,7 @@
 <head>
 <link rel="stylesheet" type="text/css" href="style/evoting.css"  media="all" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Insert title here</title>
+<title>RAVA Voting</title>
 </head>
 <body>
 	<div id="head" class="center">
@@ -20,19 +20,20 @@
 				<f:selectItems value="#{elections.els}" var="el" itemLabel="#{el.name}"
 					itemValue="#{el.id}"></f:selectItems>
 			</h:selectOneListbox>
-		</ui:remove>
-
 		<h:commandButton id="createElection" value="create election" action="create"></h:commandButton>
 		<h:commandButton value="send message" action="send"></h:commandButton>
 		<br/>
+		</ui:remove>
+
 		<ui:repeat var="el" value="#{elections.els}">
-			<ui:remove>
-			<h:commandLink value="#{el.name}" action="#{candidates.init(el.id)}"></h:commandLink>
-			</ui:remove>
-			<h:commandLink value="#{el.name}" action="#{elect.fromElections(el.id)}">
-			</h:commandLink>
-			<br />
+			<div class="highlight-box-margin">
+				<h:commandLink value="#{el.name}" action="#{elect.fromElections(el.id)}"></h:commandLink>
+				<br />
+				#{el.description}
+			</div>
 		</ui:repeat>
+		<p> </p>
+		<h:commandButton id="createElection" value="create election" action="create"></h:commandButton>
 	</h:form>
 </body>
 </html>

@@ -8,23 +8,31 @@
 <head>
 <link rel="stylesheet" type="text/css" href="style/evoting.css"  media="all" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Insert title here</title>
+<title>RAVA Voting</title>
 </head>
 <body>
 	<h:form>
 		<div id="head" class="center">
 			<h2 class="RAVA">RAVA Voting</h2>
 		</div>
-		<div id="content">
-			<p>We offer truly verifiable online elections</p>
-			
+		<div class="content" >
+			<p class="header">We offer truly verifiable online elections</p>
+			<div>
+			We believe in democracy and we think verifiable elections are its cornerstone. <br/>
+			We believe democracy is important at every level, whether it’s your book club, <br/>
+			parent-teacher association, student government, workers’ union, or state.  
+			</div>
+			<p> </p>
+			<ui:remove>
 			<div class="commandLinks">
 				<h:commandLink value="create election" action="create"></h:commandLink>
 			</div>
 			<div class="commandLinks">
 				<h:commandLink value=" vote in a featured election" action="Elections"></h:commandLink>
 			</div>
+			</ui:remove>
 			
+			<h:commandLink action="login">Please login to create an election or vote in a featured election</h:commandLink>
 		</div>
 	</h:form>
 </body>
