@@ -8,7 +8,7 @@
 <head>
 <link rel="stylesheet" type="text/css" href="style/evoting.css"	media="all" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Insert title here</title>
+<title>RAVA Voting</title>
 </head>
 <body>
 	<h:form>
@@ -26,12 +26,12 @@
 				<tr>
 					<th>Description:</th>
 					<td><h:inputTextarea id="desc" value="#{newVoting.description}"
-							label="description" rows="10" cols="50">
+							label="description" rows="10" cols="60">
 						</h:inputTextarea> <h:message for="desc"></h:message></td>
 				</tr>
 			</tbody>
 		</table>
-		<h:commandButton value="next" action="#{election.createElection(newVoting.name, newVoting.description)}"></h:commandButton>
+		<h:commandButton value="next" action="#{election.createElection(newVoting.name, newVoting.description)}" styleClass="margin1"></h:commandButton>
 		<h:commandButton value="cancel" action="Elections" immediate="true"></h:commandButton>
 	</h:form>
 </body>

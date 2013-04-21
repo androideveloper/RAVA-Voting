@@ -18,9 +18,9 @@ public class SqlDataProvider {
 	private static SqlDataProvider dataprovider;
 
 	private SqlDataProvider() {
-		this.dbUrl = "jdbc:jtds:sqlserver://localhost/Evoting;";
+		this.dbUrl = "jdbc:jtds:sqlserver://localhost/Evoting;instance=SQLEXPRESS;";
 		this.username = "sa";
-		this.password = "SaSa111";
+		this.password = "sa";
 
 		String driver = "net.sourceforge.jtds.jdbc.Driver";
 
@@ -548,6 +548,29 @@ public class SqlDataProvider {
 				}
 		}
 		return ;
+	}
+	
+	public void setTrusteeGenerated(int elId, int trId) {
+		Connection con = null;
+		try {
+			con = getConnection();
+			String sql = "update ElectionTrustees set isGenerated = 1 where electId = ? and trusteeID = ?";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setInt(1, elId);
+			statement.setInt(2, trId);
+			statement.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+				try {
+					if(con != null) {
+						con.close();
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}
 	}
 	
 	private Connection getConnection() throws SQLException {

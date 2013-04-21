@@ -27,7 +27,7 @@ public class Elections {
 	}
 	
 	public ArrayList<Election> getEls() {
-		els = SqlDataProvider.getInstance().loadElections();
+		els = SqlDataProvider.getInstance().loadOpenElections();
 		return els;
 	}
 

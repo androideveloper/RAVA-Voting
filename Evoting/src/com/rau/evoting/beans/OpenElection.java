@@ -1,5 +1,7 @@
 package com.rau.evoting.beans;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import javax.faces.event.AjaxBehaviorEvent;
@@ -177,12 +179,23 @@ public class OpenElection {
 	
 	public String addTrustee() {
 		//trustees.add(new Trustee(trustees.size()+1, trusteeName, trusteeEmail));
-//		try {
-//			MailService.sendMessage(trusteeEmail, "Trustee for evoting", "Hi Mr. " + trusteeName);
-//		} catch (MessagingException e) {
-//			e.printStackTrace();
-//		}
-		SqlDataProvider.getInstance().insertTrustee(election.getId(), new Trustee(trustees.size()+1, trusteeName, trusteeEmail, false));
+		int trId = trustees.size()+1;
+		String message = "Hi Mr. " + trusteeName + "\n Please, generate your key: \n";
+		String url = "http://localhost:8080/Evoting/Generate.xhtml?trusteeId=" + trId + "&electionId=" + election.getId();
+		String encodedUrl = url;
+		try {
+			encodedUrl = URLEncoder.encode(url, "UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		message += url;
+		SqlDataProvider.getInstance().insertTrustee(election.getId(), new Trustee(trId, trusteeName, trusteeEmail, false));
+		try {
+			MailService.sendMessage(trusteeEmail, "Trustee for " + election.getName() +" evoting", message);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}		
 		trusteeName = "";
 		trusteeEmail = "";
 		return "Trustees";
@@ -190,9 +203,7 @@ public class OpenElection {
 	
 	public String open() {
 		SqlDataProvider.getInstance().openElection(election.getId());
-
 		return "Elections";
-
 	}
 	
 	
