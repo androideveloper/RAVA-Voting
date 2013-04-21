@@ -377,6 +377,36 @@ public class SqlDataProvider {
 		}	
 	}
 	
+	public ArrayList<Election> getUserElections(String username) {
+		ArrayList<Election> l = new ArrayList<Election>();
+		Connection con = null;
+		try {
+			con = getConnection();
+			String sql = "select * from Elections where userId = ?";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setString(1, username);
+			ResultSet rs = statement.executeQuery();
+			while(rs.next()){
+				boolean isOpen = rs.getInt("isOpen") == 1 ? true : false; 
+				Election el = new Election(rs.getInt("id"), rs.getString("name"),rs.getString("descript"), isOpen);
+				l.add(el);
+			}
+			rs.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+				try {
+					if(con != null) {
+						con.close();
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}
+		return l;
+	}
+	
 	public ArrayList<Answer> getElectionAnswers(int elId){
 		ArrayList<Answer> l = new ArrayList<Answer>();
 		Connection con = null;
