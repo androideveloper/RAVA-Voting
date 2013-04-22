@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
+import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.mail.MessagingException;
 
@@ -154,7 +155,9 @@ public class OpenElection {
 	}
 		
 	public String createElection(String name, String description) {
-		int elId = SqlDataProvider.getInstance().insertElecttion(new Election(0, name, description));
+		FacesContext context = FacesContext.getCurrentInstance();
+		String username = (String) context.getApplication().evaluateExpressionGet(context, "#{home.username}", String.class);
+		int elId = SqlDataProvider.getInstance().insertElecttion(new Election(0, name, description),username);
 		election = new Election(elId, name, description);
 		return "next";
 	}

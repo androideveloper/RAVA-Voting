@@ -3,14 +3,22 @@ package com.rau.evoting.beans;
 import java.util.ArrayList;
 
 import javax.faces.application.Application;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 import javax.faces.el.MethodBinding;
 
 import com.rau.evoting.data.SqlDataProvider;
 import com.rau.evoting.models.Election;
 
+/**
+ * @author Aram
+ *
+ */
 public class Elections {
 
+	@ManagedProperty(value="#{home}")
+	private Home homeBean;
+	
 	private ArrayList<Election> els;
 	private Election selected;
 		
@@ -35,6 +43,14 @@ public class Elections {
 		this.els = els;
 	}
 
+	public Home getHomeBean() {
+		return homeBean;
+	}
+
+	public void setHomeBean(Home homeBean) {
+		this.homeBean = homeBean;
+	}
+
 	public String election(int id) {
 //		Candidates.electId = id;
 //		FacesContext context = FacesContext.getCurrentInstance();
@@ -50,6 +66,11 @@ public class Elections {
 		return "election";
 	}
 	
-
+	public String aaa() {
+		FacesContext context = FacesContext.getCurrentInstance();
+		homeBean = (Home) context.getApplication().evaluateExpressionGet(context, "#{home}", Home.class);
+		System.out.println(homeBean.getUsername());
+		return "a";
+	}
 	
 }

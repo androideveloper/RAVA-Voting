@@ -297,16 +297,17 @@ public class SqlDataProvider {
 		return l;
 	}
 	
-	public int insertElecttion(Election el){
+	public int insertElecttion(Election el, String userId){
 		int id = 0;
 		Connection con = null;
 		try {
 			con = getConnection();
 			
-			String sql = "insert into Elections(name, descript) values(? , ?)  select SCOPE_IDENTITY() as id";
+			String sql = "insert into Elections(name, descript,isOpen, userId) values(?,?, 0,?)  select SCOPE_IDENTITY() as id";
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setString(1, el.getName());
 			statement.setString(2, el.getDescription());
+			statement.setString(3, userId);
 			ResultSet rs = statement.executeQuery();
 			
 			while(rs.next()){

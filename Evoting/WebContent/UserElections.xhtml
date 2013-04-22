@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<head>
+<link rel="stylesheet" type="text/css" href="style/evoting.css"  media="all" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>RAVA Voting</title>
+</head>
+<body>
+	<div id="head" class="center">
+		<h:link value="RAVA Voting" outcome="Elections" styleClass="RAVA" ></h:link>
+	</div>
+	<h:form>
+		<ui:repeat var="el" value="#{userEl.els}">
+
+			<div class="highlight-box-margin">
+				<h:commandLink value="#{el.name}" action="#{elect.fromElections(el.id)}"></h:commandLink>
+				<br />
+				#{el.description}
+				<div class="algnRight"><h:outputLabel value="Not" rendered="#{!el.open}"></h:outputLabel> Opened</div>
+			</div>
+
+		</ui:repeat>
+		<p> </p>
+	</h:form>
+</body>
+</html>

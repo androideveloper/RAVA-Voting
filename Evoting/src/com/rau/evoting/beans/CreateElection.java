@@ -89,7 +89,7 @@ public class CreateElection {
 	}
 	
 	public String addElection(){
-		elId = SqlDataProvider.getInstance().insertElecttion(new Election(0, name, description));
+		elId = SqlDataProvider.getInstance().insertElecttion(new Election(0, name, description),"aa");
 		return "next";
 	}
 	
