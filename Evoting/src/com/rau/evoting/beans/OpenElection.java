@@ -204,6 +204,11 @@ public class OpenElection {
 		return "Trustees";
 	}
 	
+	public String setElection(int id) {
+		election = SqlDataProvider.getInstance().getElection(id);
+		return "OpenElection";
+	}
+	
 	public String open() {
 		SqlDataProvider.getInstance().openElection(election.getId());
 		return "Elections";

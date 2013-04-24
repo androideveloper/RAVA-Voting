@@ -18,7 +18,8 @@
 		<ui:repeat var="el" value="#{userEl.els}">
 
 			<div class="highlight-box-margin">
-				<h:commandLink value="#{el.name}" action="#{elect.fromElections(el.id)}"></h:commandLink>
+				<h:commandLink value="#{el.name}" action="#{elect.fromElections(el.id)}" rendered="#{el.open}"></h:commandLink>
+				<h:commandLink value="#{el.name}" action="#{election.setElection(el.id)}" rendered="#{!el.open}"></h:commandLink>
 				<br />
 				#{el.description}
 				<div class="algnRight"><h:outputLabel value="Not" rendered="#{!el.open}"></h:outputLabel> Opened</div>
