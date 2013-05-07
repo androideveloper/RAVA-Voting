@@ -182,7 +182,7 @@ public class OpenElection {
 	}
 	
 	public String addAnswers() {
-		if(answer != "") {
+		if(!answer.equals("")) {
 			answers.add(new Answer(maxId, answer));
 			answer = "";
 		}
