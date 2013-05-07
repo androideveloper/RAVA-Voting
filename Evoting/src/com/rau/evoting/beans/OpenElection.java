@@ -172,10 +172,20 @@ public class OpenElection {
 		if (answers.size() > 0) {
 			answers.remove(answers.size() - 1);
 		}
+		answer = "";
 		return "";
 	}
 	
+	public String cancelAnswers() {
+		answer = "";
+		return "OpenElection";
+	}
+	
 	public String addAnswers() {
+		if(answer != "") {
+			answers.add(new Answer(maxId, answer));
+			answer = "";
+		}
 		SqlDataProvider.getInstance().insertAnswers(election.getId(), answers);
 		return "OpenElection";
 	}

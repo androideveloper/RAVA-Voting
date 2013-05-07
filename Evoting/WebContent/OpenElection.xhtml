@@ -20,7 +20,9 @@
 	</div>
 	<h:form>
 	<div id="links" class="commandLinks" >
-		<h:commandLink styleClass="link" action="#{election.navigateAnswers}">answers</h:commandLink>
+		<h:commandLink styleClass="link" action="#{election.navigateAnswers}" value="answers">
+			<f:setPropertyActionListener target="#{back.lastPage}" value="OpenElection"></f:setPropertyActionListener>
+		</h:commandLink>
 	</div>
 	<div class="commandLinks">
 		<h:commandLink styleClass="link" action="#{election.navigateTrustees}">trustees</h:commandLink>

@@ -29,6 +29,7 @@ public class MailService {
 		props.put("mail.transport.protocol", "smtps");
 		props.put("mail.smtps.host", HOST);
 		props.put("mail.smtps.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
 		props.put("mail.smtp.from", FROM);
 		props.put("mail.smtps.quitwait", "false");
 
