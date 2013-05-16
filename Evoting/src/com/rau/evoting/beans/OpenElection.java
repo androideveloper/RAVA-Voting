@@ -156,7 +156,7 @@ public class OpenElection {
 		
 	public String createElection(String name, String description) {
 		FacesContext context = FacesContext.getCurrentInstance();
-		String username = (String) context.getApplication().evaluateExpressionGet(context, "#{home.username}", String.class);
+		String username = (String) context.getApplication().evaluateExpressionGet(context, "#{elections.username}", String.class);
 		int elId = SqlDataProvider.getInstance().insertElecttion(new Election(0, name, description),username);
 		election = new Election(elId, name, description);
 		return "next";

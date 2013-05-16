@@ -13,7 +13,8 @@ public class UserElections {
 	
 	public UserElections() {
 		FacesContext context = FacesContext.getCurrentInstance();
-		username = (String) context.getApplication().evaluateExpressionGet(context, "#{home.username}", String.class);
+		username = (String) context.getApplication().evaluateExpressionGet(context, "#{elections.username}", String.class);
+		System.out.println(username);
 	}
 
 	public ArrayList<Election> getEls() {

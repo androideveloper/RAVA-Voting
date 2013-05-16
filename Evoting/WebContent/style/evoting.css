@@ -22,6 +22,12 @@
 	margin: 10px 10px 10px 10px;
 }
 
+.link1 {
+	text-decoration: none;
+	font-size: 18px;
+	color: teal;
+}
+
 .button {
 	margin-right: 20px;
 }

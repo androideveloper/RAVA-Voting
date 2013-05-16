@@ -24,7 +24,11 @@
 		<h:commandButton value="send message" action="send"></h:commandButton>
 		<br/>
 		</ui:remove>
-
+		
+		<h:commandButton id="createElection" value="create election" action="create"></h:commandButton>
+		<h:commandButton id="userElections" value="my elections" action="UserElections"></h:commandButton>
+		<p> </p>
+		
 		<ui:repeat var="el" value="#{elections.els}">
 			<div class="highlight-box-margin">
 				<h:commandLink value="#{el.name}" action="#{elect.fromElections(el.id)}"></h:commandLink>
@@ -32,9 +36,8 @@
 				#{el.description}
 			</div>
 		</ui:repeat>
-		<p> </p>
-		<h:commandButton id="createElection" value="create election" action="create"></h:commandButton>
-		<h:commandButton id="userElections" value="my elections" action="UserElections"></h:commandButton>
+
+		
 	</h:form>
 </body>
 </html>
