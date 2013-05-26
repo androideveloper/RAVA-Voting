@@ -84,12 +84,13 @@ public class Elections {
 		if (username == null) {
 			FacebookClient fbClient = new DefaultFacebookClient(accessToken);
 			User user = fbClient.fetchObject("me", User.class);
-			/*
-			 * Connection<Group> gr = fbClient.fetchConnection("me/groups",
-			 * Group.class); for (Group g : gr.getData()) {
-			 * System.out.println("Group id: " + g.getId());
-			 * System.out.println("Group name: " + g.getName()); }
-			 */
+
+			Connection<Group> gr = fbClient.fetchConnection("me/groups",Group.class);
+			for (Group g : gr.getData()) {
+				System.out.println("Group: " + g); 
+				System.out.println("Group name: " + g.getName()); 
+			}
+
 			username = user.getUsername();
 		}
 		return username;

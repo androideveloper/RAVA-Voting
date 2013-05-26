@@ -17,18 +17,15 @@
 		
 		<p> Who can vote ?</p>
 		
-		<h:selectOneRadio layout="pageDirection" value="#{election.selectOneRadio}">
-			<f:selectItem itemLabel="Everyone can vote" itemValue="1" ></f:selectItem>
-			<f:selectItem itemLabel="only voters who are members of:" itemValue="#{election.selectOneMenu}"> 		
+		<h:selectOneRadio layout="pageDirection" value="#{election.selectedVoteMode}">
+			<f:selectItem itemLabel="Everyone can vote" itemValue="all" ></f:selectItem>
+			<f:selectItem itemLabel="only voters who are members of:" itemValue="#{election.selectedGroup}"> 		
 			</f:selectItem>
 		</h:selectOneRadio>
-		<h:selectOneMenu value="#{election.selectOneMenu}">
-			<f:selectItem itemLabel="one" itemValue="3"></f:selectItem>
-			<f:selectItem itemLabel="two" itemValue="4"></f:selectItem>
-			<f:selectItem itemLabel="seven" itemValue="7"></f:selectItem>
-			<f:selectItem itemLabel="nine" itemValue="9"></f:selectItem>
+		<h:selectOneMenu value="#{election.selectedGroup}" styleClass="margleft">
+			<f:selectItems value="{election.groups}" var="gr" itemLabel="#{gr.name}" itemValue="#{gr.id}"></f:selectItems>
 		</h:selectOneMenu>
-		
+		<br/>
 		<h:commandButton value="ok" action="#{election.fromVoters}"></h:commandButton>
 	</h:form>
 </body>

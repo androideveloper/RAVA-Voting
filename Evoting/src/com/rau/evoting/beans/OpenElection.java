@@ -3,6 +3,7 @@ package com.rau.evoting.beans;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
@@ -12,6 +13,10 @@ import javax.mail.MessagingException;
 import com.rau.evoting.data.SqlDataProvider;
 import com.rau.evoting.models.*;
 import com.rau.evoting.utils.MailService;
+import com.restfb.Connection;
+import com.restfb.DefaultFacebookClient;
+import com.restfb.FacebookClient;
+import com.restfb.types.Group;
 
 public class OpenElection {
 	private Election election;
@@ -25,36 +30,28 @@ public class OpenElection {
 	private boolean showRemove;
 	private boolean canOpen;
 	private String openningMessage;
+	private String selectedGroup;
+	private String selectedVoteMode;
+	private List<Group> groups;
 	
-	private String selectOneMenu;
-	private String selectOneRadio;
-	
+
 	@ManagedProperty(value = "")
 	private Elections electionsBean;
 	
 	public OpenElection() {
+		
+		FacesContext context = FacesContext.getCurrentInstance();
+		electionsBean = (Elections) context.getApplication().evaluateExpressionGet(context, "#{elections}", Elections.class);
+		FacebookClient fbClient = new DefaultFacebookClient(electionsBean.getAccessToken());
+		Connection<Group> gr = fbClient.fetchConnection("me/groups", Group.class);
+		groups = gr.getData();
+	
+		System.out.println("name is: " + groups.get(0).getName());
 		answers = new ArrayList<Answer>();
 		trustees = new ArrayList<Trustee>();
 		disabled = false;
 	}
 	
-
-	public String getSelectOneMenu() {
-		return selectOneMenu;
-	}
-
-	public void setSelectOneMenu(String selectOneMenu) {
-		this.selectOneMenu = selectOneMenu;
-	}
-
-	public String getSelectOneRadio() {
-		return selectOneRadio;
-	}
-
-	public void setSelectOneRadio(String selectOneRadio) {
-		this.selectOneRadio = selectOneRadio;
-	}
-
 
 	public Election getElection() {
 		return election;
@@ -115,6 +112,36 @@ public class OpenElection {
 		this.maxId = maxId;
 	}
 	
+	public String getSelectedGroup() {
+		return selectedGroup;
+	}
+
+	public void setSelectedGroup(String selectedGroup) {
+		this.selectedGroup = selectedGroup;
+	}
+
+	public String getSelectedVoteMode() {
+		return selectedVoteMode;
+	}
+
+	public void setSelectedVoteMode(String selectedVoteMode) {
+		this.selectedVoteMode = selectedVoteMode;
+	}
+
+	public List<Group> getGroups() {
+		
+			FacebookClient fbClient = new DefaultFacebookClient(electionsBean.getAccessToken());
+			Connection<Group> gr = fbClient.fetchConnection("me/groups", Group.class);
+			groups = (ArrayList<Group>) gr.getData();
+			System.out.println("name is: " + groups.get(0).getName());
+		
+		return groups;
+	}
+
+	public void setGroups(ArrayList<Group> groups) {
+		this.groups = groups;
+	}
+
 	public boolean isDisabled() {
 		return disabled;
 	}
@@ -266,7 +293,12 @@ public class OpenElection {
 	
 	
 	public String fromVoters() {
-		System.out.println(selectOneRadio);
+		if(selectedVoteMode == "all") {
+			System.out.println("all can vote");
+		}
+		else {
+			System.out.println(selectedGroup);
+		}
 		return "OpenElection";
 	}
 	
