@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
+import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.mail.MessagingException;
@@ -25,11 +26,35 @@ public class OpenElection {
 	private boolean canOpen;
 	private String openningMessage;
 	
+	private String selectOneMenu;
+	private String selectOneRadio;
+	
+	@ManagedProperty(value = "")
+	private Elections electionsBean;
+	
 	public OpenElection() {
 		answers = new ArrayList<Answer>();
 		trustees = new ArrayList<Trustee>();
 		disabled = false;
 	}
+	
+
+	public String getSelectOneMenu() {
+		return selectOneMenu;
+	}
+
+	public void setSelectOneMenu(String selectOneMenu) {
+		this.selectOneMenu = selectOneMenu;
+	}
+
+	public String getSelectOneRadio() {
+		return selectOneRadio;
+	}
+
+	public void setSelectOneRadio(String selectOneRadio) {
+		this.selectOneRadio = selectOneRadio;
+	}
+
 
 	public Election getElection() {
 		return election;
@@ -40,6 +65,7 @@ public class OpenElection {
 	}
 	
 	public ArrayList<Answer> getAnswers() {
+		System.out.println("elections bean username " + electionsBean.getUsername());
 		return answers;
 	}
 
@@ -228,6 +254,20 @@ public class OpenElection {
 	public void ajaxListener(AjaxBehaviorEvent event) {
 		System.out.println("event: " +  event.getSource().toString());
 		disabled = !disabled; 
+	}
+
+	public Elections getElectionsBean() {
+		return electionsBean;
+	}
+
+	public void setElectionsBean(Elections electionsBean) {
+		this.electionsBean = electionsBean;
+	}
+	
+	
+	public String fromVoters() {
+		System.out.println(selectOneRadio);
+		return "OpenElection";
 	}
 	
 }

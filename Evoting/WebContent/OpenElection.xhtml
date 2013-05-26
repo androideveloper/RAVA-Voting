@@ -27,6 +27,9 @@
 	<div class="commandLinks">
 		<h:commandLink styleClass="link" action="#{election.navigateTrustees}">trustees</h:commandLink>
 	</div>
+	<div class="commandLinks">
+		<h:commandLink styleClass="link" action="Voters">voters</h:commandLink>
+	</div>
 	<h:panelGroup rendered="#{not election.canOpen}">
 		<h:outputText value="#{election.openningMessage}"></h:outputText>
 	</h:panelGroup>

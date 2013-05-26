@@ -22,8 +22,10 @@ import org.apache.http.message.BasicNameValuePair;
 
 import com.rau.evoting.data.SqlDataProvider;
 import com.rau.evoting.models.Election;
+import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
+import com.restfb.types.Group;
 import com.restfb.types.User;
 
 /**
@@ -50,6 +52,7 @@ public class Elections {
 
 	public Elections() {
 		//els = SqlDataProvider.getInstance().loadElections();
+		username = null;
 	}
 	
 	public ArrayList<Election> getEls() {
@@ -68,12 +71,27 @@ public class Elections {
 	public void setHomeBean(Home homeBean) {
 		this.homeBean = homeBean;
 	}
-
 	
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
 	public String getUsername() {
-		FacebookClient fbClient = new DefaultFacebookClient(accessToken);
-		User user = fbClient.fetchObject("me", User.class);
-		username = user.getUsername();
+		if (username == null) {
+			FacebookClient fbClient = new DefaultFacebookClient(accessToken);
+			User user = fbClient.fetchObject("me", User.class);
+			/*
+			 * Connection<Group> gr = fbClient.fetchConnection("me/groups",
+			 * Group.class); for (Group g : gr.getData()) {
+			 * System.out.println("Group id: " + g.getId());
+			 * System.out.println("Group name: " + g.getName()); }
+			 */
+			username = user.getUsername();
+		}
 		return username;
 	}
 

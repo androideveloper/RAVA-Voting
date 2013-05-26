@@ -25,7 +25,9 @@
 		<br/>
 		</ui:remove>
 		
-		<h:commandButton id="createElection" value="create election" action="create"></h:commandButton>
+		<h:commandButton id="createElection" value="create election" action="create">
+			<f:setPropertyActionListener target="#{election.electionsBean}" value="#{elections}"></f:setPropertyActionListener>
+		</h:commandButton>
 		<h:commandButton id="userElections" value="my elections" action="UserElections"></h:commandButton>
 		<p> </p>
 		
