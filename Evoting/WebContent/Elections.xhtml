@@ -15,6 +15,7 @@
 		<h:link value="RAVA Voting" outcome="Home" styleClass="RAVA" ></h:link>
 	</div>
 	<h:form>
+		<h:commandButton value="log out" actionListener="#{home.fbLogout}"></h:commandButton>
 		<ui:remove>
 			<h:selectOneListbox>
 				<f:selectItems value="#{elections.els}" var="el" itemLabel="#{el.name}"

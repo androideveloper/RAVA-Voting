@@ -61,4 +61,21 @@ public class Home {
 			System.out.println("Error");
 		}
 	}
+	
+	public void fbLogout(ActionEvent event) {
+		
+		FacesContext context = FacesContext.getCurrentInstance();
+		Elections electionsBean = (Elections) context.getApplication().evaluateExpressionGet(context, "#{elections}", Elections.class);
+		String fUrl = "https://www.facebook.com/logout.php?next=http://localhost:8080/Evoting/Home.xhtml&access_token=" + electionsBean.getAccessToken();
+		
+		HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+		
+		try {
+			response.sendRedirect(fUrl);
+			System.out.println(fUrl);
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println("Error");
+		}
+	}
 }
