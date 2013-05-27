@@ -183,12 +183,5 @@ public class Elections {
 //		}
 		return "election";
 	}
-	
-	public String aaa() {
-		FacesContext context = FacesContext.getCurrentInstance();
-		homeBean = (Home) context.getApplication().evaluateExpressionGet(context, "#{home}", Home.class);
-		System.out.println(homeBean.getUsername());
-		return "a";
-	}
-	
+		
 }

@@ -6,6 +6,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:c="http://java.sun.com/jsp/jstl/core">
 <head>
+<link rel="stylesheet" type="text/css" href="style/evoting.css"	media="all" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Insert title here</title>
 </head>
@@ -15,18 +16,22 @@
 			<h:commandLink value="#{election.election.name}" action="OpenElection" styleClass="link1"></h:commandLink>
 		</div>
 		
-		<p> Who can vote ?</p>
+		<p style="font-size: 20px;"> Who can vote ?</p>
 		
 		<h:selectOneRadio layout="pageDirection" value="#{election.selectedVoteMode}">
 			<f:selectItem itemLabel="Everyone can vote" itemValue="all" ></f:selectItem>
-			<f:selectItem itemLabel="only voters who are members of:" itemValue="#{election.selectedGroup}"> 		
+			<f:selectItem itemLabel="Only voters who are members of:" itemValue="#{election.selectedGroup}"> 		
 			</f:selectItem>
 		</h:selectOneRadio>
-		<h:selectOneMenu value="#{election.selectedGroup}" styleClass="margleft">
-			<f:selectItems value="{election.groups}" var="gr" itemLabel="#{gr.name}" itemValue="#{gr.id}"></f:selectItems>
+		
+		<h:selectOneMenu value="#{election.selectedGroup}" styleClass="margin1">
+			<c:forEach items="#{election.groups}" var="gr">
+				<f:selectItem itemLabel="#{gr.name}" itemValue="#{gr.id}" ></f:selectItem>
+			</c:forEach>
 		</h:selectOneMenu>
+		
 		<br/>
-		<h:commandButton value="ok" action="#{election.fromVoters}"></h:commandButton>
+		<h:commandButton value="ok" action="#{election.fromVoters}" styleClass="margRight"></h:commandButton>
 	</h:form>
 </body>
 </html>

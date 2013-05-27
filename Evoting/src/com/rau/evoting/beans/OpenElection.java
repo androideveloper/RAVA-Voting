@@ -39,17 +39,10 @@ public class OpenElection {
 	private Elections electionsBean;
 	
 	public OpenElection() {
-		
-		FacesContext context = FacesContext.getCurrentInstance();
-		electionsBean = (Elections) context.getApplication().evaluateExpressionGet(context, "#{elections}", Elections.class);
-		FacebookClient fbClient = new DefaultFacebookClient(electionsBean.getAccessToken());
-		Connection<Group> gr = fbClient.fetchConnection("me/groups", Group.class);
-		groups = gr.getData();
-	
-		System.out.println("name is: " + groups.get(0).getName());
 		answers = new ArrayList<Answer>();
 		trustees = new ArrayList<Trustee>();
 		disabled = false;
+		selectedVoteMode = "all";
 	}
 	
 
@@ -130,11 +123,9 @@ public class OpenElection {
 
 	public List<Group> getGroups() {
 		
-			FacebookClient fbClient = new DefaultFacebookClient(electionsBean.getAccessToken());
-			Connection<Group> gr = fbClient.fetchConnection("me/groups", Group.class);
-			groups = (ArrayList<Group>) gr.getData();
-			System.out.println("name is: " + groups.get(0).getName());
-		
+		FacebookClient fbClient = new DefaultFacebookClient(electionsBean.getAccessToken());
+		Connection<Group> gr = fbClient.fetchConnection("me/groups", Group.class);
+		groups = gr.getData();
 		return groups;
 	}
 
@@ -297,7 +288,7 @@ public class OpenElection {
 			System.out.println("all can vote");
 		}
 		else {
-			System.out.println(selectedGroup);
+			System.out.println("selcted group is :" + selectedGroup);
 		}
 		return "OpenElection";
 	}
