@@ -17,6 +17,7 @@ import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
 import com.restfb.types.Group;
+import com.restfb.types.User;
 
 public class OpenElection {
 	private Election election;
@@ -34,8 +35,10 @@ public class OpenElection {
 	private String selectedVoteMode;
 	private List<Group> groups;
 	
+	private FacebookClient fbClient;
+	
 
-	@ManagedProperty(value = "")
+//	@ManagedProperty(value = "")
 	private Elections electionsBean;
 	
 	public OpenElection() {
@@ -43,6 +46,9 @@ public class OpenElection {
 		trustees = new ArrayList<Trustee>();
 		disabled = false;
 		selectedVoteMode = "all";
+		FacesContext context = FacesContext.getCurrentInstance();
+		electionsBean = (Elections) context.getApplication().evaluateExpressionGet(context, "#{elections.username}", Elections.class);
+		fbClient = new DefaultFacebookClient(electionsBean.getAccessToken());
 	}
 	
 
@@ -122,8 +128,6 @@ public class OpenElection {
 	}
 
 	public List<Group> getGroups() {
-		
-		FacebookClient fbClient = new DefaultFacebookClient(electionsBean.getAccessToken());
 		Connection<Group> gr = fbClient.fetchConnection("me/groups", Group.class);
 		groups = gr.getData();
 		return groups;
@@ -199,9 +203,9 @@ public class OpenElection {
 	}
 		
 	public String createElection(String name, String description) {
-		FacesContext context = FacesContext.getCurrentInstance();
-		String username = (String) context.getApplication().evaluateExpressionGet(context, "#{elections.username}", String.class);
-		int elId = SqlDataProvider.getInstance().insertElecttion(new Election(0, name, description),username);
+		User user = fbClient.fetchObject("me", User.class);
+		String userId = user.getId();
+		int elId = SqlDataProvider.getInstance().insertElecttion(new Election(0, name, description),userId);
 		election = new Election(elId, name, description);
 		return "next";
 	}

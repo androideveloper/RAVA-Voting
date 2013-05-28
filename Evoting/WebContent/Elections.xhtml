@@ -14,6 +14,7 @@
 	<div id="head" class="center">
 		<h:link value="RAVA Voting" outcome="Home" styleClass="RAVA" ></h:link>
 	</div>
+
 	<h:form>
 		<h:commandButton value="log out" actionListener="#{home.fbLogout}"></h:commandButton>
 		<ui:remove>
@@ -26,9 +27,7 @@
 		<br/>
 		</ui:remove>
 		
-		<h:commandButton id="createElection" value="create election" action="create">
-			<f:setPropertyActionListener target="#{election.electionsBean}" value="#{elections}"></f:setPropertyActionListener>
-		</h:commandButton>
+		<h:commandButton id="createElection" value="create election" action="create"></h:commandButton>
 		<h:commandButton id="userElections" value="my elections" action="UserElections"></h:commandButton>
 		<p> </p>
 		

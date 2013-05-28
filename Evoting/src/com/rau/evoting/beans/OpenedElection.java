@@ -21,7 +21,6 @@ public class OpenedElection {
 	}
 
 	public Election getElection() {
-		//Map<String,String> params =  FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 		return election;
 	}
 

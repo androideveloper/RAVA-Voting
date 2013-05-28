@@ -6,19 +6,24 @@ import javax.faces.context.FacesContext;
 
 import com.rau.evoting.data.SqlDataProvider;
 import com.rau.evoting.models.*;
+import com.restfb.DefaultFacebookClient;
+import com.restfb.FacebookClient;
+import com.restfb.types.User;
 
 public class UserElections {
 	private ArrayList<Election> els;
-	private String username;
+	private String userId;
 	
 	public UserElections() {
 		FacesContext context = FacesContext.getCurrentInstance();
-		username = (String) context.getApplication().evaluateExpressionGet(context, "#{elections.username}", String.class);
-		System.out.println(username);
+		Elections elsBean = (Elections) context.getApplication().evaluateExpressionGet(context, "#{elections.username}", Elections.class);
+		FacebookClient fbClient = new DefaultFacebookClient(elsBean.getAccessToken());
+		User user = fbClient.fetchObject("me", User.class);
+		userId = user.getId();
 	}
 
 	public ArrayList<Election> getEls() {
-		els = SqlDataProvider.getInstance().getUserElections(username);
+		els = SqlDataProvider.getInstance().getUserElections(userId);
 		return els;
 	}
 
