@@ -60,15 +60,15 @@
   </context-param>
   <listener>
     <listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class>
-  </listener>
+  </listener> 
   <filter>
       <filter-name>SessionTimeOutFilter</filter-name>
       <filter-class>com.rau.evoting.filters.SessionTimeOutFilter</filter-class>
-  </filter>
+  </filter> 
   <filter-mapping>
       <filter-name>SessionTimeOutFilter</filter-name>
       <url-pattern>*.xhtml</url-pattern>
-  </filter-mapping>
+  </filter-mapping> 
 <!--  <session-config>
       <session-timeout>1</session-timeout>
   </session-config> -->

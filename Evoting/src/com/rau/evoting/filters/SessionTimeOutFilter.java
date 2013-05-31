@@ -41,7 +41,10 @@ public class SessionTimeOutFilter implements Filter {
 				return ;
 			}
 		}
+
 		chain.doFilter(request, response);
+
+
 	}
 
 	public String getTimeOutPage() {

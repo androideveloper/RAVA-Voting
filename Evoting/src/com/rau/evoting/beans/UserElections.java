@@ -16,7 +16,7 @@ public class UserElections {
 	
 	public UserElections() {
 		FacesContext context = FacesContext.getCurrentInstance();
-		Elections elsBean = (Elections) context.getApplication().evaluateExpressionGet(context, "#{elections.username}", Elections.class);
+		Elections elsBean = (Elections) context.getApplication().evaluateExpressionGet(context, "#{elections}", Elections.class);
 		FacebookClient fbClient = new DefaultFacebookClient(elsBean.getAccessToken());
 		User user = fbClient.fetchObject("me", User.class);
 		userId = user.getId();

@@ -15,11 +15,11 @@ import com.rau.evoting.listeners.MyTransportListener;
 
 public class MailService {
 
-	private static final String HOST = "smtp.mail.yahoo.com";
+	private static final String HOST = "smtp.gmail.com";
 	private static final int PORT = 465;
-	private static final String USER = "crocodise123el_shio";
-	private static final String PASSWORD = "q123456789P";
-	private static final String FROM = "crocodise123el_shio@yahoo.com";
+	private static final String USER = "rava.voting";
+	private static final String PASSWORD = "rau#rava#voting";
+	private static final String FROM = "rava.voting@gmail.com";
 	
 	private static Session mailSession;
 	private static MailService mailService = null;

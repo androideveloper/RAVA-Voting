@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.rau.evoting.data.SqlDataProvider;
@@ -68,14 +69,27 @@ public class Home {
 		Elections electionsBean = (Elections) context.getApplication().evaluateExpressionGet(context, "#{elections}", Elections.class);
 		String fUrl = "https://www.facebook.com/logout.php?next=http://localhost:8080/Evoting/Home.xhtml&access_token=" + electionsBean.getAccessToken();
 		
-		HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+		
+		HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
+		HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+		if(request.getSession(false) != null) {
+			request.getSession(false).invalidate(); 
+		}
+		//context.getExternalContext().invalidateSession();
 		
 		try {
-			response.sendRedirect(fUrl);
+			context.getExternalContext().redirect(fUrl);
+			//response.sendRedirect(fUrl);
 			System.out.println(fUrl);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("Error");
 		}
+	}
+	
+	public String logout() throws IOException {
+		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+		FacesContext.getCurrentInstance().getExternalContext().redirect("Home.xhtml");
+		return "";
 	}
 }

@@ -124,7 +124,7 @@ table.vote th, td {
 }
 
 .algnRight {
-	text-align: right;
+	float: right;
 }
 
 /* #content {
