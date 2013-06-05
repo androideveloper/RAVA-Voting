@@ -36,11 +36,11 @@
 	<classpathentry exported="true" kind="lib" path="WebContent/WEB-INF/lib/httpcore-4.2.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="WebContent/WEB-INF/lib/httpmime-4.2.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="WebContent/WEB-INF/lib/restfb-1.6.12.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Vahan/Desktop/mag/barbecue-1.5-beta1/barbecue-1.5-beta1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Vahan/Desktop/mag/ElGamalLib/bcprov-jdk15on-1.47.jar" sourcepath="C:/Users/Vahan/Desktop/mag/bcprov-jdk15on-1.47-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Vahan/Desktop/mag/ElGamalLib/bcprov-jdk15on-1.47-javadoc.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Vahan/Desktop/mag/ElGamalLib/bcprov-jdk15on-1.47-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Vahan/Desktop/mag/primefaces/primefaces-3.5.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Vahan/Desktop/mag/primefaces/primefaces-3.5-sources.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/barbecue-1.5-beta1.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/bcprov-jdk15on-1.47-javadoc.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/bcprov-jdk15on-1.47-sources.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/bcprov-jdk15on-1.47.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/primefaces-3.5-sources.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/primefaces-3.5.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
