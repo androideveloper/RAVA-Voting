@@ -2,12 +2,20 @@ package com.rau.evoting.utils;
 
 import java.util.Properties;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Transport;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 import com.rau.evoting.listeners.MyTransportListener;
 
@@ -60,6 +68,46 @@ public class MailService {
 
 		transport.sendMessage(mimeMessage,
 				mimeMessage.getRecipients(Message.RecipientType.TO));
+		transport.close();
+
+	}
+	
+	public static void sendMessageWithFile(String recipient, String subject,
+			String message, String filename) throws MessagingException {
+		
+		if (mailService == null) {
+			mailService = new MailService();
+		}
+
+		MimeMessage mimeMessage = new MimeMessage(mailSession);
+
+		mimeMessage.setFrom(new InternetAddress(FROM));
+		mimeMessage.setSender(new InternetAddress(FROM));
+		mimeMessage.setSubject(subject);
+		//mimeMessage.setContent(message, "text/plain");
+		
+		BodyPart body = new MimeBodyPart();
+		body.setText(message); 
+		Multipart multipart = new MimeMultipart();
+		multipart.addBodyPart(body);
+		body = new MimeBodyPart();
+		DataSource source = new FileDataSource(filename);
+		body.setDataHandler(new DataHandler(source));
+		body.setFileName(filename.substring(filename.lastIndexOf('\\')));
+		multipart.addBodyPart(body);
+		mimeMessage.setContent(multipart); 
+
+		mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(
+				recipient));
+
+		Transport transport = mailSession.getTransport("smtps");
+		transport.connect(HOST, PORT, USER, PASSWORD);
+
+		transport.addTransportListener(new MyTransportListener());
+
+		transport.sendMessage(mimeMessage,
+				mimeMessage.getRecipients(Message.RecipientType.TO));
+		//Transport.send(mimeMessage);
 		transport.close();
 
 	}

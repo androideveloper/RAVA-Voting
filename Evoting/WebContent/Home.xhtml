@@ -12,8 +12,15 @@
 </head>
 <body>
 	<h:form>
+		<ui:remove>
 		<div id="head" class="center">
 			<h2 class="RAVA">RAVA Voting</h2>
+		</div>
+		</ui:remove>
+		<div id="head" class="center">
+			<ui:insert name="header">
+				<ui:include src="/template/CommonHeader.xhtml"></ui:include>
+			</ui:insert>
 		</div>
 		<div class="content" >
 			<p class="header">We offer truly verifiable online elections</p>

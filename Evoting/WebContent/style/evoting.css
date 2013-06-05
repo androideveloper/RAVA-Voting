@@ -124,7 +124,17 @@ table.vote th, td {
 }
 
 .algnRight {
-	float: right;
+	float: right; 
+}
+
+.headerBackground {
+	background-image: url("/images/ok.jpg");
+}
+
+.aa {
+width: 800px;
+height: 200px;	
+border: none;
 }
 
 /* #content {
