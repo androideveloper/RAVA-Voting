@@ -2,6 +2,7 @@ package com.rau.evoting.utils;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.Random;
 
 import org.bouncycastle.crypto.engines.ElGamalEngine;
 import org.bouncycastle.crypto.generators.ElGamalParametersGenerator;
@@ -21,27 +22,27 @@ public class ElGamalHelper {
 	 * 
 	 * public class PrivateKey{ BigInteger x; }
 	 */
-	
-	public ElGamalHelper(){
+
+	public ElGamalHelper() {
 		ElGamalParametersGenerator gen = new ElGamalParametersGenerator();
-		gen.init(182, 5, new SecureRandom());
+		gen.init(200, 5, new SecureRandom());
 		params = gen.generateParameters();
-		prKeyParams = new ElGamalPrivateKeyParameters(new BigInteger("2"),
-				params);
+		prKeyParams = new ElGamalPrivateKeyParameters(
+				RandomHelper.randomBigInteger(params.getP().subtract(
+						new BigInteger("1"))), params);
 		pubKeyParams = new ElGamalPublicKeyParameters(params.getG().modPow(
 				prKeyParams.getX(), params.getP()), params);
 		engine = new ElGamalEngine();
 	}
 
-	/*public void generateKey() {
-		ElGamalParametersGenerator gen = new ElGamalParametersGenerator();
-		gen.init(182, 5, new SecureRandom());
-		params = gen.generateParameters();
-		prKeyParams = new ElGamalPrivateKeyParameters(new BigInteger("2"),
-				params);
-		pubKeyParams = new ElGamalPublicKeyParameters(params.getG().modPow(
-				prKeyParams.getX(), params.getP()), params);
-	} */
+	/*
+	 * public void generateKey() { ElGamalParametersGenerator gen = new
+	 * ElGamalParametersGenerator(); gen.init(182, 5, new SecureRandom());
+	 * params = gen.generateParameters(); prKeyParams = new
+	 * ElGamalPrivateKeyParameters(new BigInteger("2"), params); pubKeyParams =
+	 * new ElGamalPublicKeyParameters(params.getG().modPow( prKeyParams.getX(),
+	 * params.getP()), params); }
+	 */
 
 	public String encode(String text) {
 		engine.init(true, pubKeyParams);
@@ -59,8 +60,21 @@ public class ElGamalHelper {
 		String decoded = new String(b);
 		return decoded;
 	}
-	
-	public int getPrivateKeyHash(){
+
+	public int getPrivateKeyHash() {
 		return prKeyParams.getX().hashCode();
 	}
+
+	public String getPrivateKey() {
+		return new String(prKeyParams.getX().toByteArray());
+	}
+	
+	public int getPublicKeyHash() {
+		return pubKeyParams.getY().hashCode();
+	}
+
+	public String getPublicKey() {
+		return new String(pubKeyParams.getY().toByteArray());
+	}
+
 }
