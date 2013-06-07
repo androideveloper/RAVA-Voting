@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import com.rau.evoting.models.*;
 
 
-
 public class SqlDataProvider {
 	protected String dbUrl;
 	protected String username;
@@ -33,12 +32,6 @@ public class SqlDataProvider {
 
 	}
     
-//	public SqlDataProvider(String dbUrl, String username, String password) {
-//		this.dbUrl = dbUrl;
-//		this.username = username;
-//		this.password = password;
-//	}
-
 	public static SqlDataProvider getInstance(){
 		if(dataprovider==null){
 			dataprovider = new SqlDataProvider();
@@ -46,6 +39,38 @@ public class SqlDataProvider {
 		return dataprovider;
 	}
 	
+	
+	public void insertUser(String fbId) {
+		Connection con = null;
+		try {
+			con = getConnection();
+			String sql = "select * from Users where fbId = ?"; 
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setString(1, fbId);
+			ResultSet rs = statement.executeQuery();
+			if(!rs.next()){
+				sql = "insert into Users(fbId) values(?) ";
+				statement = con.prepareStatement(sql);
+				statement.setString(1, fbId);
+				statement.executeUpdate();
+			}
+			rs.close();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+				try {
+					if(con != null) {
+						con.close();
+					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		return;
+	}
 	
 	public User getUser(String username) {
 		Connection con = null;
@@ -121,7 +146,7 @@ public class SqlDataProvider {
 			ResultSet rs = statement.executeQuery();
 			
 			while(rs.next()){
-				elect = new Election(elId, rs.getString("name"), rs.getString("descript"));
+				elect = new Election(elId, rs.getString("name"), rs.getString("descript"), rs.getInt("openState"), rs.getString("creatorId"));
 			}
 			rs.close();
 			
@@ -152,7 +177,7 @@ public class SqlDataProvider {
 			ResultSet rs = statement.executeQuery();
 			
 			while(rs.next()){
-				Election el = new Election(rs.getInt("id"), rs.getString("name"), rs.getString("descript"));
+				Election el = new Election(rs.getInt("id"), rs.getString("name"), rs.getString("descript"), rs.getInt("openState"), rs.getString("creatorId"));
 				l.add(el);
 			}
 			rs.close();
@@ -176,12 +201,12 @@ public class SqlDataProvider {
 		try {
 			con = getConnection();
 			
-			String sql = "select * from Elections where isOpen = 1";
+			String sql = "select * from Elections where openState = 1";
 			PreparedStatement statement = con.prepareStatement(sql);
 			ResultSet rs = statement.executeQuery();
 			
 			while(rs.next()){
-				Election el = new Election(rs.getInt("id"), rs.getString("name"), rs.getString("descript"), true);
+				Election el = new Election(rs.getInt("id"), rs.getString("name"), rs.getString("descript"), 1, rs.getString("creatorId"));
 				l.add(el);
 			}
 			rs.close();
@@ -199,111 +224,14 @@ public class SqlDataProvider {
 		return l;
 	}
 	
-	public Candidate getCandidate(int id){
-		Candidate cand = null;
-		Connection con = null;
 		
-		try {
-			con = getConnection();
-			
-			String sql = "select * from Candidates where id = ?";
-			PreparedStatement statement = con.prepareStatement(sql);
-			statement.setInt(1, id);
-			ResultSet rs = statement.executeQuery();
-			
-			while(rs.next()) {
-				cand = new Candidate(rs.getInt("id"), rs.getString("name"), rs.getString("surname"),rs.getString("email") ,rs.getDate("dateOfBirth"));
-			}
-			rs.close();
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally {
-			try {
-				if( con != null)
-					con.close();
-			} catch(SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		return cand;
-	}
-	
-	public void insertCandidates(ArrayList<Candidate> cands){
-		Connection con = null;
-		String sql = "insert into Candidates(name,surname,dateOfBirth,email) values(?,?,?,?) select SCOPE_IDENTITY() as id";
-		try {
-			con = getConnection();
-			
-			PreparedStatement statement = con.prepareStatement(sql);
-			java.sql.Date date;
-			ResultSet rs = null;
-			for (Candidate cand : cands) {
-				statement.setString(1, cand.getName());
-				statement.setString(2, cand.getSurname());
-				//date = new java.sql.Date(cand.getDateOfBirth().getTime());
-				statement.setDate(3, new java.sql.Date(cand.getDateOfBirth().getTime()));
-				statement.setString(4, cand.getEmail());
-				
-				//statement.executeUpdate();
-				 rs = statement.executeQuery();
-				while (rs.next()) {
-					cand.setId(rs.getInt("id"));
-				}
-				rs.close();
-			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally {
-			try {
-				if( con != null)
-					con.close();
-			} catch(SQLException e) {
-				e.printStackTrace();
-			}
-		}				
-	}
-	
-	public ArrayList<Candidate> getElectionCandidaets(int elId){
-		ArrayList<Candidate> l = new ArrayList<Candidate>();
-		Connection con = null;
-		try {
-			con = getConnection();
-			
-			String sql = "select * from Candidates join ElectionCandidates on id = candId where electid = ?";
-			PreparedStatement statement = con.prepareStatement(sql);
-			statement.setInt(1, elId);
-			ResultSet rs = statement.executeQuery();
-			
-			while(rs.next()){
-				Candidate cand = new Candidate(rs.getInt("id"), rs.getString("name"), rs.getString("surname"),rs.getString("email") ,rs.getTimestamp("dateOfBirth"));
-				l.add(cand);
-			}
-			rs.close();
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-				try {
-					if(con != null) {
-						con.close();
-					}
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-		}
-		return l;
-	}
-	
 	public int insertElecttion(Election el, String userId){
 		int id = 0;
 		Connection con = null;
 		try {
 			con = getConnection();
 			
-			String sql = "insert into Elections(name, descript,isOpen, userId) values(?,?, 0,?)  select SCOPE_IDENTITY() as id";
+			String sql = "insert into Elections(name, descript,openState, creatorId) values(?,?, 0,?)  select SCOPE_IDENTITY() as id";
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setString(1, el.getName());
 			statement.setString(2, el.getDescription());
@@ -336,7 +264,7 @@ public class SqlDataProvider {
 		try {
 			con = getConnection();
 			
-			String sql = "update Elections set isOpen = 1 where id = ?";
+			String sql = "update Elections set openState = 1 where id = ?";
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setInt(1, elId);
 			statement.executeUpdate();
@@ -353,43 +281,19 @@ public class SqlDataProvider {
 				}
 		}
 	}
-	
-	public void setElectionCandidates(int elId, ArrayList<Candidate> cands) {
-		Connection con = null;
-		String sql = "insert into ElectionCandidates(electID,candId) values(?,?) ";
-		try {
-			con = getConnection();
-			PreparedStatement statement = con.prepareStatement(sql);
-			statement.setInt(1, elId);
-			for (Candidate cand : cands) {
-				statement.setInt(2, cand.getId());
-				statement.executeUpdate();
-			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally {
-			try {
-				if( con != null)
-					con.close();
-			} catch(SQLException e) {
-				e.printStackTrace();
-			}
-		}	
-	}
-	
-	public ArrayList<Election> getUserElections(String username) {
+		
+	public ArrayList<Election> getUserElections(String userId) {
 		ArrayList<Election> l = new ArrayList<Election>();
 		Connection con = null;
 		try {
 			con = getConnection();
-			String sql = "select * from Elections where userId = ?";
+			String sql = "select * from Elections where creatorId = ?";
 			PreparedStatement statement = con.prepareStatement(sql);
-			statement.setString(1, username);
+			statement.setString(1, userId);
 			ResultSet rs = statement.executeQuery();
 			while(rs.next()){
-				boolean isOpen = rs.getInt("isOpen") == 1 ? true : false; 
-				Election el = new Election(rs.getInt("id"), rs.getString("name"),rs.getString("descript"), isOpen);
+				//boolean isOpen = rs.getInt("isOpen") == 1 ? true : false; 
+				Election el = new Election(rs.getInt("id"), rs.getString("name"),rs.getString("descript"), rs.getInt("openState"), userId);
 				l.add(el);
 			}
 			rs.close();
@@ -414,7 +318,7 @@ public class SqlDataProvider {
 		try {
 			con = getConnection();
 			
-			String sql = "select * from ElectionAnswers where electid = ?";
+			String sql = "select * from ElectionAnswers where electId = ?";
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setInt(1, elId);
 			ResultSet rs = statement.executeQuery();
@@ -529,13 +433,13 @@ public class SqlDataProvider {
 		try {
 			con = getConnection();
 			
-			String sql = "select * from ElectionTrustees where electid = ?";
+			String sql = "select * from ElectionTrustees where electId = ?";
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setInt(1, elId);
 			ResultSet rs = statement.executeQuery();
 			
 			while(rs.next()){
-				Trustee tr = new Trustee(rs.getInt("trusteeId"), rs.getString("name"), rs.getString("email"), rs.getBoolean("isGenerated"));
+				Trustee tr = new Trustee(rs.getString("trusteeId"), rs.getString("email"), rs.getBoolean("isGenerated"));
 				l.add(tr);
 			}
 			rs.close();
@@ -559,11 +463,10 @@ public class SqlDataProvider {
 		Connection con = null;
 		try {
 			con = getConnection();		
-			String sql = "insert into ElectionTrustees(electId,trusteeId,name,email,isGenerated) values(?,?,?,?,0)";
+			String sql = "insert into ElectionTrustees(electId,trusteeId,email,isGenerated) values(?,?,?,0)";
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setInt(1, elId);
-			statement.setInt(2, trustee.getId());
-			statement.setString(3, trustee.getName());
+			statement.setString(2, trustee.getId());
 			statement.setString(4, trustee.getEmail());
 			statement.executeUpdate();
 			
@@ -585,7 +488,7 @@ public class SqlDataProvider {
 		Connection con = null;
 		try {
 			con = getConnection();
-			String sql = "update ElectionTrustees set isGenerated = 1 where electId = ? and trusteeID = ?";
+			String sql = "update ElectionTrustees set isGenerated = 1 where electId = ? and trusteeId = ?";
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setInt(1, elId);
 			statement.setInt(2, trId);
@@ -602,6 +505,109 @@ public class SqlDataProvider {
 					e.printStackTrace();
 				}
 		}
+		return ;
+	}
+	
+	public int insertTemtTrustee(int elId, String email) {
+		Connection con = null;
+		int id = 0;
+		try {
+			con = getConnection();
+			String sql = "insert into TempTrustees(electId, email) values(?,?)  select SCOPE_IDENTITY() as id";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setInt(1, elId);
+			statement.setString(2,email);
+			ResultSet rs = statement.executeQuery();
+			
+			while(rs.next()) {
+				id = rs.getInt("id");
+			}
+			rs.close();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(con != null) {
+					con.close();
+				}
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return id;
+	}
+	
+	public void deleteTempTrustee(int id) {
+		Connection con = null;
+		try {
+			con = getConnection();
+			String sql = "delete from TempTrustees where id = ?";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setInt(1, id);
+			statement.executeUpdate();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(con != null) {
+					con.close();
+				}
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return;
+	}
+	
+	public int getTempTrusteeElectionId(int trId) {
+		Connection con = null;
+		int elId = 0;
+		try {
+			con = getConnection();
+			String sql = "select electId from TempTrustees where id = ?";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setInt(1, trId);
+			ResultSet rs = statement.executeQuery();
+			
+			while(rs.next()) {
+				elId = rs.getInt("electId");
+			}
+			rs.close();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(con != null) {
+					con.close();
+				}
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return elId;
+	}
+	
+	public void setElectionVotersGroup(int elId, int voterId) {
+		Connection con = null;
+		try{
+			con = getConnection();
+			String sql = "insert int ElectionVoters(electId,voterType,voterId) values(?,0,?)";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setInt(1, elId);
+			statement.setInt(3, voterId);
+			statement.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(con != null) {
+					con.close();
+				}
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return;
 	}
 	
 	private Connection getConnection() throws SQLException {

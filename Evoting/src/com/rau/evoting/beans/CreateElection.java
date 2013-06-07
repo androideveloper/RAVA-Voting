@@ -94,9 +94,9 @@ public class CreateElection {
 	}
 	
 	public String create() {
-		SqlDataProvider.getInstance().insertCandidates(candidates);
+		//SqlDataProvider.getInstance().insertCandidates(candidates);
 		//System.out.println(candidates.get(0).getId());
-		SqlDataProvider.getInstance().setElectionCandidates(elId, candidates);
+		//SqlDataProvider.getInstance().setElectionCandidates(elId, candidates);
 		return "create";
 	}
 	

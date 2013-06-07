@@ -15,7 +15,7 @@ public class Home {
 	private String appSecret = "e37f4bd94fc533c364ad291a2ecbba09";
 	private String username;
 	private String password;
-	
+		
 	public Home(){
 		
 	}
@@ -92,4 +92,6 @@ public class Home {
 		FacesContext.getCurrentInstance().getExternalContext().redirect("Home.xhtml");
 		return "";
 	}
+
+	
 }

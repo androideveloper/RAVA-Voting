@@ -32,8 +32,8 @@ public class Candidates {
 		electId = elId;
 		showShuffle = true;
 		codeValue = "encode";
-		c1 = SqlDataProvider.getInstance().getElectionCandidaets(electId);
-		c2 = SqlDataProvider.getInstance().getElectionCandidaets(electId);
+		//c1 = SqlDataProvider.getInstance().getElectionCandidaets(electId);
+		//c2 = SqlDataProvider.getInstance().getElectionCandidaets(electId);
 		return "election";
 	}
 	public Candidates(){

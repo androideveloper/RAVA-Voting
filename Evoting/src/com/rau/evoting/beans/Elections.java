@@ -22,6 +22,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import com.rau.evoting.data.SqlDataProvider;
 import com.rau.evoting.models.Election;
+import com.rau.evoting.utils.FacebookService;
 import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
@@ -98,71 +99,12 @@ public class Elections {
 	public void init() {
 		HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		String code = req.getParameter("code");
-		int ret = retrieveToken(code);
+		accessToken = FacebookService.getInstance().getAccessToken(code, "Elections.xhtml");
+		FacebookClient fbClient = new DefaultFacebookClient(accessToken);
+		User user = fbClient.fetchObject("me", User.class);
+		SqlDataProvider.getInstance().insertUser(user.getId());
 	}
-	
-	private int retrieveToken(String code) {
-		 
-	       HttpClient client = new DefaultHttpClient();
-	       HttpPost post = new HttpPost("https://graph.facebook.com/oauth/access_token");
-	 
-	       try {
-	           String[][] parameters = {
-	               {"client_id", "515272745187738"},
-	               {"client_secret", "e37f4bd94fc533c364ad291a2ecbba09"},
-	               {"redirect_uri",
-	                     "http://localhost:8080/Evoting/Elections.xhtml"},
-	               {"code", code}
-	           };
-	 
-	           List<NameValuePair> nameValuePairs =  new ArrayList<NameValuePair>(1);
-	 
-	           for (int i = 0; i < parameters.length; i++) {
-	               nameValuePairs.add
-	                 (new BasicNameValuePair(parameters[i][0],
-	                         parameters[i][1]));
-	           }
-	 
-	           post.setEntity(
-	              new UrlEncodedFormEntity(nameValuePairs));
-	 
-	           HttpResponse resp = client.execute(post);
-	           BufferedReader rd =
-	                   new BufferedReader(new InputStreamReader(
-	                   resp.getEntity().getContent()));
-	 
-	           String message = "";
-	           String lineData;
-	           while ((lineData = rd.readLine()) != null) {
-	               message += lineData; System.out.println(lineData);
-	           }
-	           
-	           String token = null;
-	 
-	           // Add more safety traps
-	           String[] params = message.split("&");
-	           if (params != null) {
-	               for (int i = 0; i < params.length; i++) {
-	                   if (params[i].contains("access_token")) {
-	                       String[] B = params[i].split("=");
-	                       if (B != null) {
-	                           token = B[1];
-	                       }
-	                       break;
-	                   }
-	               }
-	           } else {
-	               return 0;
-	           }
-	 
-	           accessToken = token;
-	           return 1;
-	 
-	       } catch (Exception e) {
-	           return 0;
-	       }	 
-	   }
-		
+			
 	public String election(int id) {
 //		Candidates.electId = id;
 //		FacesContext context = FacesContext.getCurrentInstance();

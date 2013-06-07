@@ -11,7 +11,8 @@ public class Election {
 	private int id;
 	private String name;
 	private String description;
-	private boolean open;
+	private int state;
+	private String creatorId;
 	private ArrayList<Answer> answers;
 		
 	public Election(int id, String name, String description) {
@@ -20,11 +21,19 @@ public class Election {
 		this.description = description;
 	}
 	
-	public Election(int id, String name, String description, boolean open) {
+	public Election(int id, String name, String description, int state) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
-		this.open = open;
+		this.state = state;
+	}
+	
+	public Election(int id, String name, String description, int state, String creatorId) {
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.state = state;
+		this.creatorId = creatorId;
 	}
 	
 	public int getId() {
@@ -48,12 +57,20 @@ public class Election {
 		this.description = description;
 	}
 	
-	public boolean isOpen() {
-		return open;
+	public int getState() {
+		return state;
 	}
 
-	public void setOpen(boolean open) {
-		this.open = open;
+	public void setState(int state) {
+		this.state = state;
+	}
+
+	public String getCreatorId() {
+		return creatorId;
+	}
+
+	public void setCreatorId(String creatorId) {
+		this.creatorId = creatorId;
 	}
 
 	public ArrayList<Answer> getAnswers() {

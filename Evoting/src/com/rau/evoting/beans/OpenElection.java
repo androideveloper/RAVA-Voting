@@ -74,7 +74,7 @@ public class OpenElection {
 	}
 	
 	public ArrayList<Trustee> getTrustees() {
-		trustees = SqlDataProvider.getInstance().getElectionTrustees(election.getId());
+		trustees = SqlDataProvider.getInstance().getElectionTrustees(election.getId()); //fix
 		return trustees;
 	}
 
@@ -201,7 +201,7 @@ public class OpenElection {
 		
 	public String createElection(String name, String description) {
 		FacebookClient fbClient = new DefaultFacebookClient(electionsBean.getAccessToken());
-		User user = fbClient.fetchObject("me", User.class);
+		User user = fbClient.fetchObject("me", User.class); 
 		String userId = user.getId();
 		int elId = SqlDataProvider.getInstance().insertElecttion(new Election(0, name, description),userId);
 		election = new Election(elId, name, description);
@@ -249,7 +249,8 @@ public class OpenElection {
 			e1.printStackTrace();
 		}
 		message += url;
-		SqlDataProvider.getInstance().insertTrustee(election.getId(), new Trustee(trId, trusteeName, trusteeEmail, false));
+		//SqlDataProvider.getInstance().insertTrustee(election.getId(), new Trustee(trId, trusteeName, trusteeEmail, false));
+		SqlDataProvider.getInstance().insertTemtTrustee(election.getId(), trusteeEmail);
 		try {
 			MailService.sendMessage(trusteeEmail, "Trustee for " + election.getName() +" evoting", message);
 		} catch (MessagingException e) {
@@ -257,6 +258,29 @@ public class OpenElection {
 		}		
 		trusteeName = "";
 		trusteeEmail = "";
+		return "Trustees";
+	}
+	
+	public String addTempTrustee() {
+		String message = "Hello, you are chosen trustee for  " + election.getName() + " election\n Please, generate your key: \n";
+		int trId = SqlDataProvider.getInstance().insertTemtTrustee(election.getId(), trusteeEmail);
+		String url = "http://localhost:8080/Evoting/TrusteeHome.xhtml?trId=" + trId;
+		String encodedUrl = url;
+		try {
+			encodedUrl = URLEncoder.encode(url, "UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		message += url;
+		try {
+			MailService.sendMessage(trusteeEmail, "Trustee for " + election.getName() +" evoting", message);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}		
+		trusteeName = "";
+		trusteeEmail = "";
+		
 		return "Trustees";
 	}
 	

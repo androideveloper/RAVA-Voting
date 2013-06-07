@@ -19,7 +19,7 @@
     <managed-bean>
         <managed-bean-name>home</managed-bean-name>
         <managed-bean-class>com.rau.evoting.beans.Home</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
+        <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
     
     <managed-bean>
@@ -74,6 +74,18 @@
         <managed-bean-name>newVoting</managed-bean-name>
         <managed-bean-class>com.rau.evoting.beans.NewVoting</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>trhome</managed-bean-name>
+        <managed-bean-class>com.rau.evoting.beans.TrusteeHomeBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>trelection</managed-bean-name>
+        <managed-bean-class>com.rau.evoting.beans.TrusteeElectionBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
     
     <managed-bean>
