@@ -2,7 +2,6 @@ package com.rau.evoting.utils;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
-import java.util.Random;
 
 import org.bouncycastle.crypto.engines.ElGamalEngine;
 import org.bouncycastle.crypto.generators.ElGamalParametersGenerator;
@@ -68,13 +67,21 @@ public class ElGamalHelper {
 	public String getPrivateKey() {
 		return new String(prKeyParams.getX().toByteArray());
 	}
-	
+
 	public int getPublicKeyHash() {
 		return pubKeyParams.getY().hashCode();
 	}
 
 	public String getPublicKey() {
 		return new String(pubKeyParams.getY().toByteArray());
+	}
+
+	public String getP() {
+		return new String(params.getP().toByteArray());
+	}
+
+	public String getG() {
+		return new String(params.getG().toByteArray());
 	}
 
 }
