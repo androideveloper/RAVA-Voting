@@ -28,14 +28,15 @@ public class TrusteeElectionBean {
 		HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		String code = req.getParameter("code");
 		accessToken = FacebookService.getInstance().getAccessToken(code, "TrusteeElection.xhtml");
-		int elId = SqlDataProvider.getInstance().getTempTrusteeElectionId(tempTrId);
-		election = SqlDataProvider.getInstance().getElection(elId);
+		//int elId = SqlDataProvider.getInstance().getTrusteeElectionId(tempTrId);
+		//election = SqlDataProvider.getInstance().getElection(elId);
+		election = SqlDataProvider.getInstance().getTrusteeElection(tempTrId);
 		FacebookClient fbClient = new DefaultFacebookClient(accessToken);
 		User user = fbClient.fetchObject("me", User.class);
-		String trusteeId = user.getId();
 		Trustee tr = new Trustee(user.getId(), user.getEmail(), false);
-		SqlDataProvider.getInstance().insertTrustee(elId, tr);
-		SqlDataProvider.getInstance().deleteTempTrustee(tempTrId);
+		SqlDataProvider.getInstance().updateTrustee(tempTrId, tr);
+		//SqlDataProvider.getInstance().insertTrustee(election.getId(), tr);
+		//SqlDataProvider.getInstance().deleteTempTrustee(tempTrId);
 	}
 
 	public int getTempTrId() {

@@ -17,9 +17,9 @@ public class SqlDataProvider {
 	private static SqlDataProvider dataprovider;
 
 	private SqlDataProvider() {
-		this.dbUrl = "jdbc:jtds:sqlserver://localhost/Evoting;";
+		this.dbUrl = "jdbc:jtds:sqlserver://localhost/Evoting;instance=SQLEXPRESS;";
 		this.username = "sa";
-		this.password = "SaSa111";
+		this.password = "sa";
 
 		String driver = "net.sourceforge.jtds.jdbc.Driver";
 
@@ -427,7 +427,7 @@ public class SqlDataProvider {
 		return ;
 	}
 	
-	public ArrayList<Trustee> getElectionTrustees(int elId){
+	public ArrayList<Trustee> getElectionNotTempTrustees(int elId){
 		ArrayList<Trustee> l = new ArrayList<Trustee>();
 		Connection con = null;
 		try {
@@ -458,16 +458,78 @@ public class SqlDataProvider {
 		return l;
 	}
 	
-	public void insertTrustee(int elId, Trustee trustee){
-		
+	public ArrayList<Trustee> getElectionTrustees(int elId){
+		ArrayList<Trustee> l = new ArrayList<Trustee>();
+		Connection con = null;
+		try {
+			con = getConnection();
+			
+			String sql = "select trusteeId,email,isGenerated from ElectionTrustees where electId = ?";
+			//sql += "union select id as trusteeId,email,0 as isGenerated from TempTrustees where electId = ?";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setInt(1, elId);
+			//statement.setInt(2, elId);
+			ResultSet rs = statement.executeQuery();
+			
+			while(rs.next()){
+				Trustee tr = new Trustee(rs.getString("trusteeId"), rs.getString("email"), rs.getBoolean("isGenerated"));
+				l.add(tr);
+			}
+			rs.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+				try {
+					if(con != null) {
+						con.close();
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}
+		return l;
+	}
+	
+	public int insertTrustee(int elId, Trustee trustee){
+		int id = 0;
 		Connection con = null;
 		try {
 			con = getConnection();		
-			String sql = "insert into ElectionTrustees(electId,trusteeId,email,isGenerated) values(?,?,?,0)";
+			String sql = "insert into ElectionTrustees(electId,trusteeId,email,isGenerated) values(?,?,?,?) select SCOPE_IDENTITY() as id";
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setInt(1, elId);
 			statement.setString(2, trustee.getId());
-			statement.setString(4, trustee.getEmail());
+			statement.setString(3, trustee.getEmail());
+			statement.setInt(4, trustee.isGenerated() ? 1 : 0);
+			ResultSet rs = statement.executeQuery();
+			if(rs.next()) {
+				id = rs.getInt("id");
+			}
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+				try {
+					if(con != null) {
+						con.close();
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}
+		return id;
+	}
+	
+	public void updateTrustee(int id, Trustee trustee) {
+		Connection con = null;
+		try {
+			con = getConnection();		
+			String sql = "update ElectionTrustees set trusteeId = ?, email = ? where id = ?";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setString(1, trustee.getId());
+			statement.setString(2, trustee.getEmail());
+			statement.setInt(3, id);
 			statement.executeUpdate();
 			
 		} catch (SQLException e) {
@@ -481,7 +543,7 @@ public class SqlDataProvider {
 					e.printStackTrace();
 				}
 		}
-		return ;
+		return;
 	}
 	
 	public void setTrusteeGenerated(int elId, int trId) {
@@ -508,6 +570,63 @@ public class SqlDataProvider {
 		return ;
 	}
 	
+	public int getTrusteeElectionId(int id) {
+		Connection con = null;
+		int elId = 0;
+		try {
+			con = getConnection();
+			String sql = "select electId from ElectionTrustees where id = ?";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setInt(1, id);
+			ResultSet rs = statement.executeQuery();
+			
+			if(rs.next()) {
+				elId = rs.getInt("electId");
+			}
+			rs.close();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(con != null) {
+					con.close();
+				}
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return elId;
+	}
+	
+	public Election getTrusteeElection(int id) {
+		Connection con = null;
+		Election el = null;
+		try {
+			con = getConnection();
+			String sql = "select e.id as id,name,descript,openState,creatorId from (select * from ElectionTrustees where id = ?) as tr "; 
+			sql +=  " join Elections as e on tr.electId = e.id ";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setInt(1, id);
+			ResultSet rs = statement.executeQuery();
+			
+			if(rs.next()) {
+				el = new Election(rs.getInt("id"), rs.getString("name"), rs.getString("descript"),rs.getInt("openState"),rs.getString("creatorId"));
+			}
+			rs.close();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(con != null) {
+					con.close();
+				}
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return el;
+	}
+	
 	public int insertTemtTrustee(int elId, String email) {
 		Connection con = null;
 		int id = 0;
@@ -519,7 +638,7 @@ public class SqlDataProvider {
 			statement.setString(2,email);
 			ResultSet rs = statement.executeQuery();
 			
-			while(rs.next()) {
+			if(rs.next()) {
 				id = rs.getInt("id");
 			}
 			rs.close();

@@ -6,12 +6,15 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:c="http://java.sun.com/jsp/jstl/core">
 <head>
+<link rel="stylesheet" type="text/css" href="style/evoting.css"	media="all" />
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 <title>Trustee Dashboard</title>
 </head>
 <body>
 	<h:form>
-		<h:commandLink actionListener="#{trhome.fbLogin}">#{trhome.login}</h:commandLink>
+		<div class="center">
+			<h:commandLink actionListener="#{trhome.fbLogin}">#{trhome.login}</h:commandLink>
+		</div>
 	</h:form>
 </body>
 </html>

@@ -57,7 +57,7 @@ public class OpenElection {
 	}
 	
 	public ArrayList<Answer> getAnswers() {
-		System.out.println("elections bean username " + electionsBean.getUsername());
+		answers = SqlDataProvider.getInstance().getElectionAnswers(election.getId());
 		return answers;
 	}
 
@@ -263,7 +263,7 @@ public class OpenElection {
 	
 	public String addTempTrustee() {
 		String message = "Hello, you are chosen trustee for  " + election.getName() + " election\n Please, generate your key: \n";
-		int trId = SqlDataProvider.getInstance().insertTemtTrustee(election.getId(), trusteeEmail);
+		int trId = SqlDataProvider.getInstance().insertTrustee(election.getId(), new Trustee(null, trusteeEmail, false));
 		String url = "http://localhost:8080/Evoting/TrusteeHome.xhtml?trId=" + trId;
 		String encodedUrl = url;
 		try {
@@ -272,7 +272,7 @@ public class OpenElection {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		message += url;
+		message += url;  // or url
 		try {
 			MailService.sendMessage(trusteeEmail, "Trustee for " + election.getName() +" evoting", message);
 		} catch (MessagingException e) {
