@@ -491,6 +491,36 @@ public class SqlDataProvider {
 		return l;
 	}
 	
+	public Trustee getElectionTrustee(int id) {
+		Trustee tr = null;
+		Connection con = null;
+		try {
+			con = getConnection();
+			
+			String sql = "select trusteeId,email,isGenerated,publicKey,electId from ElectionTrustees where id = ?";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setInt(1, id);
+			ResultSet rs = statement.executeQuery();
+			
+			if(rs.next()){
+				tr = new Trustee(rs.getString("trusteeId"), rs.getString("email"), rs.getBoolean("isGenerated"),rs.getString("publicKey"),rs.getInt("electId"));
+			}
+			rs.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+				try {
+					if(con != null) {
+						con.close();
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}
+		return tr;
+	}
+	
 	public int insertTrustee(int elId, Trustee trustee){
 		int id = 0;
 		Connection con = null;
@@ -554,6 +584,30 @@ public class SqlDataProvider {
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setInt(1, elId);
 			statement.setInt(2, trId);
+			statement.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+				try {
+					if(con != null) {
+						con.close();
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}
+		return ;
+	}
+	
+	public void setTrusteePublicKey(String key, int id) {
+		Connection con = null;
+		try {
+			con = getConnection();
+			String sql = "update ElectionTrustees set publicKey = ?, isGenerated = 1 where id = ? ";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setString(1, key);
+			statement.setInt(2, id);
 			statement.executeUpdate();
 
 		} catch (SQLException e) {

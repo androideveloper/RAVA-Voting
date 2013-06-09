@@ -25,7 +25,7 @@ public class TrusteeHomeBean {
 		String fUrl = "https://www.facebook.com/dialog/oauth?"
 			      + "client_id=" + appId + "&"
 			      + "redirect_uri=" + "http://localhost:8080/Evoting/TrusteeElection.xhtml" +"&"  
-			      + "scope=publish_stream,user_groups,status_update&"
+			      + "scope=publish_stream,user_groups,status_update,email&"
 			      + "response_type=code";
 		
 		HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();

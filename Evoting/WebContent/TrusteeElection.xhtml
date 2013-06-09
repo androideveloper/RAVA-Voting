@@ -18,7 +18,16 @@
 		<div class="center">
 			Generate your trustee key:
 			<br />
-			<h:commandButton value="Generate" ></h:commandButton>
+			<h:panelGroup rendered="#{!trelection.trustee.generated}">
+				<h:commandButton value="Generate"  action="#{trelection.generateKey}" ></h:commandButton>
+			</h:panelGroup>
+			<h:panelGroup rendered="#{trelection.trustee.generated}">
+				Your public key is:
+				<br/>
+				<h:outputLabel value="#{trelection.trustee.publicKey}"></h:outputLabel>
+				<br/>
+				Your private key was send to your facebook conected mail.
+			</h:panelGroup>
 		</div>
 	</h:form>
 </body>

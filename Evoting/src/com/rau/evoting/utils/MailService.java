@@ -93,7 +93,7 @@ public class MailService {
 		body = new MimeBodyPart();
 		DataSource source = new FileDataSource(filename);
 		body.setDataHandler(new DataHandler(source));
-		body.setFileName(filename.substring(filename.lastIndexOf('\\')));
+		body.setFileName(filename.substring(filename.lastIndexOf('\\')+1));
 		multipart.addBodyPart(body);
 		mimeMessage.setContent(multipart); 
 
