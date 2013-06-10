@@ -8,7 +8,7 @@
 <head>
 <link rel="stylesheet" type="text/css" href="style/evoting.css"	media="all" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Insert title here</title>
+<title>Add Trustee for #{election.election.name}</title>
 </head>
 <body>
 	<h:form>
@@ -29,7 +29,7 @@
 				</tr>
 			</table>
 			<div class="marg">
-				<h:commandButton value="add" action="#{election.addTempTrustee}" styleClass="margRight"></h:commandButton>
+				<h:commandButton value="add" action="#{election.addTrustee}" styleClass="margRight"></h:commandButton>
 				<h:commandButton value="cancel" action="Trustees" immediate="true"></h:commandButton>
 			</div>
 		</div>

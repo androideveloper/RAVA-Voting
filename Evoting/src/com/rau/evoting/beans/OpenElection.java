@@ -35,7 +35,6 @@ public class OpenElection {
 	private String selectedVoteMode;
 	private List<Group> groups;
 	
-//	@ManagedProperty(value = "")
 	private Elections electionsBean;
 	
 	public OpenElection() {
@@ -194,7 +193,6 @@ public class OpenElection {
 	}
 	
 	public String navigateTrustees() {
-		//answers = SqlDataProvider.getInstance().getElectionAnswers(election.getId());
 		return "Trustees";
 	}
 		
@@ -235,7 +233,7 @@ public class OpenElection {
 		return "OpenElection";
 	}
 	
-	public String addTrustee() {
+	/*public String addTrustee() {
 		//trustees.add(new Trustee(trustees.size()+1, trusteeName, trusteeEmail));
 		int trId = trustees.size()+1;
 		String message = "Hi Mr. " + trusteeName + "\n Please, generate your key: \n";
@@ -244,12 +242,11 @@ public class OpenElection {
 		try {
 			encodedUrl = URLEncoder.encode(url, "UTF-8");
 		} catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		message += url;
 		//SqlDataProvider.getInstance().insertTrustee(election.getId(), new Trustee(trId, trusteeName, trusteeEmail, false));
-		SqlDataProvider.getInstance().insertTemtTrustee(election.getId(), trusteeEmail);
+		//SqlDataProvider.getInstance().insertTempTrustee(election.getId(), trusteeEmail);
 		try {
 			MailService.sendMessage(trusteeEmail, "Trustee for " + election.getName() +" evoting", message);
 		} catch (MessagingException e) {
@@ -258,9 +255,9 @@ public class OpenElection {
 		trusteeName = "";
 		trusteeEmail = "";
 		return "Trustees";
-	}
+	}*/
 	
-	public String addTempTrustee() {
+	public String addTrustee() {
 		String message = "Hello, you are chosen trustee for  " + election.getName() + " election\n Please, generate your key: \n";
 		int trId = SqlDataProvider.getInstance().insertTrustee(election.getId(), new Trustee(null, trusteeEmail, false));
 		String url = "http://localhost:8080/Evoting/TrusteeHome.xhtml?trId=" + trId;
@@ -268,10 +265,9 @@ public class OpenElection {
 		try {
 			encodedUrl = URLEncoder.encode(url, "UTF-8");
 		} catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		message += url;  // or url
+		message += url;  // or encoded
 		try {
 			MailService.sendMessage(trusteeEmail, "Trustee for " + election.getName() +" evoting", message);
 		} catch (MessagingException e) {
@@ -293,7 +289,6 @@ public class OpenElection {
 		return "Elections";
 	}
 	
-	
 	public void ajaxListener(AjaxBehaviorEvent event) {
 		System.out.println("event: " +  event.getSource().toString());
 		disabled = !disabled; 
@@ -306,7 +301,6 @@ public class OpenElection {
 	public void setElectionsBean(Elections electionsBean) {
 		this.electionsBean = electionsBean;
 	}
-	
 	
 	public String fromVoters() {
 		if(selectedVoteMode == "all") {
