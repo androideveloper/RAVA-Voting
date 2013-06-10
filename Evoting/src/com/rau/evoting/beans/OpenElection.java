@@ -57,7 +57,6 @@ public class OpenElection {
 	}
 	
 	public ArrayList<Answer> getAnswers() {
-		answers = SqlDataProvider.getInstance().getElectionAnswers(election.getId());
 		return answers;
 	}
 

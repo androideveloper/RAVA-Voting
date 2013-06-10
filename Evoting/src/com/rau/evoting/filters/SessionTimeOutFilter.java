@@ -65,7 +65,7 @@ public class SessionTimeOutFilter implements Filter {
 	
 	private boolean isSessionInvalid(HttpServletRequest httpServletRequest) {
 		boolean sessionInValid = (httpServletRequest.getRequestedSessionId() != null) && !httpServletRequest.isRequestedSessionIdValid();
-		System.out.println(httpServletRequest.isRequestedSessionIdValid());
+		//System.out.println(httpServletRequest.isRequestedSessionIdValid());
 		return sessionInValid;
 	}
 	
