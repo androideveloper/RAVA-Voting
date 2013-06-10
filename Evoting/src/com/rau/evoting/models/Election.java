@@ -11,7 +11,8 @@ public class Election {
 	private int id;
 	private String name;
 	private String description;
-	private int state;
+	private ElectionState state;
+	//private int state;
 	private String creatorId;
 	private ArrayList<Answer> answers;
 		
@@ -21,14 +22,14 @@ public class Election {
 		this.description = description;
 	}
 	
-	public Election(int id, String name, String description, int state) {
+	public Election(int id, String name, String description, ElectionState state) {
 		this.id = id;
-		this.name = name;
+		this.name = name; 
 		this.description = description;
 		this.state = state;
 	}
 	
-	public Election(int id, String name, String description, int state, String creatorId) {
+	public Election(int id, String name, String description, ElectionState state, String creatorId) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -57,11 +58,11 @@ public class Election {
 		this.description = description;
 	}
 	
-	public int getState() {
+	public ElectionState getState() {
 		return state;
 	}
 
-	public void setState(int state) {
+	public void setState(ElectionState state) {
 		this.state = state;
 	}
 

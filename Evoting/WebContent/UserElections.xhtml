@@ -18,11 +18,15 @@
 		<ui:repeat var="el" value="#{userEl.els}">
 
 			<div class="highlight-box-margin">
-				<h:commandLink value="#{el.name}" action="#{elect.fromElections(el.id)}" rendered="#{el.state == 1 }"></h:commandLink>
-				<h:commandLink value="#{el.name}" action="#{election.setElection(el.id)}" rendered="#{el.state == 0}">
+			
+				<h:commandLink value="#{el.name}" action="#{elect.fromElections(el.id)}" rendered="#{el.state == 'ONE' }"></h:commandLink>
+				<h:commandLink value="#{el.name}" action="#{election.setElection(el.id)}" rendered="#{el.state == 'ZERO'}">
 					<f:setPropertyActionListener target="#{election.electionsBean}" value="#{elections}"></f:setPropertyActionListener>
 				</h:commandLink>
+				<ui:remove>
 				<div class="algnRight"><h:outputLabel value="Not" rendered="#{el.state == 0}"></h:outputLabel> Opened</div>
+				</ui:remove>
+				<div class="algnRight"><h:outputLabel value="#{el.state.stateName}"></h:outputLabel> </div>
 				<br />
 				#{el.description}
 			</div>
