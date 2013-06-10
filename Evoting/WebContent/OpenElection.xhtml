@@ -11,14 +11,14 @@
 <title>RAVA Voting</title>
 </head>
 <body>
-	<div id="head" class="center">
-		<h:link value="RAVA Voting" outcome="Elections" styleClass="RAVA" ></h:link>
-	</div>
+	<h:form>
+	<ui:insert name="header">
+		<ui:include src="/template/CommonHeader.xhtml"></ui:include>
+	</ui:insert>
 	<div id="info">
 		<h1>#{election.election.name}</h1>
 		<p>#{election.election.description}</p>
 	</div>
-	<h:form>
 	<div id="links" class="commandLinks" >
 		<h:commandLink styleClass="link" action="#{election.navigateAnswers}" value="answers">
 			<f:setPropertyActionListener target="#{back.lastPage}" value="OpenElection"></f:setPropertyActionListener>

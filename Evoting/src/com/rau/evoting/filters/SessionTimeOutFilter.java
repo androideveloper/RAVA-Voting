@@ -1,6 +1,7 @@
 package com.rau.evoting.filters;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -11,14 +12,18 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.rau.evoting.beans.TrusteeHomeBean;
 import com.sun.xml.internal.ws.util.StringUtils;
 
 public class SessionTimeOutFilter implements Filter {
 
 	private String timeOutPage = "Home.xhtml";
+	private ArrayList<String> trusteeHomeUrls;
 	
 	@Override
 	public void init(FilterConfig arg0) throws ServletException {
+		trusteeHomeUrls = new ArrayList<String>();
+		trusteeHomeUrls.add("/Evoting/TrusteeElection.xhtml");
 	}
 
 	@Override
@@ -29,8 +34,13 @@ public class SessionTimeOutFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest)request;
 		HttpServletResponse res = (HttpServletResponse)response;
-		
-		System.out.println(req.getRequestURI());
+
+		if(trusteeHomeUrls.contains(req.getRequestURI())) {
+			timeOutPage = "TrusteeHome.xhtml";
+		}
+		else {
+			timeOutPage = "Home.xhtml";
+		}
 		
 		if(!req.getRequestURI().equals("/Evoting/Home.xhtml") && !req.getRequestURI().equals("/Evoting/") && !req.getRequestURI().equals("/Evoting/TrusteeHome.xhtml")) {
 		
@@ -43,8 +53,6 @@ public class SessionTimeOutFilter implements Filter {
 		}
 
 		chain.doFilter(request, response);
-
-
 	}
 
 	public String getTimeOutPage() {
