@@ -65,7 +65,7 @@ public class ElGamalHelper {
 	}
 
 	public String getPrivateKey() {
-		return new String(prKeyParams.getX().toByteArray());
+		return prKeyParams.getX().toString();
 	}
 
 	public int getPublicKeyHash() {
@@ -73,16 +73,15 @@ public class ElGamalHelper {
 	}
 
 	public String getPublicKey() {
-		return new String(pubKeyParams.getY().toByteArray());
+		return pubKeyParams.getY().toString();
 	}
 
 	public String getP() {
-		return new String(params.getP().toByteArray());
+		return params.getP().toString();
 	}
 
 	public String getG() {
-		return new String(params.getG().toByteArray());
+		return params.getG().toString();
 	}
 
-	
 }
