@@ -2,6 +2,7 @@ package com.rau.evoting.utils;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.List;
 
 import org.bouncycastle.crypto.engines.ElGamalEngine;
 import org.bouncycastle.crypto.generators.ElGamalParametersGenerator;
@@ -11,21 +12,17 @@ import org.bouncycastle.crypto.params.ElGamalPublicKeyParameters;
 
 public class ElGamalHelper {
 
-	private ElGamalParameters params;
+	private static ElGamalParameters params = null;
 	private ElGamalPrivateKeyParameters prKeyParams;
 	private ElGamalPublicKeyParameters pubKeyParams;
 	private ElGamalEngine engine;
 
-	/*
-	 * public class PublicKey{ BigInteger g; BigInteger p; BigInteger y; }
-	 * 
-	 * public class PrivateKey{ BigInteger x; }
-	 */
-
 	public ElGamalHelper() {
 		ElGamalParametersGenerator gen = new ElGamalParametersGenerator();
-		gen.init(200, 5, new SecureRandom());
-		params = gen.generateParameters();
+		gen.init(500, 5, new SecureRandom());
+		if (params == null) {
+			params = gen.generateParameters();
+		}
 		prKeyParams = new ElGamalPrivateKeyParameters(
 				RandomHelper.randomBigInteger(params.getP().subtract(
 						new BigInteger("1"))), params);
@@ -33,15 +30,6 @@ public class ElGamalHelper {
 				prKeyParams.getX(), params.getP()), params);
 		engine = new ElGamalEngine();
 	}
-
-	/*
-	 * public void generateKey() { ElGamalParametersGenerator gen = new
-	 * ElGamalParametersGenerator(); gen.init(182, 5, new SecureRandom());
-	 * params = gen.generateParameters(); prKeyParams = new
-	 * ElGamalPrivateKeyParameters(new BigInteger("2"), params); pubKeyParams =
-	 * new ElGamalPublicKeyParameters(params.getG().modPow( prKeyParams.getX(),
-	 * params.getP()), params); }
-	 */
 
 	public String encode(String text) {
 		engine.init(true, pubKeyParams);
@@ -58,6 +46,16 @@ public class ElGamalHelper {
 		b = engine.processBlock(b, 0, b.length);
 		String decoded = new String(b);
 		return decoded;
+	}
+
+	public String concatenatePublicKeys(List<String> publicKeys) {
+		String key = "";
+		BigInteger res = new BigInteger("1");
+		for (String k : publicKeys) {
+			res = res.multiply(new BigInteger(k));
+		}
+		key = res.toString();
+		return key;
 	}
 
 	public int getPrivateKeyHash() {
