@@ -26,7 +26,6 @@ public class SqlDataProvider {
 		try {
 			Class.forName(driver);
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -57,7 +56,6 @@ public class SqlDataProvider {
 			rs.close();
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 				try {
@@ -65,7 +63,6 @@ public class SqlDataProvider {
 						con.close();
 					}
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 		}
@@ -89,7 +86,6 @@ public class SqlDataProvider {
 			rs.close();
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 				try {
@@ -97,7 +93,6 @@ public class SqlDataProvider {
 						con.close();
 					}
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 		}
@@ -137,6 +132,7 @@ public class SqlDataProvider {
 	public Election getElection(int elId) {
 		Connection con = null;
 		Election elect = null;
+		ElectionState states[] = ElectionState.values();
 		try {
 			con = getConnection();
 			
@@ -146,12 +142,11 @@ public class SqlDataProvider {
 			ResultSet rs = statement.executeQuery();
 			
 			while(rs.next()){
-				elect = new Election(elId, rs.getString("name"), rs.getString("descript"), rs.getInt("openState"), rs.getString("creatorId"));
+				elect = new Election(elId, rs.getString("name"), rs.getString("descript"), states[rs.getInt("openState")], rs.getString("creatorId"));
 			}
 			rs.close();
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 				try {
@@ -159,7 +154,6 @@ public class SqlDataProvider {
 						con.close();
 					}
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 		}
@@ -169,6 +163,7 @@ public class SqlDataProvider {
 	public ArrayList<Election> loadElections(){
 		ArrayList<Election> l = new ArrayList<Election>();
 		Connection con = null;
+		ElectionState states[] = ElectionState.values();
 		try {
 			con = getConnection();
 			
@@ -177,7 +172,7 @@ public class SqlDataProvider {
 			ResultSet rs = statement.executeQuery();
 			
 			while(rs.next()){
-				Election el = new Election(rs.getInt("id"), rs.getString("name"), rs.getString("descript"), rs.getInt("openState"), rs.getString("creatorId"));
+				Election el = new Election(rs.getInt("id"), rs.getString("name"), rs.getString("descript"), states[rs.getInt("openState")], rs.getString("creatorId"));
 				l.add(el);
 			}
 			rs.close();
@@ -206,7 +201,7 @@ public class SqlDataProvider {
 			ResultSet rs = statement.executeQuery();
 			
 			while(rs.next()){
-				Election el = new Election(rs.getInt("id"), rs.getString("name"), rs.getString("descript"), 1, rs.getString("creatorId"));
+				Election el = new Election(rs.getInt("id"), rs.getString("name"), rs.getString("descript"), ElectionState.ONE, rs.getString("creatorId"));
 				l.add(el);
 			}
 			rs.close();
@@ -285,6 +280,7 @@ public class SqlDataProvider {
 	public ArrayList<Election> getUserElections(String userId) {
 		ArrayList<Election> l = new ArrayList<Election>();
 		Connection con = null;
+		ElectionState states[] = ElectionState.values();
 		try {
 			con = getConnection();
 			String sql = "select * from Elections where creatorId = ?";
@@ -292,8 +288,7 @@ public class SqlDataProvider {
 			statement.setString(1, userId);
 			ResultSet rs = statement.executeQuery();
 			while(rs.next()){
-				//boolean isOpen = rs.getInt("isOpen") == 1 ? true : false; 
-				Election el = new Election(rs.getInt("id"), rs.getString("name"),rs.getString("descript"), rs.getInt("openState"), userId);
+				Election el = new Election(rs.getInt("id"), rs.getString("name"),rs.getString("descript"), states[rs.getInt("openState")], userId);
 				l.add(el);
 			}
 			rs.close();
@@ -655,6 +650,7 @@ public class SqlDataProvider {
 	public Election getTrusteeElection(int id) {
 		Connection con = null;
 		Election el = null;
+		ElectionState states[] = ElectionState.values();
 		try {
 			con = getConnection();
 			String sql = "select e.id as id,name,descript,openState,creatorId from (select * from ElectionTrustees where id = ?) as tr "; 
@@ -664,7 +660,7 @@ public class SqlDataProvider {
 			ResultSet rs = statement.executeQuery();
 			
 			if(rs.next()) {
-				el = new Election(rs.getInt("id"), rs.getString("name"), rs.getString("descript"),rs.getInt("openState"),rs.getString("creatorId"));
+				el = new Election(rs.getInt("id"), rs.getString("name"), rs.getString("descript"),states[rs.getInt("openState")],rs.getString("creatorId"));
 			}
 			rs.close();
 		} catch(SQLException e) {
