@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.rau.evoting.data.SqlDataProvider;
 import com.rau.evoting.models.Candidate;
 import com.rau.evoting.models.Election;
-import com.rau.evoting.utils.Shuffle;
+import com.rau.evoting.utils.Util;
 
 public class Candidates {
 

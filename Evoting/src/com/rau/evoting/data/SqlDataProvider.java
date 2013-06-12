@@ -434,7 +434,7 @@ public class SqlDataProvider {
 			ResultSet rs = statement.executeQuery();
 			
 			while(rs.next()){
-				Trustee tr = new Trustee(rs.getString("trusteeId"), rs.getString("email"), rs.getBoolean("isGenerated"));
+				Trustee tr = new Trustee(rs.getString("trusteeId"), rs.getString("email"), rs.getBoolean("isGenerated"),rs.getString("token"));
 				l.add(tr);
 			}
 			rs.close();
@@ -467,7 +467,7 @@ public class SqlDataProvider {
 			ResultSet rs = statement.executeQuery();
 			
 			while(rs.next()){
-				Trustee tr = new Trustee(rs.getString("trusteeId"), rs.getString("email"), rs.getBoolean("isGenerated"));
+				Trustee tr = new Trustee(rs.getString("trusteeId"), rs.getString("email"), rs.getBoolean("isGenerated"),rs.getString("token"));
 				l.add(tr);
 			}
 			rs.close();
@@ -498,7 +498,7 @@ public class SqlDataProvider {
 			ResultSet rs = statement.executeQuery();
 			
 			if(rs.next()){
-				tr = new Trustee(rs.getString("trusteeId"), rs.getString("email"), rs.getBoolean("isGenerated"),rs.getString("publicKey"),rs.getInt("electId"));
+				tr = new Trustee(rs.getString("trusteeId"), rs.getString("email"), rs.getBoolean("isGenerated"),rs.getString("publicKey"),rs.getInt("electId"),rs.getString("token"));
 			}
 			rs.close();
 			
@@ -521,12 +521,13 @@ public class SqlDataProvider {
 		Connection con = null;
 		try {
 			con = getConnection();		
-			String sql = "insert into ElectionTrustees(electId,trusteeId,email,isGenerated) values(?,?,?,?) select SCOPE_IDENTITY() as id";
+			String sql = "insert into ElectionTrustees(electId,trusteeId,email,isGenerated,token) values(?,?,?,?,?) select SCOPE_IDENTITY() as id";
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setInt(1, elId);
 			statement.setString(2, trustee.getId());
 			statement.setString(3, trustee.getEmail());
 			statement.setInt(4, trustee.isGenerated() ? 1 : 0);
+			statement.setString(5, trustee.getToken());
 			ResultSet rs = statement.executeQuery();
 			if(rs.next()) {
 				id = rs.getInt("id");

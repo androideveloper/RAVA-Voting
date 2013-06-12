@@ -7,11 +7,13 @@ public class Trustee {
 	private boolean generated;
 	private String publicKey;
 	private int electId;
+	private String token;
 	
-	public Trustee(String id, String email, boolean isGenerated) {
+	public Trustee(String id, String email, boolean isGenerated, String token) {
 		this.id = id;
 		this.email = email;
 		this.generated = isGenerated;
+		this.token = token;
 	}
 	
 	public Trustee(String id, String email, boolean isGenerated, String publicKey, int electId) {
@@ -20,6 +22,15 @@ public class Trustee {
 		this.generated = isGenerated;
 		this.publicKey = publicKey;
 		this.electId = electId;
+	}
+	
+	public Trustee(String id, String email, boolean isGenerated, String publicKey, int electId, String token) {
+		this.id = id;
+		this.email = email;
+		this.generated = isGenerated;
+		this.publicKey = publicKey;
+		this.electId = electId;
+		this.token = token;
 	}
 
 	public String getId() {
@@ -68,6 +79,14 @@ public class Trustee {
 
 	public void setElectId(int electId) {
 		this.electId = electId;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 	
 }

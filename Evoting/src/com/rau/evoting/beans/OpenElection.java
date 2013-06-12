@@ -13,6 +13,7 @@ import javax.mail.MessagingException;
 import com.rau.evoting.data.SqlDataProvider;
 import com.rau.evoting.models.*;
 import com.rau.evoting.utils.MailService;
+import com.rau.evoting.utils.Util;
 import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
@@ -259,8 +260,9 @@ public class OpenElection {
 	
 	public String addTrustee() {
 		String message = "Hello, you are chosen trustee for  " + election.getName() + " election\n Please, generate your key: \n";
-		int trId = SqlDataProvider.getInstance().insertTrustee(election.getId(), new Trustee(null, trusteeEmail, false));
-		String url = "http://localhost:8080/Evoting/TrusteeHome.xhtml?trId=" + trId;
+		String token = Util.generateRandomToken();
+		int trId = SqlDataProvider.getInstance().insertTrustee(election.getId(), new Trustee(null, trusteeEmail, false,token));
+		String url = "http://localhost:8080/Evoting/TrusteeHome.xhtml?trId=" + trId + "&token=" + token;
 		String encodedUrl = url;
 		try {
 			encodedUrl = URLEncoder.encode(url, "UTF-8");

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.rau.evoting.data.SqlDataProvider;
 import com.rau.evoting.models.*;
-import com.rau.evoting.utils.Shuffle;
+import com.rau.evoting.utils.Util;
 
 public class Vote {
 	
@@ -56,8 +56,8 @@ public class Vote {
 	}
 
 	public String shuffle() {
-		Shuffle.shuffle(answers1);
-		Shuffle.shuffle(answers2);
+		Util.shuffle(answers1);
+		Util.shuffle(answers2);
 		return null;
 	}
 	

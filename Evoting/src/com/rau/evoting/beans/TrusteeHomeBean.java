@@ -11,11 +11,13 @@ public class TrusteeHomeBean {
 	private String appSecret = "e37f4bd94fc533c364ad291a2ecbba09";
 	
 	private int tempTrId;
+	private String token;
 	private int electionId;
 	private String login = "Please login for your trustee dashboard";
 	
 	public TrusteeHomeBean() {
 		tempTrId = Integer.valueOf(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("trId"));
+		token = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("trId");
 	}
 	
 	public void empty() {
