@@ -13,7 +13,12 @@
 <body>
 	<h:form>
 		<div class="center">
+		<h:panelGroup rendered="#{trhome.error}">
+			Invalid trustee url.
+		</h:panelGroup>
+		<h:panelGroup rendered="#{!trhome.error}">
 			<h:commandLink actionListener="#{trhome.fbLogin}">#{trhome.login}</h:commandLink>
+		</h:panelGroup>
 		</div>
 	</h:form>
 </body>

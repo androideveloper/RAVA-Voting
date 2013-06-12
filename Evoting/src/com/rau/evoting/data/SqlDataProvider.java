@@ -17,9 +17,9 @@ public class SqlDataProvider {
 	private static SqlDataProvider dataprovider;
 
 	private SqlDataProvider() {
-		this.dbUrl = "jdbc:jtds:sqlserver://localhost/Evoting;";
+		this.dbUrl = "jdbc:jtds:sqlserver://localhost/Evoting;instance=SQLEXPRESS;";
 		this.username = "sa";
-		this.password = "SaSa111";
+		this.password = "sa";
 
 		String driver = "net.sourceforge.jtds.jdbc.Driver";
 
@@ -459,7 +459,7 @@ public class SqlDataProvider {
 		try {
 			con = getConnection();
 			
-			String sql = "select trusteeId,email,isGenerated from ElectionTrustees where electId = ?";
+			String sql = "select trusteeId,email,isGenerated,token from ElectionTrustees where electId = ?";
 			//sql += "union select id as trusteeId,email,0 as isGenerated from TempTrustees where electId = ?";
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setInt(1, elId);
@@ -492,7 +492,7 @@ public class SqlDataProvider {
 		try {
 			con = getConnection();
 			
-			String sql = "select trusteeId,email,isGenerated,publicKey,electId from ElectionTrustees where id = ?";
+			String sql = "select trusteeId,email,isGenerated,publicKey,electId,token from ElectionTrustees where id = ?";
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setInt(1, id);
 			ResultSet rs = statement.executeQuery();

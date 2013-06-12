@@ -6,6 +6,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpServletResponse;
 
+import com.rau.evoting.data.SqlDataProvider;
+import com.rau.evoting.models.Trustee;
+
 public class TrusteeHomeBean {
 	private String appId = "515272745187738";
 	private String appSecret = "e37f4bd94fc533c364ad291a2ecbba09";
@@ -14,10 +17,18 @@ public class TrusteeHomeBean {
 	private String token;
 	private int electionId;
 	private String login = "Please login for your trustee dashboard";
+	private boolean error;
 	
 	public TrusteeHomeBean() {
 		tempTrId = Integer.valueOf(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("trId"));
-		token = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("trId");
+		token = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("token");
+		Trustee tr = SqlDataProvider.getInstance().getElectionTrustee(tempTrId);
+		if(!tr.getToken().equals(token)) {
+			error = true;
+		}
+		else {
+			error = false;
+		}
 	}
 	
 	public void empty() {
@@ -56,5 +67,14 @@ public class TrusteeHomeBean {
 	public void setLogin(String login) {
 		this.login = login;
 	}
+
+	public boolean isError() {
+		return error;
+	}
+
+	public void setError(boolean error) {
+		this.error = error;
+	}
+
 		
 }
