@@ -11,12 +11,13 @@
 <title>RAVA Voting</title>
 </head>
 <body>
-	<ui:insert name="header">
-			<ui:include src="/template/CommonHeader.xhtml"></ui:include>
-	</ui:insert>
+	
 	<h:form>
+		<ui:insert name="header">
+			<ui:include src="/template/CommonHeader.xhtml"></ui:include>
+		</ui:insert>
+		
 		<ui:repeat var="el" value="#{userEl.els}">
-
 			<div class="highlight-box-margin">
 			
 				<h:commandLink value="#{el.name}" action="#{elect.fromElections(el.id)}" rendered="#{el.state == 'ONE' }"></h:commandLink>
