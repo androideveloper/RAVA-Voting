@@ -36,7 +36,7 @@ public class OpenElection {
 	private String selectedVoteMode;
 	private List<Group> groups;
 	
-	private Elections electionsBean;
+	private String accessToken;
 	
 	public OpenElection() {
 		answers = new ArrayList<Answer>();
@@ -44,10 +44,9 @@ public class OpenElection {
 		disabled = false;
 		selectedVoteMode = "all";
 		FacesContext context = FacesContext.getCurrentInstance();
-		electionsBean = (Elections) context.getApplication().evaluateExpressionGet(context, "#{elections}", Elections.class);
+		accessToken = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("accessToken");
 	}
 	
-
 	public Election getElection() {
 		return election;
 	}
@@ -123,7 +122,7 @@ public class OpenElection {
 	}
 
 	public List<Group> getGroups() {
-		FacebookClient fbClient = new DefaultFacebookClient(electionsBean.getAccessToken());
+		FacebookClient fbClient = new DefaultFacebookClient(accessToken);
 		Connection<Group> gr = fbClient.fetchConnection("me/groups", Group.class);
 		groups = gr.getData();
 		return groups;
@@ -198,7 +197,7 @@ public class OpenElection {
 	}
 		
 	public String createElection(String name, String description) {
-		FacebookClient fbClient = new DefaultFacebookClient(electionsBean.getAccessToken());
+		FacebookClient fbClient = new DefaultFacebookClient(accessToken);
 		User user = fbClient.fetchObject("me", User.class); 
 		String userId = user.getId();
 		int elId = SqlDataProvider.getInstance().insertElecttion(new Election(0, name, description),userId);
@@ -296,14 +295,6 @@ public class OpenElection {
 		disabled = !disabled; 
 	}
 
-	public Elections getElectionsBean() {
-		return electionsBean;
-	}
-
-	public void setElectionsBean(Elections electionsBean) {
-		this.electionsBean = electionsBean;
-	}
-	
 	public String fromVoters() {
 		if(selectedVoteMode == "all") {
 			System.out.println("all can vote");

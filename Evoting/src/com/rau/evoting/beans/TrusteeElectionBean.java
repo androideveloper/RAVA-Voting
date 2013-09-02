@@ -25,6 +25,8 @@ public class TrusteeElectionBean {
 	private Trustee trustee;
 	
 	public TrusteeElectionBean() {
+		String name = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("name"); 
+		System.out.println(name);
 		FacesContext context = FacesContext.getCurrentInstance();
 		tempTrId = (int)context.getApplication().evaluateExpressionGet(context, "#{trhome.tempTrId}", int.class);
 	}

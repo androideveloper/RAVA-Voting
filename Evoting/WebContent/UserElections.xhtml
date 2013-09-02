@@ -19,10 +19,10 @@
 		
 		<ui:repeat var="el" value="#{userEl.els}">
 			<div class="highlight-box-margin">
-			
-				<h:commandLink value="#{el.name}" action="#{elect.fromElections(el.id)}" rendered="#{el.state == 'ONE' }"></h:commandLink>
+				<h:link value="#{el.name}" outcome="Election" rendered="#{el.state == 'ONE'}">
+					<f:param name="elId" value="#{el.id}"></f:param>
+				</h:link>
 				<h:commandLink value="#{el.name}" action="#{election.setElection(el.id)}" rendered="#{el.state == 'ZERO'}">
-					<f:setPropertyActionListener target="#{election.electionsBean}" value="#{elections}"></f:setPropertyActionListener>
 				</h:commandLink>
 				<ui:remove>
 				<div class="algnRight"><h:outputLabel value="Not" rendered="#{el.state == 0}"></h:outputLabel> Opened</div>

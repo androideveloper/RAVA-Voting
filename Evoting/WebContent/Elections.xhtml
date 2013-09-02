@@ -15,16 +15,6 @@
 		<ui:insert name="header">
 			<ui:include src="/template/CommonHeader.xhtml"></ui:include>
 		</ui:insert>
-		<h:commandButton value="log out" actionListener="#{home.fbLogout}" styleClass="algnRight"></h:commandButton>
-		<ui:remove>
-			<h:selectOneListbox>
-				<f:selectItems value="#{elections.els}" var="el" itemLabel="#{el.name}"
-					itemValue="#{el.id}"></f:selectItems>
-			</h:selectOneListbox>
-		<h:commandButton id="createElection" value="create election" action="create"></h:commandButton>
-		<h:commandButton value="send message" action="send"></h:commandButton>
-		<br/>
-		</ui:remove>
 		
 		<h:commandButton id="createElection" value="create election" action="create"></h:commandButton>
 		<h:commandButton id="userElections" value="my elections" action="UserElections"></h:commandButton>
@@ -32,13 +22,17 @@
 		
 		<ui:repeat var="el" value="#{elections.els}">
 			<div class="highlight-box-margin">
+				<ui:remove>
 				<h:commandLink value="#{el.name}" action="#{elect.fromElections(el.id)}"></h:commandLink>
+				</ui:remove>
+				<h:link value="#{el.name}" outcome="Election"> 
+					<f:param name="elId" value="#{el.id}"></f:param>
+				</h:link>
 				<br />
 				#{el.description}
 			</div>
 		</ui:repeat>
 
-		
 	</h:form>
 </body>
 </html>

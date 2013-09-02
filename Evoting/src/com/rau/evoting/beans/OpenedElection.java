@@ -15,19 +15,29 @@ import com.rau.evoting.models.Election;
 
 public class OpenedElection {
 	
+	private int elId;
 	private Election election;
 	
 	public OpenedElection() {
 	}
 
 	public Election getElection() {
+		election = SqlDataProvider.getInstance().getElection(elId);
 		return election;
 	}
 
 	public void setElection(Election election) {
 		this.election = election;
 	}
-	
+		
+	public int getElId() {
+		return elId;
+	}
+
+	public void setElId(int elId) {
+		this.elId = elId;
+	}
+
 	public String fromElections(int id) {
 		election = SqlDataProvider.getInstance().getElection(id);
 		/*FacesContext context = FacesContext.getCurrentInstance();

@@ -162,3 +162,8 @@ border: none;
     padding: 10px;
 }
   
+.logout {
+	border: none;
+	background-color: aqua;
+	float: right;
+}  

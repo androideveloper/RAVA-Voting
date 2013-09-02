@@ -17,7 +17,6 @@ public class Home {
 	private String password;
 		
 	public Home(){
-		
 	}
 	
 	public String getUsername() {
@@ -59,27 +58,23 @@ public class Home {
 			System.out.println(fUrl);
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.out.println("Error");
+			System.out.println("Error while login");
 		}
 	}
 	
 	public void fbLogout(ActionEvent event) {
-		
 		FacesContext context = FacesContext.getCurrentInstance();
 		Elections electionsBean = (Elections) context.getApplication().evaluateExpressionGet(context, "#{elections}", Elections.class);
 		String fUrl = "https://www.facebook.com/logout.php?next=http://localhost:8080/Evoting/Home.xhtml&access_token=" + electionsBean.getAccessToken();
-		
 		
 		HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
 		HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
 		if(request.getSession(false) != null) {
 			request.getSession(false).invalidate(); 
 		}
-		//context.getExternalContext().invalidateSession();
 		
 		try {
 			context.getExternalContext().redirect(fUrl);
-			//response.sendRedirect(fUrl);
 			System.out.println(fUrl);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -92,6 +87,5 @@ public class Home {
 		FacesContext.getCurrentInstance().getExternalContext().redirect("Home.xhtml");
 		return "";
 	}
-
 	
 }

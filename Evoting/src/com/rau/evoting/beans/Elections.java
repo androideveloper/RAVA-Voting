@@ -35,13 +35,9 @@ import com.restfb.types.User;
  */
 public class Elections {
 	private String accessToken;
-
-	@ManagedProperty(value="#{home}")
-	private Home homeBean;
 	
 	private ArrayList<Election> els;
 	private Election selected;
-	private String username;
 		
 	public Election getSelected() {
 		return selected;
@@ -53,7 +49,6 @@ public class Elections {
 
 	public Elections() {
 		//els = SqlDataProvider.getInstance().loadElections();
-		username = null;
 	}
 	
 	public ArrayList<Election> getEls() {
@@ -65,14 +60,6 @@ public class Elections {
 		this.els = els;
 	}
 
-	public Home getHomeBean() {
-		return homeBean;
-	}
-
-	public void setHomeBean(Home homeBean) {
-		this.homeBean = homeBean;
-	}
-	
 	public String getAccessToken() {
 		return accessToken;
 	}
@@ -81,42 +68,20 @@ public class Elections {
 		this.accessToken = accessToken;
 	}
 
-	public String getUsername() {
-		if (username == null) {
-			FacebookClient fbClient = new DefaultFacebookClient(accessToken);
-			User user = fbClient.fetchObject("me", User.class);
-
-			username = user.getUsername();
-		}
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
 	@PostConstruct
 	public void init() {
-		HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-		String code = req.getParameter("code");
-		accessToken = FacebookService.getInstance().getAccessToken(code, "Elections.xhtml");
-		FacebookClient fbClient = new DefaultFacebookClient(accessToken);
-		User user = fbClient.fetchObject("me", User.class);
-		SqlDataProvider.getInstance().insertUser(user.getId());
+		if(!FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("accessToken")) {
+			HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+			String code = req.getParameter("code");
+			accessToken = FacebookService.getInstance().getAccessToken(code, "Elections.xhtml");
+			FacebookClient fbClient = new DefaultFacebookClient(accessToken);
+			User user = fbClient.fetchObject("me", User.class);
+			SqlDataProvider.getInstance().insertUser(user.getId());
+			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("accessToken", accessToken);
+		}
 	}
 			
 	public String election(int id) {
-//		Candidates.electId = id;
-//		FacesContext context = FacesContext.getCurrentInstance();
-//		Application application = context.getApplication();
-//		MethodBinding methodBinding = application.createMethodBinding(
-//				"#{candidates.init}", null);   
-//		if (methodBinding != null) {
-//			try {
-//				methodBinding.invoke(context, null);
-//			} catch (Throwable e) {
-//			}
-//		}
 		return "election";
 	}
 		

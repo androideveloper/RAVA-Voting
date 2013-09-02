@@ -19,19 +19,13 @@
     <managed-bean>
         <managed-bean-name>home</managed-bean-name>
         <managed-bean-class>com.rau.evoting.beans.Home</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
-    
-    <managed-bean>
-        <managed-bean-name>candidates</managed-bean-name>
-        <managed-bean-class>com.rau.evoting.beans.Candidates</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
+        <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
     
     <managed-bean>
         <managed-bean-name>elections</managed-bean-name>
         <managed-bean-class>com.rau.evoting.beans.Elections</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
+        <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
     
     <managed-bean>
@@ -43,13 +37,13 @@
     <managed-bean>
         <managed-bean-name>elect</managed-bean-name>
         <managed-bean-class>com.rau.evoting.beans.OpenedElection</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
+        <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
     
      <managed-bean>
         <managed-bean-name>userEl</managed-bean-name>
         <managed-bean-class>com.rau.evoting.beans.UserElections</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
+        <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
     
     <managed-bean>
@@ -57,13 +51,7 @@
         <managed-bean-class>com.rau.evoting.beans.Vote</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
-    
-    <managed-bean>
-        <managed-bean-name>create</managed-bean-name>
-        <managed-bean-class>com.rau.evoting.beans.CreateElection</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
-    
+      
     <managed-bean>
         <managed-bean-name>send</managed-bean-name>
         <managed-bean-class>com.rau.evoting.beans.SendMail</managed-bean-class>

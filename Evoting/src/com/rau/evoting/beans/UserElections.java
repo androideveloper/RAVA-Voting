@@ -16,20 +16,20 @@ public class UserElections {
 	
 	public UserElections() {
 		FacesContext context = FacesContext.getCurrentInstance();
-		Elections elsBean = (Elections) context.getApplication().evaluateExpressionGet(context, "#{elections}", Elections.class);
-		FacebookClient fbClient = new DefaultFacebookClient(elsBean.getAccessToken());
+		//Elections elsBean = (Elections) context.getApplication().evaluateExpressionGet(context, "#{elections}", Elections.class);
+		String accessToken = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("accessToken");
+		FacebookClient fbClient = new DefaultFacebookClient(accessToken);
 		User user = fbClient.fetchObject("me", User.class);
 		userId = user.getId();
+		els = SqlDataProvider.getInstance().getUserElections(userId);
 	}
 
 	public ArrayList<Election> getEls() {
-		els = SqlDataProvider.getInstance().getUserElections(userId);
 		return els;
 	}
 
 	public void setEls(ArrayList<Election> els) {
 		this.els = els;
 	}
-
 	
 }
