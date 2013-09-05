@@ -2,6 +2,8 @@ package com.rau.evoting.beans;
 
 import java.util.ArrayList;
 
+import javax.faces.context.FacesContext;
+
 import com.rau.evoting.data.SqlDataProvider;
 import com.rau.evoting.models.*;
 import com.rau.evoting.utils.Util;
@@ -33,10 +35,10 @@ public class Vote {
 		this.answers2 = answers2;
 	}
 
-	public String fromElection(int elId) {
+	public String fromElection() {
+		int elId = Integer.valueOf(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("elId"));
 		answers1 = SqlDataProvider.getInstance().getElectionAnswers(elId);
 		answers2 = SqlDataProvider.getInstance().getElectionAnswers(elId);
-		System.out.println("elect id is: " + elId + "answers count is:" + answers1.size());
 		return "Vote";
 	}
 	
