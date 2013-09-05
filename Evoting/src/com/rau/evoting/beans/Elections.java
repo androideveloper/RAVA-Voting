@@ -48,7 +48,6 @@ public class Elections {
 	}
 
 	public Elections() {
-		//els = SqlDataProvider.getInstance().loadElections();
 	}
 	
 	public ArrayList<Election> getEls() {

@@ -36,6 +36,7 @@ public class Vote {
 	public String fromElection(int elId) {
 		answers1 = SqlDataProvider.getInstance().getElectionAnswers(elId);
 		answers2 = SqlDataProvider.getInstance().getElectionAnswers(elId);
+		System.out.println("elect id is: " + elId + "answers count is:" + answers1.size());
 		return "Vote";
 	}
 	

@@ -43,7 +43,6 @@ public class OpenElection {
 		trustees = new ArrayList<Trustee>();
 		disabled = false;
 		selectedVoteMode = "all";
-		FacesContext context = FacesContext.getCurrentInstance();
 		accessToken = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("accessToken");
 	}
 	
@@ -232,30 +231,6 @@ public class OpenElection {
 		SqlDataProvider.getInstance().insertAnswers(election.getId(), answers);
 		return "OpenElection";
 	}
-	
-	/*public String addTrustee() {
-		//trustees.add(new Trustee(trustees.size()+1, trusteeName, trusteeEmail));
-		int trId = trustees.size()+1;
-		String message = "Hi Mr. " + trusteeName + "\n Please, generate your key: \n";
-		String url = "http://localhost:8080/Evoting/Generate.xhtml?trusteeId=" + trId + "&electionId=" + election.getId();
-		String encodedUrl = url;
-		try {
-			encodedUrl = URLEncoder.encode(url, "UTF-8");
-		} catch (UnsupportedEncodingException e1) {
-			e1.printStackTrace();
-		}
-		message += url;
-		//SqlDataProvider.getInstance().insertTrustee(election.getId(), new Trustee(trId, trusteeName, trusteeEmail, false));
-		//SqlDataProvider.getInstance().insertTempTrustee(election.getId(), trusteeEmail);
-		try {
-			MailService.sendMessage(trusteeEmail, "Trustee for " + election.getName() +" evoting", message);
-		} catch (MessagingException e) {
-			e.printStackTrace();
-		}		
-		trusteeName = "";
-		trusteeEmail = "";
-		return "Trustees";
-	}*/
 	
 	public String addTrustee() {
 		String message = "Hello, you are chosen trustee for  " + election.getName() + " election\n Please, generate your key: \n";

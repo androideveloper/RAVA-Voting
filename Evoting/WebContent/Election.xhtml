@@ -22,7 +22,7 @@
 			<h1>#{elect.election.name}</h1>
 			<p>#{elect.election.description}</p>
 		</div>
-		<h:commandButton value="Vote" action="#{vote.fromElection(elect.election.id)}" ></h:commandButton>
+		<h:commandButton value="Vote" action="#{vote.fromElection(elect.elId)}" ></h:commandButton>
 	</h:form>
 </body>
 </html>

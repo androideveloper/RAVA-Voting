@@ -103,10 +103,6 @@
 
     <navigation-rule>
 		<from-view-id>/Elections.xhtml</from-view-id>
-	 	<navigation-case>
-    		<from-outcome>election</from-outcome>
-    		<to-view-id>/Candidates.xhtml</to-view-id>
-    	</navigation-case>
     	<navigation-case>
     	    <from-outcome>choose</from-outcome>
     	    <to-view-id>/ChooseType.xhtml</to-view-id>
@@ -116,46 +112,18 @@
     	    <to-view-id>/SendEmail.xhtml</to-view-id>
     	</navigation-case>
     	<navigation-case>
-    	    <from-outcome>create</from-outcome>
+    	    <from-outcome>create</from-outcome> 
     	    <to-view-id>/NewVoting.xhtml</to-view-id>
     	</navigation-case>
 	</navigation-rule>
 	
     <navigation-rule>
-		<from-view-id>/Candidates.xhtml</from-view-id>
-	 	<navigation-case>
-    		<from-outcome>back</from-outcome>
-    		<to-view-id>/Elections.xhtml</to-view-id>
-    	</navigation-case>
-	</navigation-rule>
-	
-      <navigation-rule>
 		<from-view-id>/NewVoting.xhtml</from-view-id>
 	 	<navigation-case>
     		<from-outcome>next</from-outcome>
     		<to-view-id>/OpenElection.xhtml</to-view-id>
     	</navigation-case>
 	</navigation-rule>    
-	
-      <navigation-rule>
-		<from-view-id>/AddCandidates.xhtml</from-view-id>
-	 	<navigation-case>
-    		<from-outcome>add</from-outcome>
-    		<to-view-id>/AddCandidate.xhtml</to-view-id>
-    	</navigation-case>
-    	<navigation-case>
-    	    <from-outcome>create</from-outcome>
-    	    <to-view-id>/Elections.xhtml</to-view-id>
-    	</navigation-case>
-	</navigation-rule>  
-	
-      <navigation-rule>
-		<from-view-id>/AddCandidate.xhtml</from-view-id>
-	 	<navigation-case>
-    		<from-outcome>candidate</from-outcome>
-    		<to-view-id>/AddCandidates.xhtml</to-view-id>
-    	</navigation-case>
-	</navigation-rule>  
 	
     <navigation-rule>
 		<from-view-id>/Home.xhtml</from-view-id>
@@ -172,6 +140,5 @@
     		<to-view-id>/Elections.xhtml</to-view-id>
     	</navigation-case>
 	</navigation-rule>  
-	
 	  
 </faces-config>

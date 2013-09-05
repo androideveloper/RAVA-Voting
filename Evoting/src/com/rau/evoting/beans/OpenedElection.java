@@ -23,6 +23,7 @@ public class OpenedElection {
 
 	public Election getElection() {
 		election = SqlDataProvider.getInstance().getElection(elId);
+		System.out.println("election id is " + elId);
 		return election;
 	}
 
