@@ -2,7 +2,6 @@ package com.rau.evoting.models;
 
 public class Trustee {
 	private String id;
-	private String name;
 	private String email;
 	private boolean generated;
 	private String publicKey;
@@ -39,14 +38,6 @@ public class Trustee {
 
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getEmail() {

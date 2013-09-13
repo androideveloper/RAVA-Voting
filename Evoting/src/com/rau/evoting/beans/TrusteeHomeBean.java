@@ -1,10 +1,14 @@
 package com.rau.evoting.beans;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.myfaces.context.servlet.RequestParameterMap;
 
 import com.rau.evoting.data.SqlDataProvider;
 import com.rau.evoting.models.Trustee;
@@ -20,24 +24,27 @@ public class TrusteeHomeBean {
 	private boolean error;
 	
 	public TrusteeHomeBean() {
-		tempTrId = Integer.valueOf(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("trId"));
-		token = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("token");
-		Trustee tr = SqlDataProvider.getInstance().getElectionTrustee(tempTrId);
-		if(!tr.getToken().equals(token)) {
-			error = true;
-		}
-		else {
-			error = false;
+		Map<String,String> reqMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+		if(reqMap.containsKey("trId")) {
+			tempTrId = Integer.valueOf(reqMap.get("trId"));
+			token = reqMap.get("token");
+			Trustee tr = SqlDataProvider.getInstance().getElectionTrustee(tempTrId);
+			System.out.println(token + " ... " + tr.getToken());
+			if(!tr.getToken().equals(token)) {
+				error = true;
+			}
+			else {
+				error = false;
+				FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("trId", tempTrId);
+			}
 		}
 	}
 	
-	public void empty() {
-		
-	}
 	public void fbLogin(ActionEvent event) {
+		HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest(); 
 		String fUrl = "https://www.facebook.com/dialog/oauth?"
 			      + "client_id=" + appId + "&"
-			      + "redirect_uri=" + "http://localhost:8080/Evoting/TrusteeElection.xhtml" +"&"  
+			      + "redirect_uri=" + "http://localhost:8080/Evoting/TrusteeElection.xhtml"+"&"  
 			      + "scope=publish_stream,user_groups,status_update,email&"
 			      + "response_type=code";
 		
@@ -75,6 +82,4 @@ public class TrusteeHomeBean {
 	public void setError(boolean error) {
 		this.error = error;
 	}
-
-		
 }

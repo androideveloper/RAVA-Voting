@@ -9,6 +9,7 @@ import javax.faces.application.Application;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 import javax.naming.Context;
+import javax.servlet.http.HttpServletRequest;
 
 import com.rau.evoting.data.SqlDataProvider;
 import com.rau.evoting.models.Election;
@@ -22,8 +23,8 @@ public class OpenedElection {
 	}
 
 	public Election getElection() {
+		HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		election = SqlDataProvider.getInstance().getElection(elId);
-		System.out.println("election id is " + elId);
 		return election;
 	}
 

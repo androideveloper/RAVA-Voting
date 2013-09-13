@@ -33,7 +33,7 @@ public class Util {
 	}
 
 	public static String generateRandomToken() {
-		String letters = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789+@oO01lL";
+		String letters = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789@oO01lL";
 		Random r = new SecureRandom();
 		String pw = "";
 		int len = r.nextInt(10) + 30;
