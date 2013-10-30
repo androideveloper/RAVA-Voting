@@ -39,7 +39,6 @@ public class OpenElection {
 	private String accessToken;
 	
 	public OpenElection() {
-		answers = new ArrayList<Answer>();
 		trustees = new ArrayList<Trustee>();
 		disabled = false;
 		selectedVoteMode = "all";
@@ -257,6 +256,7 @@ public class OpenElection {
 	
 	public String setElection(int id) {
 		election = SqlDataProvider.getInstance().getElection(id);
+		answers = SqlDataProvider.getInstance().getElectionAnswers(election.getId());
 		return "OpenElection";
 	}
 	
@@ -272,10 +272,8 @@ public class OpenElection {
 
 	public String fromVoters() {
 		if(selectedVoteMode == "all") {
-			System.out.println("all can vote");
 		}
 		else {
-			System.out.println("selcted group is :" + selectedGroup);
 		}
 		return "OpenElection";
 	}
