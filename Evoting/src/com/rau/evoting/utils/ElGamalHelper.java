@@ -17,10 +17,16 @@ public class ElGamalHelper {
 	private ElGamalPublicKeyParameters pubKeyParams;
 	private ElGamalEngine engine;
 
-	public ElGamalHelper() {
+/*	public static void genPandG() {
 		ElGamalParametersGenerator gen = new ElGamalParametersGenerator();
 		gen.init(500, 5, new SecureRandom());
+		params = gen.generateParameters();
+	}
+*/
+	public ElGamalHelper() {
 		if (params == null) {
+			ElGamalParametersGenerator gen = new ElGamalParametersGenerator();
+			gen.init(500, 5, new SecureRandom());
 			params = gen.generateParameters();
 		}
 		prKeyParams = new ElGamalPrivateKeyParameters(
@@ -53,10 +59,13 @@ public class ElGamalHelper {
 		BigInteger res = new BigInteger("1");
 		for (String k : publicKeys) {
 			res = res.multiply(new BigInteger(k));
+			res = res.mod(pubKeyParams.getParameters().getP());
 		}
 		key = res.toString();
 		return key;
 	}
+	
+	
 
 	public int getPrivateKeyHash() {
 		return prKeyParams.getX().hashCode();
