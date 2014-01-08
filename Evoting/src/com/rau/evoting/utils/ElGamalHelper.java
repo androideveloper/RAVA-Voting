@@ -54,7 +54,7 @@ public class ElGamalHelper {
 		return decoded;
 	}
 
-	public String concatenatePublicKeys(List<String> publicKeys) {
+	public String getElectionPublicKey(List<String> publicKeys) {
 		String key = "";
 		BigInteger res = new BigInteger("1");
 		for (String k : publicKeys) {
@@ -69,7 +69,7 @@ public class ElGamalHelper {
 
 	public int getPrivateKeyHash() {
 		return prKeyParams.getX().hashCode();
-	}
+	}    
 
 	public String getPrivateKey() {
 		return prKeyParams.getX().toString();

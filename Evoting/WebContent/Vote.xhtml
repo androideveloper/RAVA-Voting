@@ -4,9 +4,11 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
 <head>
-<link rel="stylesheet" type="text/css" href="style/evoting.css"	media="all" />
+<link rel="stylesheet" type="text/css" href="style/evoting.css"
+	media="all" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Insert title here</title>
 </head>
@@ -22,6 +24,16 @@
 						<f:selectItems value="#{vote.answers1}" var="a1"
 							itemLabel="#{a1.answer}" itemValue="#{a1.id}"></f:selectItems>
 					</h:selectOneRadio></td>
+				<td><p:selectOneListbox id="imgListBox" value="#{vote.barcode}"
+						var="img" style="height:600px; width: 400px">
+						<f:selectItems value="#{vote.barcodes1}" var="img"
+							itemLabel="#{img.imgName}" itemValue="#{img}" />
+
+						<p:column>
+							<p:graphicImage value="#{img}" />
+						</p:column>
+
+					</p:selectOneListbox></td>
 				<td><h:selectOneRadio value="#{vote.selectedAnswer2}"
 						layout="pageDirection">
 						<f:selectItems value="#{vote.answers2}" var="a2"
@@ -30,6 +42,7 @@
 			</tr>
 		</table>
 		<h:commandButton value="shuffle" action="#{vote.shuffle}"></h:commandButton>
+		<p:graphicImage value="#{vote.barcode}" />
 	</h:form>
 </body>
 </html>
