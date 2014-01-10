@@ -120,9 +120,10 @@ public class OpenElection {
 	}
 
 	public List<Group> getGroups() {
-		FacebookClient fbClient = new DefaultFacebookClient(accessToken);
-		Connection<Group> gr = fbClient.fetchConnection("me/groups", Group.class);
-		groups = gr.getData();
+		//FacebookClient fbClient = new DefaultFacebookClient(accessToken);
+		//Connection<Group> gr = fbClient.fetchConnection("me/groups", Group.class);
+		//groups = gr.getData();
+		groups = (List<Group>)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userGroups");
 		return groups;
 	}
 
@@ -271,9 +272,9 @@ public class OpenElection {
 	}
 
 	public String fromVoters() {
-		if(selectedVoteMode == "all") {
-		}
-		else {
+		SqlDataProvider.getInstance().deleteElectionVoters(election.getId());
+		if(!selectedVoteMode.equals("all")) {
+			SqlDataProvider.getInstance().setElectionVotersByGroup(election.getId(), selectedGroup);
 		}
 		return "OpenElection";
 	}

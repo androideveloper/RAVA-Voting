@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.Application;
@@ -51,7 +52,9 @@ public class Elections {
 	}
 	
 	public ArrayList<Election> getEls() {
-		els = SqlDataProvider.getInstance().loadOpenElections();
+		//els = SqlDataProvider.getInstance().loadOpenElections(); 
+		int userId = (int)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId");
+		els = SqlDataProvider.getInstance().loadOpenElectionsforUser(userId);
 		return els;
 	}
 
@@ -75,9 +78,16 @@ public class Elections {
 			accessToken = FacebookService.getInstance().getAccessToken(code, "Elections.xhtml");
 			FacebookClient fbClient = new DefaultFacebookClient(accessToken);
 			User user = fbClient.fetchObject("me", User.class);
-			SqlDataProvider.getInstance().insertUser(user.getId());
-			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("accessToken", accessToken);
+			int userId = SqlDataProvider.getInstance().insertUser(user.getId());
+			Map<String, Object> sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
+			sessionMap.put("accessToken", accessToken);
+			Connection<Group> gr = fbClient.fetchConnection("me/groups", Group.class);
+			List<Group> groups = gr.getData();
+			sessionMap.put("userGroups", groups); 
+			SqlDataProvider.getInstance().insertUserGroups(userId, groups); 
+			sessionMap.put("userId", userId);
 		}
+		// load groups not depending on if
 	}
 			
 	public String election(int id) {

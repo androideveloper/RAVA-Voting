@@ -6,8 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.rau.evoting.models.*;
+import com.restfb.types.Group;
 
 
 public class SqlDataProvider {
@@ -28,7 +30,6 @@ public class SqlDataProvider {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-
 	}
     
 	public static SqlDataProvider getInstance(){
@@ -39,7 +40,8 @@ public class SqlDataProvider {
 	}
 	
 	
-	public void insertUser(String fbId) {
+	public int insertUser(String fbId) {
+		int id = 0;
 		Connection con = null;
 		try {
 			con = getConnection();
@@ -47,12 +49,20 @@ public class SqlDataProvider {
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setString(1, fbId);
 			ResultSet rs = statement.executeQuery();
-			if(!rs.next()){
-				sql = "insert into Users(fbId) values(?) ";
+			if(rs.next()){
+				id = rs.getInt("id");
+			}
+			else{
+				sql = "insert into Users(fbId) values(?) select SCOPE_IDENTITY() as id";
 				statement = con.prepareStatement(sql);
 				statement.setString(1, fbId);
 				statement.executeUpdate();
+				
+				if(rs.next()){
+					id = rs.getInt("id");
+				}
 			}
+			
 			rs.close();
 			
 		} catch (SQLException e) {
@@ -65,6 +75,35 @@ public class SqlDataProvider {
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
+		}
+		return id;
+	}
+	
+	public void insertUserGroups(int userId,List<Group> groups){
+		Connection con = null; 
+		try{
+			con = getConnection();
+			String sql = "delete from UserGroups where userId = ?";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setInt(1,userId);
+			statement.executeUpdate();
+			for(Group gr : groups) {
+				sql = "insert into UserGroups(userId,groupId) values(?,?) ";
+				statement = con.prepareStatement(sql);
+				statement.setInt(1,userId);
+				statement.setString(2, gr.getId());
+				statement.executeUpdate();
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(con != null) {
+					con.close();
+				}
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return;
 	}
@@ -198,6 +237,37 @@ public class SqlDataProvider {
 			
 			String sql = "select * from Elections where openState = 1";
 			PreparedStatement statement = con.prepareStatement(sql);
+			ResultSet rs = statement.executeQuery();
+			
+			while(rs.next()){
+				Election el = new Election(rs.getInt("id"), rs.getString("name"), rs.getString("descript"), ElectionState.ONE, rs.getString("creatorId"));
+				l.add(el);
+			}
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+				try {
+					if(con != null) {
+						con.close();
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}
+		return l;
+	}
+	
+	public ArrayList<Election> loadOpenElectionsforUser(int userId){
+		ArrayList<Election> l = new ArrayList<Election>();
+		Connection con = null;
+		try {
+			con = getConnection();
+			
+			String sql = "select * from Elections where openState = 1 and not exists( select * from ElectionVoters where electId = id) ";
+			sql += "union all select e.* from Elections as e join ElectionVoters as v on(e.id = v.electId) join UserGroups as u on(u.userId = ? and u.groupId = v.voterId) where v.voterType = 0 ";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setInt(1,userId);
 			ResultSet rs = statement.executeQuery();
 			
 			while(rs.next()){
@@ -757,14 +827,95 @@ public class SqlDataProvider {
 		return elId;
 	}
 	
-	public void setElectionVotersGroup(int elId, int voterId) {
-		Connection con = null;
+	public void setElectionVotersByGroup(int elId, String voterId) {
+		Connection con = null; 
 		try{
 			con = getConnection();
-			String sql = "insert int ElectionVoters(electId,voterType,voterId) values(?,0,?)";
+			String sql = "insert into ElectionVoters(electId,voterType,voterId) values(?,0,?)";
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setInt(1, elId);
-			statement.setInt(3, voterId);
+			statement.setString(2, voterId);
+			statement.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(con != null) {
+					con.close();
+				}
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return;
+	}
+	
+	public String GetElectionVoterByGroup(int elId) {
+		String groupId = null;
+		Connection con = null;
+		try {
+			con = getConnection();
+			String sql = "select voterId from ElectionVoters where electId = ? and voterType = 0 ";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setInt(1, elId);
+			ResultSet rs = statement.executeQuery();
+			
+			while(rs.next()) {
+				groupId = rs.getString("voterId");
+			}
+			rs.close();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(con != null) {
+					con.close();
+				}
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return groupId;
+	}
+	
+	public boolean CanVoteByGroup(int elId, String groupId){
+		String voterId = null;
+		Connection con = null;
+		try {
+			con = getConnection();
+			String sql = "select voterId from ElectionVoters where electId = ? and voterType = 0 ";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setInt(1, elId);
+			ResultSet rs = statement.executeQuery();
+			
+			while(rs.next()) {
+				voterId = rs.getString("voterId");
+			}
+			rs.close();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(con != null) {
+					con.close();
+				}
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		if(groupId == null || groupId.equals(voterId)){
+			return true;
+		}
+		return false;
+	}
+	
+	public void deleteElectionVoters(int elId) {
+		Connection con = null; 
+		try{
+			con = getConnection();
+			String sql = "delete from ElectionVoters where electId = ?";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setInt(1, elId);
 			statement.executeUpdate();
 		}catch(SQLException e) {
 			e.printStackTrace();
