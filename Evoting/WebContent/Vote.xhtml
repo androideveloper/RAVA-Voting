@@ -24,7 +24,7 @@
 						<f:selectItems value="#{vote.answers1}" var="a1"
 							itemLabel="#{a1.answer}" itemValue="#{a1.id}"></f:selectItems>
 					</h:selectOneRadio></td>
-				<td><p:selectOneListbox id="imgListBox" value="#{vote.barcode}"
+				<!-- 		<td><p:selectOneListbox id="imgListBox" value="#{vote.barcode}"
 						var="img" style="height:600px; width: 400px">
 						<f:selectItems value="#{vote.barcodes1}" var="img"
 							itemLabel="#{img.imgName}" itemValue="#{img}" />
@@ -33,7 +33,14 @@
 							<p:graphicImage value="#{img}" />
 						</p:column>
 
-					</p:selectOneListbox></td>
+					</p:selectOneListbox></td> -->
+				<td><p:dataTable value="#{vote.barcodes1}" var="b">
+					<p:column>
+						<p:graphicImage value="#{b}">
+						<!-- 	<f:param name="id" value="#{student.id}" /> -->
+						</p:graphicImage>
+					</p:column>
+				</p:dataTable></td>
 				<td><h:selectOneRadio value="#{vote.selectedAnswer2}"
 						layout="pageDirection">
 						<f:selectItems value="#{vote.answers2}" var="a2"
