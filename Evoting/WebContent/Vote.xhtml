@@ -10,7 +10,7 @@
 <link rel="stylesheet" type="text/css" href="style/evoting.css"
 	media="all" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Insert title here</title>
+<title>Vote</title>
 </head>
 <body>
 	<h:form>
@@ -34,13 +34,13 @@
 						</p:column>
 
 					</p:selectOneListbox></td> -->
-				<td><p:dataTable value="#{vote.barcodes1}" var="b">
+<!-- 				<td><p:dataTable value="#{vote.barcodes1}" var="b">
 					<p:column>
 						<p:graphicImage value="#{b}">
-						<!-- 	<f:param name="id" value="#{student.id}" /> -->
+							<f:param name="id" value="#{student.id}" />
 						</p:graphicImage>
 					</p:column>
-				</p:dataTable></td>
+				</p:dataTable></td> -->
 				<td><h:selectOneRadio value="#{vote.selectedAnswer2}"
 						layout="pageDirection">
 						<f:selectItems value="#{vote.answers2}" var="a2"
@@ -49,7 +49,7 @@
 			</tr>
 		</table>
 		<h:commandButton value="shuffle" action="#{vote.shuffle}"></h:commandButton>
-		<p:graphicImage value="#{vote.barcode}" />
+<!-- 		<p:graphicImage value="#{vote.barcode}" /> -->
 	</h:form>
 </body>
 </html>

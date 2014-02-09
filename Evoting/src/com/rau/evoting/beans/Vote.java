@@ -23,12 +23,12 @@ public class Vote {
 	private int selectedAnswer1;
 	private int selectedAnswer2;
 
-	private StreamedContent barcode;
-	private ArrayList<StreamedContent> barcodes1;
-	private ArrayList<StreamedContent> barcodes2;
+	//private StreamedContent barcode;
+	//private ArrayList<StreamedContent> barcodes1;
+	//private ArrayList<StreamedContent> barcodes2;
 
 	public Vote() {
-		try {
+		/*try {
 			File barcodeFile = new File("dynamicbarcode");
 			BarcodeImageHandler.saveJPEG(
 					BarcodeFactory.createCode128("PRIMEFACES"), barcodeFile);
@@ -38,7 +38,7 @@ public class Vote {
 					barcodeFile), "image/jpeg");
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 
 	public ArrayList<Answer> getAnswers1() {
@@ -73,7 +73,7 @@ public class Vote {
 		this.selectedAnswer2 = selectedAnswer2;
 	}
 
-	public StreamedContent getBarcode() {
+/*	public StreamedContent getBarcode() {
 		return barcode;
 	}
 
@@ -98,17 +98,17 @@ public class Vote {
 	public void setBarcodes2(ArrayList<StreamedContent> barcodes2) {
 		this.barcodes2 = barcodes2;
 	}
-
+*/
 	public String fromElection() {
 		int elId = Integer.valueOf(FacesContext.getCurrentInstance()
 				.getExternalContext().getRequestParameterMap().get("elId"));
 		answers1 = SqlDataProvider.getInstance().getElectionAnswers(elId);
 		answers2 = SqlDataProvider.getInstance().getElectionAnswers(elId);
-		genBarCodes();
+		//genBarCodes();
 		return "Vote";
 	}
 
-	private void genBarCodes() {
+/*	private void genBarCodes() {
 		for (Answer ans : answers1) {
 			try {
 				File barcodeFile = new File("dynamicbarcode");
@@ -135,7 +135,7 @@ public class Vote {
 			}
 		}
 	}
-
+*/
 	public String shuffle() {
 		Util.shuffle(answers1);
 		Util.shuffle(answers2);
