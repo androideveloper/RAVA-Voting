@@ -56,8 +56,9 @@ public class Home {
 	
 	public void fbLogout(ActionEvent event) {
 		FacesContext context = FacesContext.getCurrentInstance();
-		Elections electionsBean = (Elections) context.getApplication().evaluateExpressionGet(context, "#{elections}", Elections.class);
-		String fUrl = "https://www.facebook.com/logout.php?next=http://localhost:8080/Evoting/Home.xhtml&access_token=" + electionsBean.getAccessToken();
+		//Elections electionsBean = (Elections) context.getApplication().evaluateExpressionGet(context, "#{elections}", Elections.class);
+		String accessToken = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("accessToken");
+		String fUrl = "https://www.facebook.com/logout.php?next=http://localhost:8080/Evoting/Home.xhtml&access_token=" + accessToken;
 		
 		HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
 		HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();

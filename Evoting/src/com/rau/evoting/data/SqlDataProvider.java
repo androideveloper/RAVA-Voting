@@ -19,9 +19,9 @@ public class SqlDataProvider {
 	private static SqlDataProvider dataprovider;
 
 	private SqlDataProvider() {
-		this.dbUrl = "jdbc:jtds:sqlserver://localhost/Evoting;";
+		this.dbUrl = "jdbc:jtds:sqlserver://localhost/Evoting;instance=SQLEXPRESS;";
 		this.username = "sa";
-		this.password = "SaSa111";
+		this.password = "sa";
 
 		String driver = "net.sourceforge.jtds.jdbc.Driver";
 
@@ -265,7 +265,7 @@ public class SqlDataProvider {
 			con = getConnection();
 			
 			String sql = "select * from Elections where openState = 1 and not exists( select * from ElectionVoters where electId = id) ";
-			sql += "union all select e.* from Elections as e join ElectionVoters as v on(e.id = v.electId) join UserGroups as u on(u.userId = ? and u.groupId = v.voterId) where v.voterType = 0 ";
+			sql += "union all select e.* from Elections as e join ElectionVoters as v on(e.id = v.electId) join UserGroups as u on(u.userId = ? and u.groupId = v.voterId) where v.voterType = 0 and openState = 1";
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setInt(1,userId);
 			ResultSet rs = statement.executeQuery();
@@ -324,14 +324,15 @@ public class SqlDataProvider {
 		return id;
 	}
 	
-	public void openElection(int elId) {
+	public void openElection(int elId, String publicKey) {
 		Connection con = null;
 		try {
 			con = getConnection();
 			
-			String sql = "update Elections set openState = 1 where id = ?";
+			String sql = "update Elections set openState = 1, publicKey = ? where id = ?";
 			PreparedStatement statement = con.prepareStatement(sql);
-			statement.setInt(1, elId);
+			statement.setString(1, publicKey);
+			statement.setInt(2, elId);
 			statement.executeUpdate();
 
 		} catch (SQLException e) {
@@ -539,6 +540,35 @@ public class SqlDataProvider {
 			while(rs.next()){
 				Trustee tr = new Trustee(rs.getString("trusteeId"), rs.getString("email"), rs.getBoolean("isGenerated"),rs.getString("token"));
 				l.add(tr);
+			}
+			rs.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+				try {
+					if(con != null) {
+						con.close();
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}
+		return l;
+	}
+	
+	public ArrayList<String> getElectionTrusteesPublicKeys(int elId){
+		ArrayList<String> l = new ArrayList<String>();
+		Connection con = null;
+		try {
+			con = getConnection();
+			String sql = "select publicKey from ElectionTrustees where electId = ?";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setInt(1, elId);
+			ResultSet rs = statement.executeQuery();
+			
+			while(rs.next()){
+				l.add(rs.getString("publicKey"));
 			}
 			rs.close();
 			
@@ -850,7 +880,7 @@ public class SqlDataProvider {
 		return;
 	}
 	
-	public String GetElectionVoterByGroup(int elId) {
+	public String getElectionVoterByGroup(int elId) {
 		String groupId = null;
 		Connection con = null;
 		try {
@@ -878,7 +908,7 @@ public class SqlDataProvider {
 		return groupId;
 	}
 	
-	public boolean CanVoteByGroup(int elId, String groupId){
+	public boolean canVoteByGroup(int elId, String groupId){
 		String voterId = null;
 		Connection con = null;
 		try {

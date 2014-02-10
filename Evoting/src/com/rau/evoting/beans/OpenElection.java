@@ -12,6 +12,7 @@ import javax.mail.MessagingException;
 
 import com.rau.evoting.data.SqlDataProvider;
 import com.rau.evoting.models.*;
+import com.rau.evoting.utils.ElGamalHelper;
 import com.rau.evoting.utils.MailService;
 import com.rau.evoting.utils.Util;
 import com.restfb.Connection;
@@ -39,9 +40,10 @@ public class OpenElection {
 	private String accessToken;
 	
 	public OpenElection() {
-		trustees = new ArrayList<Trustee>();
-		disabled = false;
-		selectedVoteMode = "all";
+		//trustees = new ArrayList<Trustee>();
+		disabled = false; //no need
+		//selectedVoteMode = "all";
+		//answers = new ArrayList<Answer>();
 		accessToken = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("accessToken");
 	}
 	
@@ -201,6 +203,10 @@ public class OpenElection {
 		String userId = user.getId();
 		int elId = SqlDataProvider.getInstance().insertElecttion(new Election(0, name, description),userId);
 		election = new Election(elId, name, description);
+		answers = new ArrayList<Answer>();
+		trustees = new ArrayList<Trustee>();
+		selectedVoteMode = "all";
+		selectedGroup = null;
 		return "next";
 	}
 	
@@ -252,18 +258,28 @@ public class OpenElection {
 		trusteeName = "";
 		trusteeEmail = "";
 		
-		return "Trustees";
+		return "Trustees?faces-redirect=true";
 	}
 	
 	public String setElection(int id) {
 		election = SqlDataProvider.getInstance().getElection(id);
 		answers = SqlDataProvider.getInstance().getElectionAnswers(election.getId());
+		trustees = SqlDataProvider.getInstance().getElectionTrustees(election.getId());
+		selectedGroup = SqlDataProvider.getInstance().getElectionVoterByGroup(election.getId());
+		if(selectedGroup == null) {
+			selectedVoteMode = "all";
+		}
+		else {
+			selectedVoteMode = "";
+		}
 		return "OpenElection";
 	}
 	
 	public String open() {
-		SqlDataProvider.getInstance().openElection(election.getId());
-		return "Elections";
+		ElGamalHelper elHelper = new ElGamalHelper();
+		String pbKey = elHelper.getElectionPublicKey(SqlDataProvider.getInstance().getElectionTrusteesPublicKeys(election.getId()));
+		SqlDataProvider.getInstance().openElection(election.getId(),pbKey);
+		return "Elections?faces-redirect=true";
 	}
 	
 	public void ajaxListener(AjaxBehaviorEvent event) {
