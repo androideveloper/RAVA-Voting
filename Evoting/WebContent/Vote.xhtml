@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
@@ -9,29 +9,46 @@
 <head>
 <link rel="stylesheet" type="text/css" href="style/evoting.css"
 	media="all" />
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Vote</title>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>Insert title here</title>
 </head>
 <body>
-	<h:form>
+<h:form>
 		<ui:insert name="header">
 			<ui:include src="/template/CommonHeader.xhtml"></ui:include>
 		</ui:insert>
-		<table class="vote" align="center">
-			<tr>
-				<td><h:selectOneRadio value="#{vote.selectedAnswer1}"
-						layout="pageDirection">
-						<f:selectItems value="#{vote.answers1}" var="a1"
-							itemLabel="#{a1.answer}" itemValue="#{a1.id}"></f:selectItems>
-					</h:selectOneRadio></td>
-				<td><h:selectOneRadio value="#{vote.selectedAnswer2}"
-						layout="pageDirection">
-						<f:selectItems value="#{vote.answers2}" var="a2"
-							itemLabel="#{a2.answer}" itemValue="#{a2.id}"></f:selectItems>
-					</h:selectOneRadio></td>
-			</tr>
-		</table>
-		<h:commandButton value="shuffle" action="#{vote.shuffle}"></h:commandButton>
+		
+		<div>
+			<div class="algnLeft">
+				<ul>
+					<ui:repeat var="ans" value="#{vote.answers}">
+						<li> <h:outputText value="#{ans.id}: #{ans.answer}"></h:outputText> </li>
+					</ui:repeat>
+				</ul>
+			</div>
+			<div class="algnCenter">
+				<table >
+					<tr>
+						<td>
+							<ul>
+								<ui:repeat var="id" value="#{vote.a1}">
+									<li> <h:outputText value="#{id}"></h:outputText> </li>
+								</ui:repeat>
+							</ul>
+						</td>
+						<td>
+							<ul>
+								<ui:repeat var="id" value="#{vote.a2}">
+									<li> <h:outputText value="#{id}"></h:outputText> </li>
+								</ui:repeat>
+							</ul>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<h:commandButton value="shuffle" action="#{vote.shuffle}" styleClass="margin1"></h:commandButton>
+		<h:commandButton value="encode" rendered="#{vote.showEncode}"></h:commandButton>
 	</h:form>
 </body>
 </html>
