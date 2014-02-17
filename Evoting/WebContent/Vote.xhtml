@@ -18,7 +18,7 @@
 			<ui:include src="/template/CommonHeader.xhtml"></ui:include>
 		</ui:insert>
 		
-		<div>
+		<div style="overflow: hidden;">
 			<div class="algnLeft">
 				<ul>
 					<ui:repeat var="ans" value="#{vote.answers}">
@@ -26,7 +26,10 @@
 					</ui:repeat>
 				</ul>
 			</div>
+			
+			<h:panelGroup rendered="#{vote.showShuffle}">	
 			<div class="algnCenter">
+							
 				<table >
 					<tr>
 						<td>
@@ -45,10 +48,24 @@
 						</td>
 					</tr>
 				</table>
+			
 			</div>
+			</h:panelGroup>	
+			
+			
+			<h:panelGroup rendered="#{not vote.showShuffle}">
+			<div style="vertical-align: middle;width: 550px; margin:0px auto; ">
+				<p:graphicImage value="#{vote.encoded1}" style="float:left;display:inline;margin-top: 50px;"></p:graphicImage>
+			
+				<p:graphicImage value="#{vote.encoded2}" style="float:right;display:inline;margin-top: 50px;"></p:graphicImage>
+			</div>
+			</h:panelGroup>
+					
 		</div>
-		<h:commandButton value="shuffle" action="#{vote.shuffle}" styleClass="margin1"></h:commandButton>
-		<h:commandButton value="encode" rendered="#{vote.showEncode}"></h:commandButton>
+		
+		<h:commandButton value="shuffle" action="#{vote.shuffle}" styleClass="margin1" rendered="#{vote.showShuffle}"></h:commandButton>
+		<h:commandButton value="encode" action="#{vote.encode}" rendered="#{vote.showEncode}"></h:commandButton>
+		
 	</h:form>
 </body>
 </html>

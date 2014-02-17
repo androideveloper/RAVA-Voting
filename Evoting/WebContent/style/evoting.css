@@ -130,7 +130,7 @@ table.vote th, td {
 }
 
 .algnLeft {
-	margin-top: 20px;
+	margin-top: 20px; 
 	float: left; 
 	display:inline;
 }
@@ -146,9 +146,9 @@ table.vote th, td {
 }
 
 .logo {
-width: 800px;
-height: 150px;	
-border: none;
+	width: 800px;
+	height: 150px;	
+	border: none;
 }
 
 /* #content {

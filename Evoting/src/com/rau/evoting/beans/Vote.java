@@ -5,8 +5,11 @@ import java.util.List;
 
 import javax.faces.context.FacesContext;
 
+import org.primefaces.model.StreamedContent;
+
 import com.rau.evoting.data.SqlDataProvider;
 import com.rau.evoting.models.Answer;
+import com.rau.evoting.utils.BarcodeHelper;
 import com.rau.evoting.utils.Util;
 
 public class Vote {
@@ -15,6 +18,9 @@ public class Vote {
 	private ArrayList<Integer> a1;
 	private ArrayList<Integer> a2;
 	private boolean showEncode;
+	private boolean showShuffle;
+	private StreamedContent encoded1;
+	private StreamedContent encoded2;
 	
 	public Vote() {
 		
@@ -25,6 +31,7 @@ public class Vote {
 				.getExternalContext().getRequestParameterMap().get("elId"));
 		answers = SqlDataProvider.getInstance().getElectionAnswers(elId);
 		showEncode = false;
+		showShuffle = true;
 		a1 = new ArrayList<Integer>();
 		a2 = new ArrayList<Integer>();
 		for(Answer ans : answers) {
@@ -67,10 +74,41 @@ public class Vote {
 		this.showEncode = showEncode;
 	}
 
+	public boolean isShowShuffle() {
+		return showShuffle;
+	}
+
+	public void setShowShuffle(boolean showShuffle) {
+		this.showShuffle = showShuffle;
+	}
+
+	public StreamedContent getEncoded1() {
+		return encoded1;
+	}
+
+	public void setEncoded1(StreamedContent encoded1) {
+		this.encoded1 = encoded1;
+	}
+
+	public StreamedContent getEncoded2() {
+		return encoded2;
+	}
+
+	public void setEncoded2(StreamedContent encoded2) {
+		this.encoded2 = encoded2;
+	}
+
 	public String shuffle() {
 		Util.shuffle(a1);
 		Util.shuffle(a2);
 		showEncode = true;
+		return null;
+	}
+	
+	public String encode() {
+		showShuffle = false;
+		encoded1 = BarcodeHelper.getBarcodeFromIntList(a1);
+		encoded2 = BarcodeHelper.getBarcodeFromIntList(a2);
 		return null;
 	}
 
