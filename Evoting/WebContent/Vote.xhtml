@@ -51,17 +51,24 @@
 			
 			</div>
 			</h:panelGroup>	
-			
-			
+						
 			<h:panelGroup rendered="#{not vote.showShuffle}">
-			<div style="vertical-align: middle;width: 550px; margin:0px auto; ">
-				<p:graphicImage value="#{vote.encoded1}" style="float:left;display:inline;margin-top: 50px;"></p:graphicImage>
-			
-				<p:graphicImage value="#{vote.encoded2}" style="float:right;display:inline;margin-top: 50px;"></p:graphicImage>
+			<div class="algnCenter">
+				<p:graphicImage value="#{vote.encoded1}" styleClass="algnLeft-marginTop"></p:graphicImage>
+				<p:graphicImage value="#{vote.encoded2}" styleClass="algnRight-marginTop"></p:graphicImage>
 			</div>
 			</h:panelGroup>
 					
 		</div>
+		
+		
+		<h:panelGroup rendered="#{not vote.showShuffle}" styleClass="margin1">
+			<h:outputText> Please select list to decode for checking: </h:outputText> 
+			<h:selectOneMenu value="#{vote.selectedDecodedList}">
+				<f:selectItem itemLabel="1" itemValue="1"></f:selectItem>
+				<f:selectItem itemLabel="2" itemValue="2"></f:selectItem>
+			</h:selectOneMenu>
+		</h:panelGroup>
 		
 		<h:commandButton value="shuffle" action="#{vote.shuffle}" styleClass="margin1" rendered="#{vote.showShuffle}"></h:commandButton>
 		<h:commandButton value="encode" action="#{vote.encode}" rendered="#{vote.showEncode}"></h:commandButton>

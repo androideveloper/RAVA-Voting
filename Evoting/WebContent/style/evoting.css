@@ -135,9 +135,21 @@ table.vote th, td {
 	display:inline;
 }
 
+.algnRight-marginTop {
+	margin-top: 50px;
+	float: right; 
+	display:inline;	
+}
+
+.algnLeft-marginTop {
+	margin-top: 50px; 
+	float: left; 
+	display:inline;
+}
+
 .algnCenter {
 	margin:0px auto; 
-	width: 150px;
+	width: 550px;
 	vertical-align: middle;
 }
 

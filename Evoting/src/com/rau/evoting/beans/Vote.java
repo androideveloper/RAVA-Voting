@@ -21,6 +21,7 @@ public class Vote {
 	private boolean showShuffle;
 	private StreamedContent encoded1;
 	private StreamedContent encoded2;
+	private String selectedDecodedList;
 	
 	public Vote() {
 		
@@ -32,6 +33,7 @@ public class Vote {
 		answers = SqlDataProvider.getInstance().getElectionAnswers(elId);
 		showEncode = false;
 		showShuffle = true;
+		selectedDecodedList = "1";
 		a1 = new ArrayList<Integer>();
 		a2 = new ArrayList<Integer>();
 		for(Answer ans : answers) {
@@ -97,6 +99,14 @@ public class Vote {
 	public void setEncoded2(StreamedContent encoded2) {
 		this.encoded2 = encoded2;
 	}
+	
+	public String getSelectedDecodedList() {
+		return selectedDecodedList;
+	}
+
+	public void setSelectedDecodedList(String selectedDecodedList) {
+		this.selectedDecodedList = selectedDecodedList;
+	}
 
 	public String shuffle() {
 		Util.shuffle(a1);
@@ -109,6 +119,7 @@ public class Vote {
 		showShuffle = false;
 		encoded1 = BarcodeHelper.getBarcodeFromIntList(a1);
 		encoded2 = BarcodeHelper.getBarcodeFromIntList(a2);
+		showEncode = false;
 		return null;
 	}
 
