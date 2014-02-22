@@ -1,7 +1,7 @@
 package com.rau.evoting.beans;
 
+import java.io.Console;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.faces.context.FacesContext;
 
@@ -9,6 +9,7 @@ import org.primefaces.model.StreamedContent;
 
 import com.rau.evoting.data.SqlDataProvider;
 import com.rau.evoting.models.Answer;
+import com.rau.evoting.models.Election;
 import com.rau.evoting.utils.BarcodeHelper;
 import com.rau.evoting.utils.Util;
 
@@ -22,6 +23,8 @@ public class Vote {
 	private StreamedContent encoded1;
 	private StreamedContent encoded2;
 	private String selectedDecodedList;
+	
+	private String publicKey;
 	
 	public Vote() {
 		
@@ -40,6 +43,8 @@ public class Vote {
 			a1.add(ans.getId());
 			a2.add(ans.getId());
 		}
+		publicKey = SqlDataProvider.getInstance().getElection(elId).getPublicKey();
+		//System.out.print("public_key: " + el.getPublicKey());
 		return "Vote";
 	}
 	
@@ -117,8 +122,9 @@ public class Vote {
 	
 	public String encode() {
 		showShuffle = false;
-		encoded1 = BarcodeHelper.getBarcodeFromIntList(a1);
-		encoded2 = BarcodeHelper.getBarcodeFromIntList(a2);
+		System.out.print("public_key: " + publicKey);
+		encoded1 = BarcodeHelper.getEncodedBarcodeFromIntList(a1, publicKey);
+		encoded2 = BarcodeHelper.getEncodedBarcodeFromIntList(a2, publicKey);
 		showEncode = false;
 		return null;
 	}

@@ -36,6 +36,16 @@ public class ElGamalHelper {
 				prKeyParams.getX(), params.getP()), params);
 		engine = new ElGamalEngine();
 	}
+	
+	public ElGamalHelper(String pubKey){
+		if (params == null) {
+			ElGamalParametersGenerator gen = new ElGamalParametersGenerator();
+			gen.init(500, 5, new SecureRandom());
+			params = gen.generateParameters();
+		}
+		pubKeyParams = new ElGamalPublicKeyParameters(new BigInteger(pubKey), params);
+		engine = new ElGamalEngine();
+	}
 
 	public String encode(String text) {
 		engine.init(true, pubKeyParams);
