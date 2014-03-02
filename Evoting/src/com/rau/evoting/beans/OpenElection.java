@@ -5,17 +5,17 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.mail.MessagingException;
 
+import com.rau.evoting.ElGamal.ElGamalHelper;
 import com.rau.evoting.data.SqlDataProvider;
-import com.rau.evoting.models.*;
-import com.rau.evoting.utils.ElGamalHelper;
+import com.rau.evoting.models.Answer;
+import com.rau.evoting.models.Election;
+import com.rau.evoting.models.Trustee;
 import com.rau.evoting.utils.MailService;
 import com.rau.evoting.utils.Util;
-import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
 import com.restfb.types.Group;
