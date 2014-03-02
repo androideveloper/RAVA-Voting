@@ -226,7 +226,7 @@ public class OpenElection {
 	
 	public String cancelAnswers() {
 		answer = "";
-		return "OpenElection";
+		return "OpenElection?faces-redirect=true";
 	}
 	
 	public String addAnswers() {
@@ -235,7 +235,7 @@ public class OpenElection {
 			answer = "";
 		}
 		SqlDataProvider.getInstance().insertAnswers(election.getId(), answers);
-		return "OpenElection";
+		return "OpenElection?faces-redirect=true";
 	}
 	
 	public String addTrustee() {

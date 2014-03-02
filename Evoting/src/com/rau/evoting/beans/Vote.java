@@ -4,6 +4,7 @@ import java.io.Console;
 import java.util.ArrayList;
 
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 
 import org.primefaces.model.StreamedContent;
 
@@ -23,7 +24,11 @@ public class Vote {
 	private StreamedContent encoded1;
 	private StreamedContent encoded2;
 	private String selectedDecodedList;
-	
+	private boolean showDecode;
+	private boolean showDecoded1;
+	private boolean showDecoded2;
+	private int selectedVote;
+		
 	private String publicKey;
 	
 	public Vote() {
@@ -37,6 +42,12 @@ public class Vote {
 		showEncode = false;
 		showShuffle = true;
 		selectedDecodedList = "1";
+		showDecode = false;
+		showDecoded1 = false;
+		showDecoded2 = false;
+		selectedVote = 1;
+		encoded1 = null;
+		encoded2 = null;
 		a1 = new ArrayList<Integer>();
 		a2 = new ArrayList<Integer>();
 		for(Answer ans : answers) {
@@ -112,20 +123,68 @@ public class Vote {
 	public void setSelectedDecodedList(String selectedDecodedList) {
 		this.selectedDecodedList = selectedDecodedList;
 	}
+	
+	public boolean isShowDecode() {
+		return showDecode;
+	}
 
-	public String shuffle() {
+	public void setShowDecode(boolean showDecode) {
+		this.showDecode = showDecode;
+	}
+
+	public boolean isShowDecoded1() {
+		return showDecoded1;
+	}
+
+	public void setShowDecoded1(boolean showDecoded1) {
+		this.showDecoded1 = showDecoded1;
+	}
+
+	public boolean isShowDecoded2() {
+		return showDecoded2;
+	}
+
+	public void setShowDecoded2(boolean showDecoded2) {
+		this.showDecoded2 = showDecoded2;
+	}
+
+	public int getSelectedVote() {
+		return selectedVote;
+	}
+
+	public void setSelectedVote(int selectedVote) {
+		this.selectedVote = selectedVote;
+	}
+
+	public void shuffle(AjaxBehaviorEvent event) {
 		Util.shuffle(a1);
 		Util.shuffle(a2);
 		showEncode = true;
-		return null;
 	}
 	
-	public String encode() {
+	public void encode(AjaxBehaviorEvent event) {
 		showShuffle = false;
 		System.out.print("public_key: " + publicKey);
 		encoded1 = BarcodeHelper.getEncodedBarcodeFromIntList(a1, publicKey);
 		encoded2 = BarcodeHelper.getEncodedBarcodeFromIntList(a2, publicKey);
 		showEncode = false;
+		showDecode = true;
+	}
+	
+	public String decode() {
+		showDecode = false;
+		if(selectedDecodedList.equals("1")){
+			showDecoded1 = true;
+			//make decode logic
+		} else {
+			showDecoded2 = true;
+			//make decode logic
+		}
+		return null;
+	}
+	
+	public String vote() {
+		// vote
 		return null;
 	}
 

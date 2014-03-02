@@ -13,7 +13,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h:form>
+	<h:form id="voteForm">
 		<ui:insert name="header">
 			<ui:include src="/template/CommonHeader.xhtml"></ui:include>
 		</ui:insert>
@@ -28,51 +28,88 @@
 			</div>
 			
 			<h:panelGroup rendered="#{vote.showShuffle}">	
-			<div class="algnCenter">
-							
-				<table >
-					<tr>
-						<td>
-							<ul>
-								<ui:repeat var="id" value="#{vote.a1}">
-									<li> <h:outputText value="#{id}"></h:outputText> </li>
-								</ui:repeat>
-							</ul>
-						</td>
-						<td>
-							<ul>
-								<ui:repeat var="id" value="#{vote.a2}">
-									<li> <h:outputText value="#{id}"></h:outputText> </li>
-								</ui:repeat>
-							</ul>
-						</td>
-					</tr>
-				</table>
-			
-			</div>
+				<div class="algnCenter">				
+					<table >
+						<tr>
+							<td>
+								<ul>
+									<ui:repeat var="id" value="#{vote.a1}">
+										<li> <h:outputText value="#{id}"></h:outputText> </li>
+									</ui:repeat>
+								</ul>
+							</td>
+							<td>
+								<ul>
+									<ui:repeat var="id" value="#{vote.a2}">
+										<li> <h:outputText value="#{id}"></h:outputText> </li>
+									</ui:repeat>
+								</ul>
+							</td>
+						</tr>
+					</table>	
+				</div>
 			</h:panelGroup>	
 						
-			<h:panelGroup rendered="#{not vote.showShuffle}">
-			<div class="algnCenter">
-				<p:graphicImage value="#{vote.encoded1}" styleClass="algnLeft-marginTop"></p:graphicImage>
-				<p:graphicImage value="#{vote.encoded2}" styleClass="algnRight-marginTop"></p:graphicImage>
-			</div>
+			<h:panelGroup rendered="#{vote.showDecode}">
+				<div class="algnCenter">
+					<p:graphicImage value="#{vote.encoded1}" styleClass="algnLeft-marginTop"></p:graphicImage>
+					<p:graphicImage value="#{vote.encoded2}" styleClass="algnRight-marginTop"></p:graphicImage>
+				</div>
 			</h:panelGroup>
 					
+			<h:panelGroup rendered="#{vote.showDecoded1}" styleClass="margin1">
+				<div class="algnCenter">
+					<h:outputText>You select first ballot for decode:</h:outputText>
+					<ul>
+						<ui:repeat var="id" value="#{vote.a1}">
+							<li> <h:outputText value="#{id}"></h:outputText> </li>
+						</ui:repeat>
+					</ul>
+				</div>
+			</h:panelGroup>	
+			
+			<h:panelGroup rendered="#{vote.showDecoded2}" styleClass="margin1">
+				<div class="algnCenter">
+					<h:outputText>You select second ballot for decode:</h:outputText>
+					<ul>
+						<ui:repeat var="id" value="#{vote.a2}">
+							<li> <h:outputText value="#{id}"></h:outputText> </li>
+						</ui:repeat>
+					</ul>
+				</div>
+			</h:panelGroup>		
+
 		</div>
-		
-		
-		<h:panelGroup rendered="#{not vote.showShuffle}" styleClass="margin1">
-			<h:outputText> Please select list to decode for checking: </h:outputText> 
-			<h:selectOneMenu value="#{vote.selectedDecodedList}">
+				
+		<h:panelGroup rendered="#{vote.showDecode}" styleClass="margin1">
+			<h:outputText> Select list to decode for checking: </h:outputText> 
+			<h:selectOneMenu value="#{vote.selectedDecodedList}" style="margin: 10px;">
 				<f:selectItem itemLabel="1" itemValue="1"></f:selectItem>
 				<f:selectItem itemLabel="2" itemValue="2"></f:selectItem>
 			</h:selectOneMenu>
+			<h:commandButton value="decode" action="#{vote.decode}">
+			<ui:remove>
+				<f:ajax event="click" listener="#{vote.decode}" render="voteForm"></f:ajax>
+			</ui:remove>
+			</h:commandButton>
 		</h:panelGroup>
 		
-		<h:commandButton value="shuffle" action="#{vote.shuffle}" styleClass="margin1" rendered="#{vote.showShuffle}"></h:commandButton>
-		<h:commandButton value="encode" action="#{vote.encode}" rendered="#{vote.showEncode}"></h:commandButton>
+		<h:commandButton value="shuffle" styleClass="margin1" rendered="#{vote.showShuffle}">
+			<f:ajax event="click" listener="#{vote.shuffle}" render="voteForm"></f:ajax>
+		</h:commandButton>
+		<h:commandButton value="encode" rendered="#{vote.showEncode}">
+			<f:ajax event="click" listener="#{vote.encode}" render="voteForm"></f:ajax>
+		</h:commandButton>
 		
+		<h:panelGroup rendered="#{vote.showDecoded1 or vote.showDecoded2}" styleClass="margin1">
+			<h:outputText rendered="#{vote.showDecoded2}">Select answer to vote in first ballot </h:outputText>
+			<h:outputText rendered="#{vote.showDecoded1}">Select answer to vote in second ballot </h:outputText> 
+			<h:selectOneMenu value="#{vote.selectedVote}" style="margin: 10px;">
+				<f:selectItems value="#{vote.answers}" var="ans" itemValue="#{ans.id}" itemLabel="#{ans.id}"></f:selectItems>
+			</h:selectOneMenu>
+			<h:commandButton value="vote" action="#{vote.vote}"></h:commandButton>
+		</h:panelGroup>
+			
 	</h:form>
 </body>
 </html>

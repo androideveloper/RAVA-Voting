@@ -153,6 +153,12 @@ table.vote th, td {
 	vertical-align: middle;
 }
 
+.algnCenter1 {
+	margin:20px auto; 
+	width: 550px;
+	vertical-align: middle;
+}
+
 .headerBackground {
 	background-image: url("/images/ok.jpg");
 }
