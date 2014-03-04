@@ -83,14 +83,12 @@
 				
 		<h:panelGroup rendered="#{vote.showDecode}" styleClass="margin1">
 			<h:outputText> Select list to decode for checking: </h:outputText> 
-			<h:selectOneMenu value="#{vote.selectedDecodedList}" style="margin: 10px;">
+			<h:selectOneMenu id="selectList" value="#{vote.selectedDecodedList}" style="margin: 10px;">
 				<f:selectItem itemLabel="1" itemValue="1"></f:selectItem>
 				<f:selectItem itemLabel="2" itemValue="2"></f:selectItem>
 			</h:selectOneMenu>
-			<h:commandButton value="decode" action="#{vote.decode}">
-			<ui:remove>
-				<f:ajax event="click" listener="#{vote.decode}" render="voteForm"></f:ajax>
-			</ui:remove>
+			<h:commandButton value="decode">
+				<f:ajax event="click" listener="#{vote.decode}" render="voteForm" execute="selectList"></f:ajax>
 			</h:commandButton>
 		</h:panelGroup>
 		

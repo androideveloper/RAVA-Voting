@@ -13,6 +13,9 @@ import com.rau.evoting.models.Answer;
 import com.rau.evoting.models.Election;
 import com.rau.evoting.utils.BarcodeHelper;
 import com.rau.evoting.utils.Util;
+import com.restfb.DefaultFacebookClient;
+import com.restfb.FacebookClient;
+import com.restfb.types.User;
 
 public class Vote {
 	
@@ -23,25 +26,27 @@ public class Vote {
 	private boolean showShuffle;
 	private StreamedContent encoded1;
 	private StreamedContent encoded2;
-	private String selectedDecodedList;
+	private int selectedDecodedList;
 	private boolean showDecode;
 	private boolean showDecoded1;
 	private boolean showDecoded2;
 	private int selectedVote;
+	private int elId;
+	private int userId;
 		
 	private String publicKey;
 	
 	public Vote() {
-		
+		userId = (int)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId");
 	}
 	
 	public String fromElection() {
-		int elId = Integer.valueOf(FacesContext.getCurrentInstance()
+		elId = Integer.valueOf(FacesContext.getCurrentInstance()
 				.getExternalContext().getRequestParameterMap().get("elId"));
 		answers = SqlDataProvider.getInstance().getElectionAnswers(elId);
 		showEncode = false;
 		showShuffle = true;
-		selectedDecodedList = "1";
+		selectedDecodedList = 1;
 		showDecode = false;
 		showDecoded1 = false;
 		showDecoded2 = false;
@@ -116,11 +121,11 @@ public class Vote {
 		this.encoded2 = encoded2;
 	}
 	
-	public String getSelectedDecodedList() {
+	public int getSelectedDecodedList() {
 		return selectedDecodedList;
 	}
 
-	public void setSelectedDecodedList(String selectedDecodedList) {
+	public void setSelectedDecodedList(int selectedDecodedList) {
 		this.selectedDecodedList = selectedDecodedList;
 	}
 	
@@ -165,27 +170,27 @@ public class Vote {
 	public void encode(AjaxBehaviorEvent event) {
 		showShuffle = false;
 		System.out.print("public_key: " + publicKey);
-		encoded1 = BarcodeHelper.getEncodedBarcodeFromIntList(a1, publicKey);
+		encoded1 = BarcodeHelper.getEncodedBarcodeFromIntList(a1, publicKey);    
 		encoded2 = BarcodeHelper.getEncodedBarcodeFromIntList(a2, publicKey);
 		showEncode = false;
 		showDecode = true;
 	}
 	
-	public String decode() {
+	public void decode(AjaxBehaviorEvent event) {
 		showDecode = false;
-		if(selectedDecodedList.equals("1")){
+		if(selectedDecodedList == 1){
 			showDecoded1 = true;
 			//make decode logic
 		} else {
 			showDecoded2 = true;
 			//make decode logic
 		}
-		return null;
 	}
 	
 	public String vote() {
 		// vote
-		return null;
+		SqlDataProvider.getInstance().setElectionVotes(elId, userId,(selectedDecodedList == 1 ? 2: 1) , "", "", selectedVote);
+		return "Elections?faces-redirect=true";
 	}
 
 }

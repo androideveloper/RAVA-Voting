@@ -12,15 +12,15 @@ import com.restfb.types.User;
 
 public class UserElections {
 	private ArrayList<Election> els;
-	private String userId;
+	//private String userId;
 	
 	public UserElections() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		//Elections elsBean = (Elections) context.getApplication().evaluateExpressionGet(context, "#{elections}", Elections.class);
-		String accessToken = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("accessToken");
-		FacebookClient fbClient = new DefaultFacebookClient(accessToken);
-		User user = fbClient.fetchObject("me", User.class);
-		userId = user.getId();
+		//String accessToken = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("accessToken");
+		//FacebookClient fbClient = new DefaultFacebookClient(accessToken);
+		//User user = fbClient.fetchObject("me", User.class);
+		int userId = userId = (int)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId");
 		els = SqlDataProvider.getInstance().getUserElections(userId);
 	}
 

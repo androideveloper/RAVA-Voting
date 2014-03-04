@@ -198,9 +198,10 @@ public class OpenElection {
 	}
 		
 	public String createElection(String name, String description) {
-		FacebookClient fbClient = new DefaultFacebookClient(accessToken);
-		User user = fbClient.fetchObject("me", User.class); 
-		String userId = user.getId();
+		//FacebookClient fbClient = new DefaultFacebookClient(accessToken);
+		//User user = fbClient.fetchObject("me", User.class); 
+		//String userId = user.getId();
+		int userId = (int)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId");
 		int elId = SqlDataProvider.getInstance().insertElecttion(new Election(0, name, description),userId);
 		election = new Election(elId, name, description);
 		answers = new ArrayList<Answer>();
@@ -241,7 +242,7 @@ public class OpenElection {
 	public String addTrustee() {
 		String message = "Hello, you are chosen trustee for  " + election.getName() + " election\n Please, generate your key: \n";
 		String token = Util.generateRandomToken();
-		int trId = SqlDataProvider.getInstance().insertTrustee(election.getId(), new Trustee(null, trusteeEmail, false,token));
+		int trId = SqlDataProvider.getInstance().insertTrustee(election.getId(), new Trustee(0, trusteeEmail, false,token));
 		String url = "http://localhost:8080/Evoting/TrusteeHome.xhtml?trId=" + trId + "&token=" + token;
 		String encodedUrl = url;
 		try {
