@@ -26,9 +26,7 @@
 </table>
 <div class="commandLinks">
 <h:commandButton value="add answer" styleClass="button" action="#{election.addAnswer}"></h:commandButton>
-<h:panelGroup rendered="#{election.showRemove}">
-<h:commandButton value="remove answer" action="#{election.removeAnswer}"></h:commandButton>
-</h:panelGroup>
+<h:commandButton value="remove answer" action="#{election.removeAnswer}" rendered="#{election.showRemove}"></h:commandButton>
 </div>
 <div class="commandLinks">
 <h:commandButton value="ok" styleClass="button" action="#{election.addAnswers}"></h:commandButton>

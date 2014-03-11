@@ -7,10 +7,10 @@ import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
+import com.rau.evoting.ElGamal.ElGamalHelper;
 import com.rau.evoting.data.SqlDataProvider;
 import com.rau.evoting.models.Election;
 import com.rau.evoting.models.Trustee;
-import com.rau.evoting.utils.ElGamalHelper;
 import com.rau.evoting.utils.FacebookService;
 import com.rau.evoting.utils.MailService;
 import com.restfb.DefaultFacebookClient;
@@ -38,8 +38,9 @@ public class TrusteeElectionBean {
 		election = SqlDataProvider.getInstance().getElection(trustee.getElectId());
 		FacebookClient fbClient = new DefaultFacebookClient(accessToken);
 		User user = fbClient.fetchObject("me", User.class);
+		int userId = SqlDataProvider.getInstance().insertUser(user.getId());
 		trustee.setEmail(user.getEmail());
-		trustee.setId(user.getId());
+		trustee.setId(userId);
 		SqlDataProvider.getInstance().updateTrustee(tempTrId, trustee);
 	}
 

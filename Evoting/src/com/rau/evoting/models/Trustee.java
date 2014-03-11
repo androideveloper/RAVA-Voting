@@ -1,21 +1,21 @@
 package com.rau.evoting.models;
 
 public class Trustee {
-	private String id;
+	private int id;
 	private String email;
 	private boolean generated;
 	private String publicKey;
 	private int electId;
 	private String token;
 	
-	public Trustee(String id, String email, boolean isGenerated, String token) {
+	public Trustee(int id, String email, boolean isGenerated, String token) {
 		this.id = id;
 		this.email = email;
 		this.generated = isGenerated;
 		this.token = token;
 	}
 	
-	public Trustee(String id, String email, boolean isGenerated, String publicKey, int electId) {
+	public Trustee(int id, String email, boolean isGenerated, String publicKey, int electId) {
 		this.id = id;
 		this.email = email;
 		this.generated = isGenerated;
@@ -23,7 +23,7 @@ public class Trustee {
 		this.electId = electId;
 	}
 	
-	public Trustee(String id, String email, boolean isGenerated, String publicKey, int electId, String token) {
+	public Trustee(int id, String email, boolean isGenerated, String publicKey, int electId, String token) {
 		this.id = id;
 		this.email = email;
 		this.generated = isGenerated;
@@ -32,11 +32,11 @@ public class Trustee {
 		this.token = token;
 	}
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

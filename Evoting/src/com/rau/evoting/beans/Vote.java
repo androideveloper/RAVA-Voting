@@ -1,13 +1,21 @@
 package com.rau.evoting.beans;
 
+import java.io.Console;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+
+import org.primefaces.model.StreamedContent;
 
 import com.rau.evoting.data.SqlDataProvider;
 import com.rau.evoting.models.Answer;
+import com.rau.evoting.models.Election;
+import com.rau.evoting.utils.BarcodeHelper;
 import com.rau.evoting.utils.Util;
+import com.restfb.DefaultFacebookClient;
+import com.restfb.FacebookClient;
+import com.restfb.types.User;
 
 public class Vote {
 	
@@ -15,22 +23,44 @@ public class Vote {
 	private ArrayList<Integer> a1;
 	private ArrayList<Integer> a2;
 	private boolean showEncode;
+	private boolean showShuffle;
+	private StreamedContent encoded1;
+	private StreamedContent encoded2;
+	private int selectedDecodedList;
+	private boolean showDecode;
+	private boolean showDecoded1;
+	private boolean showDecoded2;
+	private int selectedVote;
+	private int elId;
+	private int userId;
+		
+	private String publicKey;
 	
 	public Vote() {
-		
+		userId = (int)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId");
 	}
 	
 	public String fromElection() {
-		int elId = Integer.valueOf(FacesContext.getCurrentInstance()
+		elId = Integer.valueOf(FacesContext.getCurrentInstance()
 				.getExternalContext().getRequestParameterMap().get("elId"));
 		answers = SqlDataProvider.getInstance().getElectionAnswers(elId);
 		showEncode = false;
+		showShuffle = true;
+		selectedDecodedList = 1;
+		showDecode = false;
+		showDecoded1 = false;
+		showDecoded2 = false;
+		selectedVote = 1;
+		encoded1 = null;
+		encoded2 = null;
 		a1 = new ArrayList<Integer>();
 		a2 = new ArrayList<Integer>();
 		for(Answer ans : answers) {
 			a1.add(ans.getId());
 			a2.add(ans.getId());
 		}
+		publicKey = SqlDataProvider.getInstance().getElection(elId).getPublicKey();
+		//System.out.print("public_key: " + el.getPublicKey());
 		return "Vote";
 	}
 	
@@ -67,11 +97,100 @@ public class Vote {
 		this.showEncode = showEncode;
 	}
 
-	public String shuffle() {
+	public boolean isShowShuffle() {
+		return showShuffle;
+	}
+
+	public void setShowShuffle(boolean showShuffle) {
+		this.showShuffle = showShuffle;
+	}
+
+	public StreamedContent getEncoded1() {
+		return encoded1;
+	}
+
+	public void setEncoded1(StreamedContent encoded1) {
+		this.encoded1 = encoded1;
+	}
+
+	public StreamedContent getEncoded2() {
+		return encoded2;
+	}
+
+	public void setEncoded2(StreamedContent encoded2) {
+		this.encoded2 = encoded2;
+	}
+	
+	public int getSelectedDecodedList() {
+		return selectedDecodedList;
+	}
+
+	public void setSelectedDecodedList(int selectedDecodedList) {
+		this.selectedDecodedList = selectedDecodedList;
+	}
+	
+	public boolean isShowDecode() {
+		return showDecode;
+	}
+
+	public void setShowDecode(boolean showDecode) {
+		this.showDecode = showDecode;
+	}
+
+	public boolean isShowDecoded1() {
+		return showDecoded1;
+	}
+
+	public void setShowDecoded1(boolean showDecoded1) {
+		this.showDecoded1 = showDecoded1;
+	}
+
+	public boolean isShowDecoded2() {
+		return showDecoded2;
+	}
+
+	public void setShowDecoded2(boolean showDecoded2) {
+		this.showDecoded2 = showDecoded2;
+	}
+
+	public int getSelectedVote() {
+		return selectedVote;
+	}
+
+	public void setSelectedVote(int selectedVote) {
+		this.selectedVote = selectedVote;
+	}
+
+	public void shuffle(AjaxBehaviorEvent event) {
 		Util.shuffle(a1);
 		Util.shuffle(a2);
 		showEncode = true;
-		return null;
+	}
+	
+	public void encode(AjaxBehaviorEvent event) {
+		showShuffle = false;
+		System.out.print("public_key: " + publicKey);
+		encoded1 = BarcodeHelper.getEncodedBarcodeFromIntList(a1, publicKey);    
+		encoded2 = BarcodeHelper.getEncodedBarcodeFromIntList(a2, publicKey);
+		showEncode = false;
+		showDecode = true;
+	}
+	
+	public void decode(AjaxBehaviorEvent event) {
+		showDecode = false;
+		if(selectedDecodedList == 1){
+			showDecoded1 = true;
+			//make decode logic
+		} else {
+			showDecoded2 = true;
+			//make decode logic
+		}
+	}
+	
+	public String vote() {
+		// vote
+		SqlDataProvider.getInstance().setElectionVotes(elId, userId,(selectedDecodedList == 1 ? 2: 1) , "", "", selectedVote);
+		return "Elections?faces-redirect=true";
 	}
 
 }

@@ -130,14 +130,32 @@ table.vote th, td {
 }
 
 .algnLeft {
-	margin-top: 20px;
+	margin-top: 20px; 
+	float: left; 
+	display:inline;
+}
+
+.algnRight-marginTop {
+	margin-top: 50px;
+	float: right; 
+	display:inline;	
+}
+
+.algnLeft-marginTop {
+	margin-top: 50px; 
 	float: left; 
 	display:inline;
 }
 
 .algnCenter {
 	margin:0px auto; 
-	width: 150px;
+	width: 550px;
+	vertical-align: middle;
+}
+
+.algnCenter1 {
+	margin:20px auto; 
+	width: 550px;
 	vertical-align: middle;
 }
 
@@ -146,9 +164,9 @@ table.vote th, td {
 }
 
 .logo {
-width: 800px;
-height: 150px;	
-border: none;
+	width: 800px;
+	height: 150px;	
+	border: none;
 }
 
 /* #content {

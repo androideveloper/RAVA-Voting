@@ -5,17 +5,17 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.mail.MessagingException;
 
+import com.rau.evoting.ElGamal.ElGamalHelper;
 import com.rau.evoting.data.SqlDataProvider;
-import com.rau.evoting.models.*;
-import com.rau.evoting.utils.ElGamalHelper;
+import com.rau.evoting.models.Answer;
+import com.rau.evoting.models.Election;
+import com.rau.evoting.models.Trustee;
 import com.rau.evoting.utils.MailService;
 import com.rau.evoting.utils.Util;
-import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
 import com.restfb.types.Group;
@@ -198,9 +198,10 @@ public class OpenElection {
 	}
 		
 	public String createElection(String name, String description) {
-		FacebookClient fbClient = new DefaultFacebookClient(accessToken);
-		User user = fbClient.fetchObject("me", User.class); 
-		String userId = user.getId();
+		//FacebookClient fbClient = new DefaultFacebookClient(accessToken);
+		//User user = fbClient.fetchObject("me", User.class); 
+		//String userId = user.getId();
+		int userId = (int)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId");
 		int elId = SqlDataProvider.getInstance().insertElecttion(new Election(0, name, description),userId);
 		election = new Election(elId, name, description);
 		answers = new ArrayList<Answer>();
@@ -226,7 +227,7 @@ public class OpenElection {
 	
 	public String cancelAnswers() {
 		answer = "";
-		return "OpenElection";
+		return "OpenElection?faces-redirect=true";
 	}
 	
 	public String addAnswers() {
@@ -235,13 +236,13 @@ public class OpenElection {
 			answer = "";
 		}
 		SqlDataProvider.getInstance().insertAnswers(election.getId(), answers);
-		return "OpenElection";
+		return "OpenElection?faces-redirect=true";
 	}
 	
 	public String addTrustee() {
 		String message = "Hello, you are chosen trustee for  " + election.getName() + " election\n Please, generate your key: \n";
 		String token = Util.generateRandomToken();
-		int trId = SqlDataProvider.getInstance().insertTrustee(election.getId(), new Trustee(null, trusteeEmail, false,token));
+		int trId = SqlDataProvider.getInstance().insertTrustee(election.getId(), new Trustee(0, trusteeEmail, false,token));
 		String url = "http://localhost:8080/Evoting/TrusteeHome.xhtml?trId=" + trId + "&token=" + token;
 		String encodedUrl = url;
 		try {

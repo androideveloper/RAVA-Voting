@@ -1,39 +1,40 @@
-package com.rau.evoting.utils;
+package com.rau.evoting.ElGamal;
 
 import java.math.BigInteger;
-import java.security.SecureRandom;
 import java.util.List;
 
 import org.bouncycastle.crypto.engines.ElGamalEngine;
-import org.bouncycastle.crypto.generators.ElGamalParametersGenerator;
 import org.bouncycastle.crypto.params.ElGamalParameters;
 import org.bouncycastle.crypto.params.ElGamalPrivateKeyParameters;
 import org.bouncycastle.crypto.params.ElGamalPublicKeyParameters;
 
+import com.rau.evoting.utils.RandomHelper;
+
 public class ElGamalHelper {
 
-	private static ElGamalParameters params = null;
+	private ElGamalParameters params = null;
 	private ElGamalPrivateKeyParameters prKeyParams;
 	private ElGamalPublicKeyParameters pubKeyParams;
 	private ElGamalEngine engine;
 
-/*	public static void genPandG() {
-		ElGamalParametersGenerator gen = new ElGamalParametersGenerator();
-		gen.init(500, 5, new SecureRandom());
-		params = gen.generateParameters();
-	}
-*/
 	public ElGamalHelper() {
-		if (params == null) {
-			ElGamalParametersGenerator gen = new ElGamalParametersGenerator();
-			gen.init(500, 5, new SecureRandom());
-			params = gen.generateParameters();
-		}
+		
+		GlobalParameters.getInstance();
+		params = GlobalParameters.getParams();
+		
 		prKeyParams = new ElGamalPrivateKeyParameters(
 				RandomHelper.randomBigInteger(params.getP().subtract(
 						new BigInteger("1"))), params);
 		pubKeyParams = new ElGamalPublicKeyParameters(params.getG().modPow(
 				prKeyParams.getX(), params.getP()), params);
+		engine = new ElGamalEngine();
+	}
+	
+	public ElGamalHelper(String pubKey){
+		GlobalParameters.getInstance();
+		params = GlobalParameters.getParams();
+		
+		pubKeyParams = new ElGamalPublicKeyParameters(new BigInteger(pubKey), params);
 		engine = new ElGamalEngine();
 	}
 
