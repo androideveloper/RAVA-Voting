@@ -103,13 +103,13 @@ public class ElGamalHelper {
 		return pubKeyParams.getY().toString();
 	}
 
-	public String getP() {
+/*	public String getP() {
 		return params.getP().toString();
 	}
 
 	public String getG() {
 		return params.getG().toString();
-	}
+	}*/
 
 	public ElGamalPublicKeyParameters getPubKeyParams() {
 		return pubKeyParams;
