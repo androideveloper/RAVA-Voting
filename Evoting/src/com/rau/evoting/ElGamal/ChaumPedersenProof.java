@@ -2,17 +2,11 @@ package com.rau.evoting.ElGamal;
 
 import java.math.BigInteger;
 
-import org.bouncycastle.crypto.params.ElGamalPublicKeyParameters;
-
 import com.rau.evoting.utils.Pair;
 import com.rau.evoting.utils.RandomHelper;
 
 public class ChaumPedersenProof {
 
-	// private ElGamalParameters params ;
-	// private ElGamalPrivateKeyParameters prKeyParams;
-	// private ElGamalPublicKeyParameters pubKeyParams;
-	private ElGamalHelper elGamal;
 	private BigInteger y1;
 	private BigInteger y2;
 	private BigInteger a1;
@@ -25,23 +19,10 @@ public class ChaumPedersenProof {
 	private BigInteger g;
 	private BigInteger p;
 	private BigInteger y;
-	// BigInteger x;
 
 	private BigInteger res1;
 	private BigInteger res2;
 
-	public ChaumPedersenProof(ElGamalHelper el) {
-		// GlobalParameters.getInstance();
-		// params = GlobalParameters.getParams();
-		elGamal = el;
-		g = elGamal.getPubKeyParams().getParameters().getG();
-		p = elGamal.getPubKeyParams().getParameters().getP();
-		y = elGamal.getPubKeyParams().getY();
-		// x = elGamal.getPrKeyParams().getX();
-
-		// y1 = g.modPow(x, p);
-		// y2 = y.modPow(x, p);
-	}
 
 	public Pair<BigInteger, BigInteger> generate(BigInteger pubKey, BigInteger r) {
 		g = GlobalParameters.getParams().getG();
