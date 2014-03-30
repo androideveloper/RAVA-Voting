@@ -3,7 +3,8 @@ use Evoting
 create table Users
 (
 	id int primary key identity(1,1),
-	fbId varchar(100) unique
+	fbId varchar(100) unique,
+	email varchar(50),
 );
 
 create table Elections
@@ -43,11 +44,13 @@ create table ElectionVoters
 
 create table ElectionVotes
 (
+	id  int primary key identity(1,1),
 	electId int foreign key references Elections(id),
 	userId int foreign key references Users(id),
-	votedBallot tinyint,
-	decodedSequence varchar(1024),
-	encodedSequence varchar(1024),
+	auditBallot tinyint,
+	auditSequence varchar(256),
+	encoded1 varchar(1024),
+	encoded2 varchar(1024),
 	answerId int
 );
 
@@ -67,10 +70,13 @@ create table UserGroups
 
 drop table TempTrustees
 drop table ElectionVoters
+drop table ElectionVotes
 drop table ElectionAnswers
 drop table ElectionTrustees
 drop table Elections
+drop table UserGroups
 drop table Users
+
 
 insert into Users(fbId) values ('123')
 
@@ -88,7 +94,8 @@ where id = 2
 
 select * from ElectionTrustees
 
-select * from ElectionVotes
+select * from ElectionVotes 
+where id = '3'
 
 select publicKey 
 from ElectionTrustees 
@@ -96,3 +103,5 @@ where electId = 3
 
 alter table Elections
 add publicKey varchar(max)
+
+delete from ElectionVotes

@@ -26,7 +26,20 @@
 					</ui:repeat>
 				</ul>
 			</div>
-			
+
+			<h:panelGroup rendered="#{vote.showDecoded1 or vote.showDecoded2}">
+				<div class="algnRight margRight">
+					<h:outputText value="hash1: #{vote.hash1}"></h:outputText>
+					<br />
+					<h:outputText value="hash2: #{vote.hash2}"></h:outputText>
+					<br />
+					<h:outputText value="selected audit ballot:"></h:outputText>
+					<br />
+					<h:outputText
+						value="#{vote.selectedDecodedList} - #{vote.selectedDecodedList==1?vote.decoded1:vote.decoded2}" />
+				</div>
+			</h:panelGroup>
+
 			<h:panelGroup rendered="#{vote.showShuffle}">	
 				<div class="algnCenter">				
 					<table >
@@ -52,14 +65,15 @@
 						
 			<h:panelGroup rendered="#{vote.showDecode}">
 				<div class="algnCenter">
-					<p:graphicImage value="#{vote.encoded1}" styleClass="algnLeft-marginTop"></p:graphicImage>
-					<p:graphicImage value="#{vote.encoded2}" styleClass="algnRight-marginTop"></p:graphicImage>
+					<p:graphicImage value="#{vote.barcode1}" styleClass="algnLeft-marginTop"></p:graphicImage>
+					<p:graphicImage value="#{vote.barcode2}" styleClass="algnRight-marginTop"></p:graphicImage>
 				</div>
 			</h:panelGroup>
 					
-			<h:panelGroup rendered="#{vote.showDecoded1}" styleClass="margin1">
+				
+			<h:panelGroup rendered="#{vote.showDecoded2}" styleClass="margin1">
 				<div class="algnCenter">
-					<h:outputText>You select first ballot for decode:</h:outputText>
+					<ui:remove><h:outputText>You select first ballot for decode:</h:outputText></ui:remove>
 					<ul>
 						<ui:repeat var="id" value="#{vote.a1}">
 							<li> <h:outputText value="#{id}"></h:outputText> </li>
@@ -67,10 +81,9 @@
 					</ul>
 				</div>
 			</h:panelGroup>	
-			
-			<h:panelGroup rendered="#{vote.showDecoded2}" styleClass="margin1">
+			<h:panelGroup rendered="#{vote.showDecoded1}" styleClass="margin1">
 				<div class="algnCenter">
-					<h:outputText>You select second ballot for decode:</h:outputText>
+					<ui:remove><h:outputText>You select second ballot for decode:</h:outputText></ui:remove>
 					<ul>
 						<ui:repeat var="id" value="#{vote.a2}">
 							<li> <h:outputText value="#{id}"></h:outputText> </li>
@@ -78,16 +91,16 @@
 					</ul>
 				</div>
 			</h:panelGroup>		
-
+					
 		</div>
 				
 		<h:panelGroup rendered="#{vote.showDecode}" styleClass="margin1">
-			<h:outputText> Select list to decode for checking: </h:outputText> 
+			<h:outputText> Select auditing ballot: </h:outputText> 
 			<h:selectOneMenu id="selectList" value="#{vote.selectedDecodedList}" style="margin: 10px;">
 				<f:selectItem itemLabel="1" itemValue="1"></f:selectItem>
 				<f:selectItem itemLabel="2" itemValue="2"></f:selectItem>
 			</h:selectOneMenu>
-			<h:commandButton value="decode">
+			<h:commandButton value="next">
 				<f:ajax event="click" listener="#{vote.decode}" render="voteForm" execute="selectList"></f:ajax>
 			</h:commandButton>
 		</h:panelGroup>

@@ -51,6 +51,12 @@
         <managed-bean-class>com.rau.evoting.beans.Vote</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>receipt</managed-bean-name>
+        <managed-bean-class>com.rau.evoting.beans.Receipt</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
       
     <managed-bean>
         <managed-bean-name>send</managed-bean-name>

@@ -6,7 +6,7 @@ import java.util.List;
 public class StringHelper {
 
 	public static String convertIntArrayToString(int[] array) {
-		String delimiter = "|";
+		String delimiter = ".";
 
 		StringBuilder stringBuilder = new StringBuilder();
 		if (array.length > 0) {
@@ -21,7 +21,7 @@ public class StringHelper {
 
 	public static String converInttListToString(List<Integer> list) {
 
-		String delimiter = "|";
+		String delimiter = ".";
 
 		StringBuilder stringBuilder = new StringBuilder();
 		if (!list.isEmpty()) {
@@ -37,7 +37,7 @@ public class StringHelper {
 	public static List<Integer> converStringToInttList(String s) {
 
 		List<Integer> list = new ArrayList<Integer>();
-		String delimiter = "|";
+		String delimiter = ".";
 
 		String[] res = s.split(delimiter);
 		for (int i = 0; i < res.length; ++i) {
@@ -51,6 +51,11 @@ public class StringHelper {
 		}
 
 		return list;
+	}
+	
+	public static String getSHA256hash(String s) {
+		String hash = org.apache.commons.codec.digest.DigestUtils.shaHex(s);
+		return hash;
 	}
 
 }

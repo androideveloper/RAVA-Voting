@@ -125,6 +125,7 @@ table.vote th, td {
 }
 
 .algnRight {
+	margin-top: 20px;
 	float: right; 
 	display:inline;	
 }

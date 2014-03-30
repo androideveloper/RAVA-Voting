@@ -78,12 +78,12 @@ public class Elections {
 			accessToken = FacebookService.getInstance().getAccessToken(code, "Elections.xhtml");
 			FacebookClient fbClient = new DefaultFacebookClient(accessToken);
 			User user = fbClient.fetchObject("me", User.class);
-			int userId = SqlDataProvider.getInstance().insertUser(user.getId());
+			int userId = SqlDataProvider.getInstance().insertUser(user.getId(), user.getEmail());
 			Map<String, Object> sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
-			sessionMap.put("accessToken", accessToken);
+			sessionMap.put("accessToken", accessToken); 
 			Connection<Group> gr = fbClient.fetchConnection("me/groups", Group.class);
 			List<Group> groups = gr.getData();
-			sessionMap.put("userGroups", groups); 
+			sessionMap.put("userGroups", groups);  
 			SqlDataProvider.getInstance().insertUserGroups(userId, groups); 
 			sessionMap.put("userId", userId);
 		}

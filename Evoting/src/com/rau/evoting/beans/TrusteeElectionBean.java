@@ -38,7 +38,7 @@ public class TrusteeElectionBean {
 		election = SqlDataProvider.getInstance().getElection(trustee.getElectId());
 		FacebookClient fbClient = new DefaultFacebookClient(accessToken);
 		User user = fbClient.fetchObject("me", User.class);
-		int userId = SqlDataProvider.getInstance().insertUser(user.getId());
+		int userId = SqlDataProvider.getInstance().insertUser(user.getId(), user.getEmail());
 		trustee.setEmail(user.getEmail());
 		trustee.setId(userId);
 		SqlDataProvider.getInstance().updateTrustee(tempTrId, trustee);

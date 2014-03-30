@@ -1,17 +1,24 @@
 package com.rau.evoting.beans;
 
 import java.io.Console;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.mail.MessagingException;
 
 import org.primefaces.model.StreamedContent;
 
+import com.rau.evoting.ElGamal.ElGamalHelper;
 import com.rau.evoting.data.SqlDataProvider;
 import com.rau.evoting.models.Answer;
 import com.rau.evoting.models.Election;
 import com.rau.evoting.utils.BarcodeHelper;
+import com.rau.evoting.utils.MailService;
+import com.rau.evoting.utils.StringHelper;
 import com.rau.evoting.utils.Util;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
@@ -24,8 +31,10 @@ public class Vote {
 	private ArrayList<Integer> a2;
 	private boolean showEncode;
 	private boolean showShuffle;
-	private StreamedContent encoded1;
-	private StreamedContent encoded2;
+	private String encoded1;
+	private String encoded2;
+	private StreamedContent barcode1;
+	private StreamedContent barcode2;
 	private int selectedDecodedList;
 	private boolean showDecode;
 	private boolean showDecoded1;
@@ -33,7 +42,13 @@ public class Vote {
 	private int selectedVote;
 	private int elId;
 	private int userId;
+	private String decoded1;
+	private String decoded2;
+	private String hash1;
+	private String hash2;
+	private int receiptId;
 		
+	private Election election;
 	private String publicKey;
 	
 	public Vote() {
@@ -51,6 +66,8 @@ public class Vote {
 		showDecoded1 = false;
 		showDecoded2 = false;
 		selectedVote = 1;
+		barcode1 = null;
+		barcode2 = null;
 		encoded1 = null;
 		encoded2 = null;
 		a1 = new ArrayList<Integer>();
@@ -59,11 +76,67 @@ public class Vote {
 			a1.add(ans.getId());
 			a2.add(ans.getId());
 		}
-		publicKey = SqlDataProvider.getInstance().getElection(elId).getPublicKey();
-		//System.out.print("public_key: " + el.getPublicKey());
+		election = SqlDataProvider.getInstance().getElection(elId);
+		publicKey = election.getPublicKey();
+		
 		return "Vote";
 	}
 	
+	public void shuffle(AjaxBehaviorEvent event) {
+		Util.shuffle(a1);
+		Util.shuffle(a2);
+		showEncode = true;
+	}
+	
+	public void encode(AjaxBehaviorEvent event) {
+		showShuffle = false;
+		//barcode1 = BarcodeHelper.getEncodedBarcodeFromIntList(a1, publicKey);    
+		//barcode2 = BarcodeHelper.getEncodedBarcodeFromIntList(a2, publicKey);
+		decoded1 = StringHelper.converInttListToString(a1);
+		ElGamalHelper e1 = new ElGamalHelper(publicKey);
+		encoded1 = e1.oldEncode(decoded1);
+		System.out.println("enc + dec: " + encoded1 + " " + decoded1);
+		barcode1 = BarcodeHelper.getBarcodeFromString(encoded1);
+		decoded2 = StringHelper.converInttListToString(a2);
+		ElGamalHelper e2 = new ElGamalHelper(publicKey);
+		encoded2 = e2.oldEncode(decoded2);
+		System.out.println("enc + dec2: " + encoded2 + " " + decoded2);
+		barcode2 = BarcodeHelper.getBarcodeFromString(encoded2);
+		showEncode = false;
+		showDecode = true;
+	}
+	
+	public void decode(AjaxBehaviorEvent event) {
+		showDecode = false;
+		hash1 = StringHelper.getSHA256hash(encoded1);
+		hash2 = StringHelper.getSHA256hash(encoded2);
+		if(selectedDecodedList == 1){
+			showDecoded1 = true;
+			//make decode logic
+		} else {
+			showDecoded2 = true;
+			//make decode logic
+		}
+	}
+	
+	public String vote() {
+		// vote
+		receiptId = SqlDataProvider.getInstance().setElectionVote(elId, userId,selectedDecodedList, (selectedDecodedList==1?decoded1:decoded2), encoded1,encoded2, selectedVote);
+		String message = "  Reciept Id: " + receiptId + "\n " +
+				" hash1: " + hash1 + "\n " +
+				" hash2: " + hash2 + "\n " +
+				" selected audit ballot: " + selectedDecodedList + " - " + (selectedDecodedList==1?decoded1:decoded2) + "\n " +
+				" your choice: " + selectedVote;
+		String subject = "Receipt for " + election.getName() + " election";
+		com.rau.evoting.models.User user = SqlDataProvider.getInstance().getUser(userId);
+		try {
+			MailService.sendMessage(user.getEmail(), subject, message);
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "AfterVote?faces-redirect=true";
+	}
 	
 	public ArrayList<Answer> getAnswers() {
 		return answers;
@@ -105,20 +178,20 @@ public class Vote {
 		this.showShuffle = showShuffle;
 	}
 
-	public StreamedContent getEncoded1() {
-		return encoded1;
+	public StreamedContent getBarcode1() {
+		return barcode1;
 	}
 
-	public void setEncoded1(StreamedContent encoded1) {
-		this.encoded1 = encoded1;
+	public void setBarcode1(StreamedContent encoded1) {
+		this.barcode1 = encoded1;
 	}
 
-	public StreamedContent getEncoded2() {
-		return encoded2;
+	public StreamedContent getBarcode2() {
+		return barcode2;
 	}
 
-	public void setEncoded2(StreamedContent encoded2) {
-		this.encoded2 = encoded2;
+	public void setBarcode2(StreamedContent encoded2) {
+		this.barcode2 = encoded2;
 	}
 	
 	public int getSelectedDecodedList() {
@@ -160,37 +233,45 @@ public class Vote {
 	public void setSelectedVote(int selectedVote) {
 		this.selectedVote = selectedVote;
 	}
+	
+	public String getHash1() {
+		return hash1;
+	}
 
-	public void shuffle(AjaxBehaviorEvent event) {
-		Util.shuffle(a1);
-		Util.shuffle(a2);
-		showEncode = true;
+	public void setHash1(String hash1) {
+		this.hash1 = hash1;
 	}
-	
-	public void encode(AjaxBehaviorEvent event) {
-		showShuffle = false;
-		System.out.print("public_key: " + publicKey);
-		encoded1 = BarcodeHelper.getEncodedBarcodeFromIntList(a1, publicKey);    
-		encoded2 = BarcodeHelper.getEncodedBarcodeFromIntList(a2, publicKey);
-		showEncode = false;
-		showDecode = true;
+
+	public String getHash2() {
+		return hash2;
 	}
-	
-	public void decode(AjaxBehaviorEvent event) {
-		showDecode = false;
-		if(selectedDecodedList == 1){
-			showDecoded1 = true;
-			//make decode logic
-		} else {
-			showDecoded2 = true;
-			//make decode logic
-		}
+
+	public void setHash2(String hash2) {
+		this.hash2 = hash2;
 	}
-	
-	public String vote() {
-		// vote
-		SqlDataProvider.getInstance().setElectionVotes(elId, userId,(selectedDecodedList == 1 ? 2: 1) , "", "", selectedVote);
-		return "Elections?faces-redirect=true";
+		
+	public String getDecoded1() {
+		return decoded1;
+	}
+
+	public void setDecoded1(String decoded1) {
+		this.decoded1 = decoded1;
+	}
+
+	public String getDecoded2() {
+		return decoded2;
+	}
+
+	public void setDecoded2(String decoded2) {
+		this.decoded2 = decoded2;
+	}
+
+	public int getReceiptId() {
+		return receiptId;
+	}
+
+	public void setReceiptId(int receiptId) {
+		this.receiptId = receiptId;
 	}
 
 }

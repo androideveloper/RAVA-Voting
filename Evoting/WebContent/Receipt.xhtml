@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<head>
+<link rel="stylesheet" type="text/css" href="style/evoting.css"	media="all" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Insert title here</title>
+</head>
+<body>
+	<h:form id="receiptForm">
+		<ui:insert name="header">
+			<ui:include src="/template/CommonHeader.xhtml"></ui:include>
+		</ui:insert>
+		<h:outputText value="Receipt Id: "></h:outputText>
+		<h:inputText id="receiptId" value="#{receipt.id}"></h:inputText>
+		<h:commandButton value="Ok">
+			<f:ajax event="click" listener="#{receipt.setBallot}" render="receiptForm" execute="receiptId"></f:ajax>
+		</h:commandButton>
+		
+		<h:panelGroup rendered="#{receipt.showReceipt}">
+			<div style="text-align: center;">
+				<p> Receipt ID: #{receipt.vote.id} </p>
+				<p> Hash1: #{receipt.hash1}</p>
+				<p> Hash2: #{receipt.hash2}</p>
+				<p> Audit ballot: #{receipt.vote.auditBallot} - #{receipt.vote.auditSequence}</p>
+				<p> Your choice: #{receipt.vote.answerId}</p>
+			</div>
+		</h:panelGroup>
+	</h:form>
+</body>
+</html>

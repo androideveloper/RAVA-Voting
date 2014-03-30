@@ -69,7 +69,32 @@ public class MailService {
 		transport.sendMessage(mimeMessage,
 				mimeMessage.getRecipients(Message.RecipientType.TO));
 		transport.close();
+	}
+	
+	public static void sendHtmlMessage(String recipient, String subject,
+			String message) throws MessagingException {
 
+		if (mailService == null) {
+			mailService = new MailService();
+		}
+
+		MimeMessage mimeMessage = new MimeMessage(mailSession);
+
+		mimeMessage.setFrom(new InternetAddress(FROM));
+		mimeMessage.setSender(new InternetAddress(FROM));
+		mimeMessage.setSubject(subject);
+		mimeMessage.setContent(message, "text/html");
+
+		mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
+
+		Transport transport = mailSession.getTransport("smtps");
+		transport.connect(HOST, PORT, USER, PASSWORD);
+		
+		transport.addTransportListener(new MyTransportListener());
+
+		transport.sendMessage(mimeMessage,
+				mimeMessage.getRecipients(Message.RecipientType.TO));
+		transport.close();
 	}
 	
 	public static void sendMessageWithFile(String recipient, String subject,

@@ -5,33 +5,9 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import com.rau.evoting.models.Answer;
-import com.rau.evoting.models.Candidate;
-
 
 public class Util {
 
-	/*
-	 * public static void shuffle(ArrayList<Candidate> l){ int size = l.size() ;
-	 * Random r = new Random(); int x, y; Candidate one, two; for (int i = 0; i
-	 * < 100; ++i) { x = r.nextInt(size); y = r.nextInt(size); one = l.get(x);
-	 * two = l.get(y); l.set(x, two); l.set(y, one); } }
-	 */
-
-	public static void shuffle1(ArrayList<Answer> l) {
-		int size = l.size();
-		Random r = new Random();
-		int x, y;
-		Answer one, two;
-		for (int i = 0; i < 100; ++i) {
-			x = r.nextInt(size);
-			y = r.nextInt(size);
-			one = l.get(x);
-			two = l.get(y);
-			l.set(x, two);
-			l.set(y, one);
-		}
-	}
-	
 	public static <E> void shuffle(ArrayList<E> l) {
 		int size = l.size();
 		Random r = new Random();

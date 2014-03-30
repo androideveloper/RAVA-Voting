@@ -19,7 +19,7 @@ public class LoginValidator implements Validator {
 		UIInput passwordInput = (UIInput)component.getAttributes().get("passwordComponent");
 		String password = (String) passwordInput.getSubmittedValue();
 		
-		SqlDataProvider dataprovider = SqlDataProvider.getInstance(); 
+		/*SqlDataProvider dataprovider = SqlDataProvider.getInstance(); 
 		User user = dataprovider.getUser(username);
 		if(user == null){
 			throw new ValidatorException(new FacesMessage("no such user"));
@@ -28,7 +28,7 @@ public class LoginValidator implements Validator {
 		if (!user.getPassword().equals(password)) {
 			throw new ValidatorException(new FacesMessage(
 					"incorrect password"));
-		}
+		}*/
 		
 		return ;
 	}
