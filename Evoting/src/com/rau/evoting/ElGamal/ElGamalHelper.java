@@ -1,6 +1,7 @@
 package com.rau.evoting.ElGamal;
 
 import java.math.BigInteger;
+import java.nio.charset.Charset;
 import java.util.List;
 
 import org.bouncycastle.crypto.engines.ElGamalEngine;
@@ -17,6 +18,8 @@ public class ElGamalHelper {
 	private ElGamalPublicKeyParameters pubKeyParams;
 	private ElGamalEngine engine;
 	private BigInteger r = null;
+	private Charset charset = Charset.forName("ISO-8859-1");
+	
 	
 	public ElGamalHelper() {
 		
@@ -27,7 +30,7 @@ public class ElGamalHelper {
 				RandomHelper.randomNonZeroBigInteger(params.getP().subtract(
 						new BigInteger("1"))), params);
 		pubKeyParams = new ElGamalPublicKeyParameters(params.getG().modPow(
-				prKeyParams.getX(), params.getP()), params);
+				prKeyParams.getX(), params.getP()), params); 
 		engine = new ElGamalEngine();
 	}
 	
@@ -41,36 +44,36 @@ public class ElGamalHelper {
 
 	public String oldEncode(String text) {
 		engine.init(true, pubKeyParams);
-		byte[] in = text.getBytes();
+		byte[] in = text.getBytes(charset);
 		byte[] b = engine.processBlock(in, 0, in.length);
-		String encoded = new String(b);
+		String encoded = new String(b, charset);
 		return encoded;
 	}
 
 	public String oldDecode(String codedText) {
-		byte[] in = codedText.getBytes(); 
+		byte[] in = codedText.getBytes(charset); 
 		engine.init(false, prKeyParams);
 		byte[] b = engine.processBlock(in, 0, in.length);
-		String decoded = new String(b);
+		String decoded = new String(b, charset);
 		return decoded;
 	}
 	
 	public String newEncode(String text) {
 		EncryptEngine eng = new EncryptEngine();
 		eng.initForEncrypt(pubKeyParams);
-		byte[] in = text.getBytes();
+		byte[] in = text.getBytes(charset);
 		byte[] b = eng.encode(in, 0, in.length);
 		r = eng.getR();
-		String encoded = new String(b);
+		String encoded = new String(b, charset);
 		return encoded;
 	}
 
 	public String newDecode(String codedText) {
 		DecryptEngine eng = new DecryptEngine();
-		byte[] in = codedText.getBytes(); 
+		byte[] in = codedText.getBytes(charset); 
 		eng.initForDecrypt(prKeyParams);
 		byte[] b = eng.decode(in, 0, in.length);
-		String decoded = new String(b);
+		String decoded = new String(b, charset);
 		return decoded;
 	}
 
@@ -102,14 +105,6 @@ public class ElGamalHelper {
 	public String getPublicKey() {
 		return pubKeyParams.getY().toString();
 	}
-
-/*	public String getP() {
-		return params.getP().toString();
-	}
-
-	public String getG() {
-		return params.getG().toString();
-	}*/
 
 	public ElGamalPublicKeyParameters getPubKeyParams() {
 		return pubKeyParams;
