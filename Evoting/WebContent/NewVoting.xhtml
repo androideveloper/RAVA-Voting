@@ -12,6 +12,9 @@
 </head>
 <body>
 	<h:form>
+		<ui:insert name="header">
+			<ui:include src="/template/CommonHeader.xhtml"></ui:include>
+		</ui:insert>
 		<div id="head">
 			<h1>Create new election</h1>
 		</div>
@@ -32,7 +35,7 @@
 			</tbody>
 		</table>
 		<h:commandButton value="next" action="#{election.createElection(newVoting.name, newVoting.description)}" styleClass="margin1"></h:commandButton>
-		<h:commandButton value="cancel" action="Elections" immediate="true"></h:commandButton>
+		<h:commandButton value="cancel" action="Home" immediate="true"></h:commandButton>
 	</h:form>
 </body>
 </html>

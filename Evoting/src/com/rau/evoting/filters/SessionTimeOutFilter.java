@@ -17,7 +17,7 @@ import com.sun.xml.internal.ws.util.StringUtils;
 
 public class SessionTimeOutFilter implements Filter {
 
-	private String timeOutPage = "Home.xhtml";
+	private String timeOutPage = "Login.xhtml";
 	private ArrayList<String> trusteeHomeUrls;
 	
 	@Override
@@ -39,10 +39,10 @@ public class SessionTimeOutFilter implements Filter {
 			timeOutPage = "TrusteeHome.xhtml";
 		}
 		else {
-			timeOutPage = "Home.xhtml";
+			timeOutPage = "Login.xhtml";
 		}
 		
-		if(!req.getRequestURI().equals("/Evoting/Home.xhtml") && !req.getRequestURI().equals("/Evoting/") && !req.getRequestURI().equals("/Evoting/TrusteeHome.xhtml")) {
+		if(!req.getRequestURI().equals("/Evoting/Login.xhtml") && !req.getRequestURI().equals("/Evoting/") && !req.getRequestURI().equals("/Evoting/TrusteeHome.xhtml")) {
 		
 			if(isSessionInvalid(req)) {
 				System.out.println("Session is invalid");

@@ -70,7 +70,7 @@ public class Elections {
 		this.accessToken = accessToken;
 	}
 
-	@PostConstruct
+/*	@PostConstruct
 	public void init() {
 		if(!FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("accessToken")) {
 			HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -88,7 +88,7 @@ public class Elections {
 			sessionMap.put("userId", userId);
 		}
 		// load groups not depending on if
-	}
+	}*/
 			
 	public String election(int id) {
 		return "election";

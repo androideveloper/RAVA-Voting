@@ -1,84 +1,92 @@
 package com.rau.evoting.beans;
 
-import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
+import javax.annotation.PostConstruct;
+import javax.faces.application.Application;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
+import javax.faces.el.MethodBinding;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 
 import com.rau.evoting.data.SqlDataProvider;
-import com.rau.evoting.models.User;
+import com.rau.evoting.models.Election;
+import com.rau.evoting.utils.FacebookService;
+import com.restfb.Connection;
+import com.restfb.DefaultFacebookClient;
+import com.restfb.FacebookClient;
+import com.restfb.types.Group;
+import com.restfb.types.User;
 
+/**
+ * @author Aram
+ *
+ */
 public class Home {
-	private String appId = "515272745187738";
-	private String appSecret = "e37f4bd94fc533c364ad291a2ecbba09";
-	private String username;
-	private String password;
-		
-	public Home(){
+	/*private String accessToken;
+	
+	public Home() {
 	}
 	
-	public String getUsername() {
-		return username;
+	public String getAccessToken() {
+		return accessToken;
 	}
-	public void setUsername(String username) {
-		this.username = username;
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
 	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
-	public String login(){
-		return "login";
-	}
-	
-	public void fbLogin(ActionEvent event) {
-		String fUrl = "https://www.facebook.com/dialog/oauth?"
-			      + "client_id=" + appId + "&"
-			      + "redirect_uri=" + "http://localhost:8080/Evoting/Elections.xhtml" +"&"  
-			      + "scope=publish_stream,user_groups,status_update&"
-			      + "response_type=code";
-		
-		HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-		
-		try {
-			response.sendRedirect(fUrl);
-			System.out.println(fUrl);
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.out.println("Error while login");
+
+	@PostConstruct
+	public void init() {
+		System.out.println("home init");
+		if(!FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("accessToken")) {
+			HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+			String code = req.getParameter("code");
+			accessToken = FacebookService.getInstance().getAccessToken(code, "Elections.xhtml");
+			FacebookClient fbClient = new DefaultFacebookClient(accessToken);
+			User user = fbClient.fetchObject("me", User.class);
+			int userId = SqlDataProvider.getInstance().insertUser(user.getId(), user.getEmail());
+			Map<String, Object> sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
+			sessionMap.put("accessToken", accessToken); 
+			Connection<Group> gr = fbClient.fetchConnection("me/groups", Group.class);
+			List<Group> groups = gr.getData();
+			sessionMap.put("userGroups", groups);  
+			SqlDataProvider.getInstance().insertUserGroups(userId, groups); 
+			sessionMap.put("userId", userId);
 		}
-	}
+		// load groups not depending on if
+	}*/
 	
-	public void fbLogout(ActionEvent event) {
-		FacesContext context = FacesContext.getCurrentInstance();
-		//Elections electionsBean = (Elections) context.getApplication().evaluateExpressionGet(context, "#{elections}", Elections.class);
-		String accessToken = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("accessToken");
-		String fUrl = "https://www.facebook.com/logout.php?next=http://localhost:8080/Evoting/Home.xhtml&access_token=" + accessToken;
-		
-		HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
-		HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
-		if(request.getSession(false) != null) {
-			request.getSession(false).invalidate(); 
+	public void getAccessToken() {
+		System.out.println("home init");
+		if(!FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("accessToken")) {
+			HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+			String code = req.getParameter("code");
+			String accessToken = FacebookService.getInstance().getAccessToken(code, "Home.xhtml");
+			FacebookClient fbClient = new DefaultFacebookClient(accessToken);
+			User user = fbClient.fetchObject("me", User.class);
+			int userId = SqlDataProvider.getInstance().insertUser(user.getId(), user.getEmail());
+			Map<String, Object> sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
+			sessionMap.put("accessToken", accessToken); 
+			Connection<Group> gr = fbClient.fetchConnection("me/groups", Group.class);
+			List<Group> groups = gr.getData();
+			sessionMap.put("userGroups", groups);  
+			SqlDataProvider.getInstance().insertUserGroups(userId, groups); 
+			sessionMap.put("userId", userId);
 		}
-		
-		try {
-			context.getExternalContext().redirect(fUrl);
-			System.out.println(fUrl);
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.out.println("Error");
-		}
+		return;
 	}
-	
-	public String logout() throws IOException {
-		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-		FacesContext.getCurrentInstance().getExternalContext().redirect("Home.xhtml");
-		return "";
-	}
-	
+			
 }

@@ -16,11 +16,12 @@
 			<ui:include src="/template/CommonHeader.xhtml"></ui:include>
 		</ui:insert>
 		
+		<ui:remove>
 		<h:commandButton id="createElection" value="create election" action="create"></h:commandButton>
 		<h:commandButton id="userElections" value="my elections" action="UserElections"></h:commandButton>
 		<h:commandButton id="receipts" value="receipts" action="Receipt"></h:commandButton>
+		</ui:remove>
 		<p> </p>
-		
 		<ui:repeat var="el" value="#{elections.els}">
 			<div class="highlight-box-margin">
 				<ui:remove>

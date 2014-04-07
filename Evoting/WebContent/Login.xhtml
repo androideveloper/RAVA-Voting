@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
 <head>
+<link rel="stylesheet" type="text/css" href="style/evoting.css"  media="all" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>RAVA Voting</title>
 </head>
 <body>
-	<h:form id="form">
-		Username: <br />
-		<h:inputText id="username" value="#{home.username}" required="true">
-			<f:validator validatorId="loginValidator"></f:validator>
-			<f:attribute name="passwordComponent" value="#{passwordComponent}"></f:attribute>
-		</h:inputText>
-
-		<br />
-		Password: <br />
-		<h:inputSecret id="password" binding="#{passwordComponent}"
-			value="#{home.password}" required="true"></h:inputSecret>
-		<h:message for="password" style="color: red;"></h:message>
-		<br />
-		<h:message for="username" style="color: red;"></h:message>
-		<br />
-		<h:commandButton value="login" id="login" action="#{home.login}"></h:commandButton>
+	<h:form>
+		<div id="head" class="center">
+			<h:commandButton image="/images/RAVA.png" styleClass="logo"></h:commandButton>
+		</div>
+		<div class="center">
+			<p class="header">We offer truly verifiable online elections</p>
+			<div>
+			We believe in democracy and we think verifiable elections are its cornerstone. <br/>
+			We believe democracy is important at every level, whether it’s your book club, <br/>
+			parent-teacher association, student government, workers’ union, or state.  
+			</div>
+			<p> </p>
+			
+			<h:commandLink actionListener="#{login.fbLogin}">Please login to create an election or vote in a featured election</h:commandLink>
+		</div>
 	</h:form>
 </body>
 </html>

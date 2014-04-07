@@ -241,8 +241,15 @@ public class SqlDataProvider {
 		try {
 			con = getConnection();
 
-			String sql = "select * from Elections where openState = 1 and not exists( select * from ElectionVoters where electId = id) ";
-			sql += "union all select e.* from Elections as e join ElectionVoters as v on(e.id = v.electId) join UserGroups as u on(u.userId = ? and u.groupId = v.voterId) where v.voterType = 0 and openState = 1 ";
+			String sql = "select * from Elections as e" +
+					" where openState = 1 " + 
+						" and not exists(select * from ElectionVoters where electId = e.id) " +
+						" and not exists(select * from ElectionVotes where electId = e.id)" +
+				" union all select e.* from Elections as e " + 
+					" join ElectionVoters as v on(e.id = v.electId) " + 
+					" join UserGroups as u on(u.userId = ? and u.groupId = v.voterId) " + 
+					" where v.voterType = 0 and openState = 1 " +
+						" and not exists(select * from ElectionVotes where electId = e.id)";
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setInt(1, userId);
 			ResultSet rs = statement.executeQuery();

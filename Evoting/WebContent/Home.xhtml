@@ -10,34 +10,25 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>RAVA Voting</title>
 </head>
+<f:event listener="#{home.getAccessToken}" type="preRenderView"></f:event>
 <body>
 	<h:form>
-		<ui:remove>
-		<div id="head" class="center">
-			<h2 class="RAVA">RAVA Voting</h2>
-		</div>
-		</ui:remove>
-		<div id="head" class="center">
-			<h:commandButton image="/images/RAVA.png" styleClass="logo"></h:commandButton>
-		</div>
-		<div class="content" style="text-align: center;">
-			<p class="header">We offer truly verifiable online elections</p>
-			<div>
-			We believe in democracy and we think verifiable elections are its cornerstone. <br/>
-			We believe democracy is important at every level, whether it’s your book club, <br/>
-			parent-teacher association, student government, workers’ union, or state.  
-			</div>
-			<p> </p>
-			<ui:remove>
+		<ui:insert name="header">
+			<ui:include src="/template/CommonHeader.xhtml"></ui:include>
+		</ui:insert>
+		<div class="margLeft" >
 			<div class="commandLinks">
-				<h:commandLink value="create election" action="create"></h:commandLink>
+			<h:commandButton value="create election"  action="create"/>
 			</div>
 			<div class="commandLinks">
-				<h:commandLink value=" vote in a featured election" action="Elections"></h:commandLink>
+			<h:commandButton value="my elections"  action="my"/>
 			</div>
-			</ui:remove>
-			
-			<h:commandLink actionListener="#{home.fbLogin}">Please login to create an election or vote in a featured election</h:commandLink>
+			<div class="commandLinks">
+			<h:commandButton value="vote in a election"  action="vote"/>
+			</div>
+			<div class="commandLinks">
+			<h:commandButton value="receipts"  action="receipts"/>
+			</div>
 		</div>
 	</h:form>
 </body>

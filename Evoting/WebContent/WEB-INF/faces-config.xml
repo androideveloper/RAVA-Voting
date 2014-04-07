@@ -17,6 +17,12 @@
     </validator>
     
     <managed-bean>
+        <managed-bean-name>login</managed-bean-name>
+        <managed-bean-class>com.rau.evoting.beans.Login</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+     <managed-bean>
         <managed-bean-name>home</managed-bean-name>
         <managed-bean-class>com.rau.evoting.beans.Home</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
@@ -94,32 +100,23 @@
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
     
-    
     <navigation-rule>
-		<from-view-id>/Login.xhtml</from-view-id>
-	 	<navigation-case>
-    		<from-outcome>login</from-outcome>
-    		<to-view-id>/Elections.xhtml</to-view-id>
-    	</navigation-case>
-    	<navigation-case>
-    		<from-outcome>create</from-outcome>
-    		<to-view-id>/NewVoting.xhtml</to-view-id>
-    	</navigation-case>
-	</navigation-rule>
-
-    <navigation-rule>
-		<from-view-id>/Elections.xhtml</from-view-id>
-    	<navigation-case>
-    	    <from-outcome>choose</from-outcome>
-    	    <to-view-id>/ChooseType.xhtml</to-view-id>
-    	</navigation-case>
-    	<navigation-case>
-    	    <from-outcome>send</from-outcome>
-    	    <to-view-id>/SendEmail.xhtml</to-view-id>
-    	</navigation-case>
-    	<navigation-case>
+		<from-view-id>/Home.xhtml</from-view-id>
+		 <navigation-case>
     	    <from-outcome>create</from-outcome> 
     	    <to-view-id>/NewVoting.xhtml</to-view-id>
+    	</navigation-case>
+    	<navigation-case>
+    	    <from-outcome>my</from-outcome>
+    	    <to-view-id>/UserElections.xhtml</to-view-id>
+    	</navigation-case>
+    	<navigation-case>
+    	    <from-outcome>vote</from-outcome>
+    	    <to-view-id>/Elections.xhtml</to-view-id>
+    	</navigation-case>
+    	<navigation-case>
+    	    <from-outcome>receipts</from-outcome> 
+    	    <to-view-id>/Receipt.xhtml</to-view-id>
     	</navigation-case>
 	</navigation-rule>
 	
@@ -130,15 +127,7 @@
     		<to-view-id>/OpenElection.xhtml</to-view-id>
     	</navigation-case>
 	</navigation-rule>    
-	
-    <navigation-rule>
-		<from-view-id>/Home.xhtml</from-view-id>
-	 	<navigation-case>
-    		<from-outcome>login</from-outcome>
-    		<to-view-id>/Login.xhtml</to-view-id>
-    	</navigation-case>
-	</navigation-rule>  
-	
+		
     <navigation-rule>
 		<from-view-id>/OpenElection.xhtml</from-view-id>
 	 	<navigation-case>
