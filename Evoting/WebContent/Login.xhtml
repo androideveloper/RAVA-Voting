@@ -1,31 +1,124 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html class="no-js" lang="en" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:c="http://java.sun.com/jsp/jstl/core">
 <head>
-<link rel="stylesheet" type="text/css" href="style/evoting.css"  media="all" />
+<link rel="stylesheet" type="text/css" href="style/evoting.css"
+	media="all" />
+<link rel="stylesheet" href="style/foundation.css" />
+<link rel="stylesheet" href="style/foundation-tweaks.css" />
+<script src="scripts/vendor/modernizr.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>RAVA Voting</title>
+
 </head>
+
 <body>
 	<h:form>
-		<div id="head" class="center">
-			<h:commandButton image="/images/RAVA.png" styleClass="logo"></h:commandButton>
-		</div>
-		<div class="center">
-			<p class="header">We offer truly verifiable online elections</p>
-			<div>
-			We believe in democracy and we think verifiable elections are its cornerstone. <br/>
-			We believe democracy is important at every level, whether it’s your book club, <br/>
-			parent-teacher association, student government, workers’ union, or state.  
+		<div class="wrapper">
+			<nav class="top-bar">
+			<ul class="title-area">
+				<!-- Title Area -->
+				<li class="name">
+					<h1>
+						<a href="/Evoting"><img src="/Evoting/images/rava_tiny.png" /></a>
+					</h1>
+				</li>
+				<li class="toggle-topbar menu-icon"><a href="#"><span>menu</span></a></li>
+			</ul>
+
+			<section class="top-bar-section"> <!-- Right Nav Section -->
+			<ul class="right">
+
+
+			</ul>
+
+			<ul>
+				<li><a href="/Evoting">Rava Voting</a></li>
+
+				<li class="divider"></li>
+				<li><a>About</a></li>
+				<li class="divider"></li>
+				<li><a target="_new"
+					href="https://github.com/androideveloper/RAVA-Voting">Code</a></li>
+				<li class="divider"></li>
+				<li><a>Docs</a></li>
+				<li class="divider"></li>
+				<li><a>FAQ</a></li>
+				<li class="divider"></li>
+				<li><a>Privacy</a></li>
+
+				<li class="divider"></li>
+				<li><a href="mailto:rava.voting@gmail.com">Help!</a></li>
+			</ul>
+			</section> </nav>
+
+
+			<!-- Main Page Content and Sidebar -->
+
+			<div class="row" id="contentbody">
+
+
+				<div class="row">
+					<div class="large-5 columns large-centered">
+						<a href="/Evoting"><img border="0" height="500" width="474"
+							src="/Evoting/images/rava_logo.png" /></a>
+					</div>
+				</div>
+				<div class="row">&nbsp;</div>
+				<div class="large-9 columns">
+
+					<p>
+						RAVA offers <b>truly verifiable online elections</b>.
+					</p>
+
+					<p>
+						We believe in democracy and we think verifiable elections are its
+						cornerstone. <br /> We believe democracy is important at every
+						level, whether it’s your book club, <br /> parent-teacher
+						association, student government, workers’ union, or state.
+					</p>
+
+
+				</div>
+
+				<div class="large-3 columns" id="mystuff">
+					<div class="row">&nbsp;</div>
+					<div class="panel row">
+
+
+						<h5>Log In to Start Voting</h5>
+
+
+
+						<p>
+							<h:commandLink actionListener="#{login.fbLogin}"
+								style="font-size: 1.4em;">
+								<img border="0" height="35" src="/Evoting/images/facebook.png"
+									alt="facebook" /> facebook
+							</h:commandLink>
+						</p>
+
+					</div>
+				</div>
+
+
+
 			</div>
-			<p> </p>
-			
-			<h:commandLink actionListener="#{login.fbLogin}">Please login to create an election or vote in a featured election</h:commandLink>
+
+			<div class="push"></div>
 		</div>
+
+
+		<div class="footer" id="footer">not logged in</div>
+
+		<script>
+			$(document).foundation();
+		</script>
 	</h:form>
 </body>
 </html>
