@@ -124,15 +124,19 @@ table.vote th, td {
 }
 
 .algnRight {
-	margin-top: 20px;
 	float: right; 
 	display:inline;	
 }
 
 .algnLeft {
-	margin-top: 20px; 
 	float: left; 
 	display:inline;
+}
+
+.algnRightMargin {
+	margin: 20px;
+	float: right; 
+	display:inline;	
 }
 
 .algnRight-marginTop {

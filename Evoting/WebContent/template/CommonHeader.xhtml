@@ -12,8 +12,9 @@
 	<ui:composition>
 		<div id="head" class="center">
 			<h:commandButton image="/images/RAVA.png" styleClass="logo"
-				action="Home.xhtml"></h:commandButton>
-			<h:commandButton styleClass="logout" value="log out" actionListener="#{login.fbLogout}"></h:commandButton>
+				action="Home" immediate="true"></h:commandButton>
+			<h:commandButton styleClass="logout" value="log out"
+				actionListener="#{login.fbLogout}" immediate="true"></h:commandButton>
 		</div>
 	</ui:composition>
 </body>
