@@ -50,6 +50,8 @@ public class Vote {
 		
 	private Election election;
 	private String publicKey;
+	private BigInteger r1;
+	private BigInteger r2;
 	
 	public Vote() {
 		userId = (int)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId");
@@ -90,18 +92,18 @@ public class Vote {
 	
 	public void encode(AjaxBehaviorEvent event) {
 		showShuffle = false;
-		//barcode1 = BarcodeHelper.getEncodedBarcodeFromIntList(a1, publicKey);    
-		//barcode2 = BarcodeHelper.getEncodedBarcodeFromIntList(a2, publicKey);
 		decoded1 = StringHelper.converInttListToString(a1);
 		ElGamalHelper e1 = new ElGamalHelper(publicKey);
-		encoded1 = e1.oldEncode(decoded1);
+		encoded1 = e1.newEncode(decoded1);
 		System.out.println("enc + dec: " + encoded1 + " " + decoded1);
 		barcode1 = BarcodeHelper.getBarcodeFromString(encoded1);
 		decoded2 = StringHelper.converInttListToString(a2);
+		r1 = e1.getR();
 		ElGamalHelper e2 = new ElGamalHelper(publicKey);
-		encoded2 = e2.oldEncode(decoded2);
+		encoded2 = e2.newEncode(decoded2);
 		System.out.println("enc + dec2: " + encoded2 + " " + decoded2);
 		barcode2 = BarcodeHelper.getBarcodeFromString(encoded2);
+		r2 = e2.getR();
 		showEncode = false;
 		showDecode = true;
 	}
@@ -122,6 +124,7 @@ public class Vote {
 	public String vote() {
 		// vote
 		receiptId = SqlDataProvider.getInstance().setElectionVote(elId, userId,selectedDecodedList, (selectedDecodedList==1?decoded1:decoded2), encoded1,encoded2, selectedVote);
+		
 		String message = "  Reciept Id: " + receiptId + "\n " +
 				" hash1: " + hash1 + "\n " +
 				" hash2: " + hash2 + "\n " +

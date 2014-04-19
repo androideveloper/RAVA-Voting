@@ -2,6 +2,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
+
 	<div class="wrapper">
 		<nav class="top-bar" data-topbar="true">
 			<ul class="title-area">
@@ -40,9 +41,9 @@
 				</ul>
 
 				<ul class="right">
-					<li class="has-form"><h:commandButton styleClass="button"
-							value="Log Out" actionListener="#{login.fbLogout}"></h:commandButton>
-					</li>
+					<li class="has-form"><h:commandButton immediate="true"
+							styleClass="button" value="Log Out"
+							actionListener="#{login.fbLogout}"></h:commandButton></li>
 
 				</ul>
 			</section>
@@ -58,6 +59,7 @@
 				</div>
 			</div>
 			<div class="row">&#160;</div>
+
 		</div>
 
 		<div class="push"></div>
