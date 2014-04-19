@@ -41,6 +41,7 @@ table.pretty th,td {
 	padding: 5px;
 	background: #ddd;
 	bottom: 0px;
+	position: fixed;
 }
 
 * {

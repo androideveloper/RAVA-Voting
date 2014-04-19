@@ -1,20 +1,65 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-<title>Insert title here</title>
-</head>
-<body>
-	<ui:composition>
-		<div id="head" class="center">
-			<h:commandButton image="/images/RAVA.png" styleClass="logo"
-				action="Home.xhtml"></h:commandButton>
-			<h:commandButton styleClass="logout" value="log out" actionListener="#{login.fbLogout}"></h:commandButton>
+	<div class="wrapper">
+		<nav class="top-bar" data-topbar="true">
+			<ul class="title-area">
+				<!-- Title Area -->
+				<li class="name">
+					<h1>
+						<a href="/Evoting/Home.xhtml"><img
+							src="/Evoting/images/rava_tiny.png" /></a>
+					</h1>
+				</li>
+				<li class="toggle-topbar menu-icon"><a href="#"><span>menu</span></a></li>
+			</ul>
+
+			<section class="top-bar-section">
+				<!-- Right Nav Section -->
+
+
+				<ul>
+					<li><a href="/Evoting/Home.xhtml">Rava Voting</a></li>
+
+					<li class="divider"></li>
+					<li><a>About</a></li>
+					<li class="divider"></li>
+					<li><a target="_new"
+						href="https://github.com/androideveloper/RAVA-Voting">Code</a></li>
+					<li class="divider"></li>
+					<li><a>Docs</a></li>
+					<li class="divider"></li>
+					<li><a>FAQ</a></li>
+					<li class="divider"></li>
+					<li><a>Privacy</a></li>
+
+					<li class="divider"></li>
+					<li><a href="mailto:rava.voting@gmail.com">Help!</a></li>
+
+				</ul>
+
+				<ul class="right">
+					<li class="has-form"><h:commandButton styleClass="button"
+							value="Log Out" actionListener="#{login.fbLogout}"></h:commandButton>
+					</li>
+
+				</ul>
+			</section>
+		</nav>
+
+		<div class="row" id="contentbody">
+
+
+			<div class="row">
+				<div class="large-5 columns large-centered">
+					<a href="/Evoting/Home.xhtml"><img border="0" height="500"
+						width="474" src="/Evoting/images/rava_logo.png" /></a>
+				</div>
+			</div>
+			<div class="row">&#160;</div>
 		</div>
-	</ui:composition>
-</body>
-</html>
+
+		<div class="push"></div>
+	</div>
+</ui:composition>

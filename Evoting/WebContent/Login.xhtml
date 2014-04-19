@@ -18,9 +18,9 @@
 </head>
 
 <body>
-	<h:form>
-		<div class="wrapper">
-			<nav class="top-bar">
+
+	<div class="wrapper">
+		<nav class="top-bar" data-topbar="true">
 			<ul class="title-area">
 				<!-- Title Area -->
 				<li class="name">
@@ -31,94 +31,102 @@
 				<li class="toggle-topbar menu-icon"><a href="#"><span>menu</span></a></li>
 			</ul>
 
-			<section class="top-bar-section"> <!-- Right Nav Section -->
-			<ul class="right">
+			<section class="top-bar-section">
+				<!-- Right Nav Section -->
+				<ul class="right">
 
 
-			</ul>
+				</ul>
 
-			<ul>
-				<li><a href="/Evoting">Rava Voting</a></li>
+				<ul>
+					<li><a href="/Evoting">Rava Voting</a></li>
 
-				<li class="divider"></li>
-				<li><a>About</a></li>
-				<li class="divider"></li>
-				<li><a target="_new"
-					href="https://github.com/androideveloper/RAVA-Voting">Code</a></li>
-				<li class="divider"></li>
-				<li><a>Docs</a></li>
-				<li class="divider"></li>
-				<li><a>FAQ</a></li>
-				<li class="divider"></li>
-				<li><a>Privacy</a></li>
+					<li class="divider"></li>
+					<li><a>About</a></li>
+					<li class="divider"></li>
+					<li><a target="_new"
+						href="https://github.com/androideveloper/RAVA-Voting">Code</a></li>
+					<li class="divider"></li>
+					<li><a>Docs</a></li>
+					<li class="divider"></li>
+					<li><a>FAQ</a></li>
+					<li class="divider"></li>
+					<li><a>Privacy</a></li>
 
-				<li class="divider"></li>
-				<li><a href="mailto:rava.voting@gmail.com">Help!</a></li>
-			</ul>
-			</section> </nav>
-
-
-			<!-- Main Page Content and Sidebar -->
-
-			<div class="row" id="contentbody">
+					<li class="divider"></li>
+					<li><a href="mailto:rava.voting@gmail.com">Help!</a></li>
+				</ul>
+			</section>
+		</nav>
 
 
-				<div class="row">
-					<div class="large-5 columns large-centered">
-						<a href="/Evoting"><img border="0" height="500" width="474"
-							src="/Evoting/images/rava_logo.png" /></a>
-					</div>
+		<!-- Main Page Content and Sidebar -->
+
+		<div class="row" id="contentbody">
+
+
+			<div class="row">
+				<div class="large-5 columns large-centered">
+					<a href="/Evoting"><img border="0" height="500" width="474"
+						src="/Evoting/images/rava_logo.png" /></a>
 				</div>
+			</div>
+			<div class="row">&nbsp;</div>
+			<div class="large-9 columns">
+
+				<p>
+					RAVA offers <b>truly verifiable online elections</b>.
+				</p>
+
+				<p>
+					We believe in democracy and we think verifiable elections are its
+					cornerstone. <br /> We believe democracy is important at every
+					level, whether it’s your book club, <br /> parent-teacher
+					association, student government, workers’ union, or state.
+				</p>
+
+
+			</div>
+
+			<div class="large-3 columns" id="mystuff">
 				<div class="row">&nbsp;</div>
-				<div class="large-9 columns">
+				<div class="panel row">
+
+
+					<h5>Log In to Start Voting</h5>
+
+
 
 					<p>
-						RAVA offers <b>truly verifiable online elections</b>.
-					</p>
-
-					<p>
-						We believe in democracy and we think verifiable elections are its
-						cornerstone. <br /> We believe democracy is important at every
-						level, whether it’s your book club, <br /> parent-teacher
-						association, student government, workers’ union, or state.
-					</p>
-
-
-				</div>
-
-				<div class="large-3 columns" id="mystuff">
-					<div class="row">&nbsp;</div>
-					<div class="panel row">
-
-
-						<h5>Log In to Start Voting</h5>
-
-
-
-						<p>
+						<h:form>
 							<h:commandLink actionListener="#{login.fbLogin}"
 								style="font-size: 1.4em;">
 								<img border="0" height="35" src="/Evoting/images/facebook.png"
 									alt="facebook" /> facebook
 							</h:commandLink>
-						</p>
+						</h:form>
+					</p>
 
-					</div>
 				</div>
-
-
-
 			</div>
 
-			<div class="push"></div>
+
+
 		</div>
 
+		<div class="push"></div>
+	</div>
 
-		<div class="footer" id="footer">not logged in</div>
 
-		<script>
-			$(document).foundation();
-		</script>
-	</h:form>
+	<div class="footer" id="footer">not logged in</div>
+
+	<script src="scripts/vendor/jquery.js"></script>
+	<script src="scripts/vendor/fastclick.js"></script>
+	<script src="scripts/foundation.min.js"></script>
+
+	<script>
+		$(document).foundation();
+	</script>
+
 </body>
 </html>

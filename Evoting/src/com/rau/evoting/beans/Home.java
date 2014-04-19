@@ -85,8 +85,15 @@ public class Home {
 			sessionMap.put("userGroups", groups);  
 			SqlDataProvider.getInstance().insertUserGroups(userId, groups); 
 			sessionMap.put("userId", userId);
+			sessionMap.put("username", user.getName());
 		}
 		return;
+	}
+	
+	public String getUsername() {
+		String username = (String) FacesContext.getCurrentInstance()
+				.getExternalContext().getSessionMap().get("username");
+		return username;
 	}
 			
 }
