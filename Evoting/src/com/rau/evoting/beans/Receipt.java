@@ -2,10 +2,9 @@ package com.rau.evoting.beans;
 
 import javax.faces.event.AjaxBehaviorEvent;
 
-import com.rau.evoting.data.SqlDataProvider;
+import com.rau.evoting.data.ElectionVoteDP;
 import com.rau.evoting.models.Vote;
 import com.rau.evoting.utils.StringHelper;
-import com.rau.evoting.utils.Util;
 
 public class Receipt {
 
@@ -24,7 +23,7 @@ public class Receipt {
 		
 		try {
 			int recId = Integer.parseInt(id); 
-			vote = SqlDataProvider.getInstance().getVote(recId);
+			vote = ElectionVoteDP.getVote(recId);
 			if(vote != null) {
 				hash1 = StringHelper.getSHA256hash(vote.getEncoded1());
 				hash2 = StringHelper.getSHA256hash(vote.getEncoded2());

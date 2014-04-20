@@ -1,16 +1,9 @@
 package com.rau.evoting.beans;
 
-import java.beans.Expression;
-import java.util.Map;
-
-import javax.el.ExpressionFactory;
-import javax.el.MethodExpression;
-import javax.faces.application.Application;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
-import javax.naming.Context;
 import javax.servlet.http.HttpServletRequest;
 
+import com.rau.evoting.data.ElectionDP;
 import com.rau.evoting.data.SqlDataProvider;
 import com.rau.evoting.models.Election;
 
@@ -24,7 +17,7 @@ public class OpenedElection {
 
 	public Election getElection() {
 		HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-		election = SqlDataProvider.getInstance().getElection(elId);
+		election = ElectionDP.getElection(elId);
 		return election;
 	}
 
@@ -41,7 +34,7 @@ public class OpenedElection {
 	}
 
 	public String fromElections(int id) {
-		election = SqlDataProvider.getInstance().getElection(id);
+		election = ElectionDP.getElection(id);
 		/*FacesContext context = FacesContext.getCurrentInstance();
 		Application application =  context.getApplication();
 		//application.evaluateExpressionGet(context, "#{election.}", expectedType)

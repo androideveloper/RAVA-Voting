@@ -1,10 +1,8 @@
 package com.rau.evoting.beans;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 
-import com.rau.evoting.data.SqlDataProvider;
+import com.rau.evoting.data.ElectionTrusteeDP;
 
 public class Generate {
 	private int trusteeId;
@@ -14,7 +12,7 @@ public class Generate {
 	public Generate() {
 		trusteeId = Integer.valueOf(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("trusteeId"));
 		electionId = Integer.valueOf(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("electionId"));
-		SqlDataProvider.getInstance().setTrusteeGenerated(electionId, trusteeId);
+		ElectionTrusteeDP.setTrusteeGenerated(electionId, trusteeId);
 	}
 
 	

@@ -8,7 +8,9 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
 import com.rau.evoting.ElGamal.ElGamalHelper;
-import com.rau.evoting.data.SqlDataProvider;
+import com.rau.evoting.data.ElectionDP;
+import com.rau.evoting.data.ElectionTrusteeDP;
+import com.rau.evoting.data.UserDP;
 import com.rau.evoting.models.Election;
 import com.rau.evoting.models.Trustee;
 import com.rau.evoting.utils.FacebookService;
@@ -34,14 +36,14 @@ public class TrusteeElectionBean {
 		HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		String code = req.getParameter("code");
 		accessToken = FacebookService.getInstance().getAccessToken(code, "TrusteeElection.xhtml");
-		trustee = SqlDataProvider.getInstance().getElectionTrustee(tempTrId);
-		election = SqlDataProvider.getInstance().getElection(trustee.getElectId());
+		trustee = ElectionTrusteeDP.getElectionTrustee(tempTrId);
+		election = ElectionDP.getElection(trustee.getElectId());
 		FacebookClient fbClient = new DefaultFacebookClient(accessToken);
 		User user = fbClient.fetchObject("me", User.class);
-		int userId = SqlDataProvider.getInstance().insertUser(user.getId(), user.getEmail());
+		int userId = UserDP.insert(user.getId(), user.getEmail());
 		trustee.setEmail(user.getEmail());
 		trustee.setId(userId);
-		SqlDataProvider.getInstance().updateTrustee(tempTrId, trustee);
+		ElectionTrusteeDP.updateTrustee(tempTrId, trustee);
 	}
 
 	public int getTempTrId() {
@@ -74,7 +76,7 @@ public class TrusteeElectionBean {
 		ElGamalHelper elHelper = new ElGamalHelper();
 		trustee.setPublicKey(elHelper.getPublicKey());
 		trustee.setGenerated(true);
-		SqlDataProvider.getInstance().setTrusteePublicKey(trustee.getPublicKey(), tempTrId);
+		ElectionTrusteeDP.setTrusteePublicKey(trustee.getPublicKey(), tempTrId);
 		
 		try {
 			FileWriter fw = new FileWriter(file);

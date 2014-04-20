@@ -1,9 +1,6 @@
 package com.rau.evoting.beans;
 
-import java.io.Console;
 import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 import javax.faces.context.FacesContext;
@@ -13,16 +10,18 @@ import javax.mail.MessagingException;
 import org.primefaces.model.StreamedContent;
 
 import com.rau.evoting.ElGamal.ElGamalHelper;
-import com.rau.evoting.data.SqlDataProvider;
+import com.rau.evoting.data.ElectionDP;
+import com.rau.evoting.data.ElectionVoteDP;
+import com.rau.evoting.data.ElectonAnswerDP;
+import com.rau.evoting.data.UserDP;
 import com.rau.evoting.models.Answer;
 import com.rau.evoting.models.Election;
+import com.rau.evoting.models.User;
 import com.rau.evoting.utils.BarcodeHelper;
 import com.rau.evoting.utils.MailService;
 import com.rau.evoting.utils.StringHelper;
 import com.rau.evoting.utils.Util;
-import com.restfb.DefaultFacebookClient;
-import com.restfb.FacebookClient;
-import com.restfb.types.User;
+
 
 public class Vote {
 	
@@ -60,7 +59,7 @@ public class Vote {
 	public String fromElection() {
 		elId = Integer.valueOf(FacesContext.getCurrentInstance()
 				.getExternalContext().getRequestParameterMap().get("elId"));
-		answers = SqlDataProvider.getInstance().getElectionAnswers(elId);
+		answers = ElectonAnswerDP.getElectionAnswers(elId);
 		showEncode = false;
 		showShuffle = true;
 		selectedDecodedList = 1;
@@ -78,7 +77,7 @@ public class Vote {
 			a1.add(ans.getId());
 			a2.add(ans.getId());
 		}
-		election = SqlDataProvider.getInstance().getElection(elId);
+		election = ElectionDP.getElection(elId);
 		publicKey = election.getPublicKey();
 		
 		return "Vote";
@@ -123,7 +122,7 @@ public class Vote {
 	
 	public String vote() {
 		// vote
-		receiptId = SqlDataProvider.getInstance().setElectionVote(elId, userId,selectedDecodedList, (selectedDecodedList==1?decoded1:decoded2), encoded1,encoded2, selectedVote);
+		receiptId = ElectionVoteDP.setElectionVote(elId, userId,selectedDecodedList, (selectedDecodedList==1?decoded1:decoded2), encoded1,encoded2, selectedVote);
 		
 		String message = "  Reciept Id: " + receiptId + "\n " +
 				" hash1: " + hash1 + "\n " +
@@ -131,7 +130,7 @@ public class Vote {
 				" selected audit ballot: " + selectedDecodedList + " - " + (selectedDecodedList==1?decoded1:decoded2) + "\n " +
 				" your choice: " + selectedVote;
 		String subject = "Receipt for " + election.getName() + " election";
-		com.rau.evoting.models.User user = SqlDataProvider.getInstance().getUser(userId);
+		User user = UserDP.getUser(userId);
 		try {
 			MailService.sendMessage(user.getEmail(), subject, message);
 		} catch (MessagingException e) {

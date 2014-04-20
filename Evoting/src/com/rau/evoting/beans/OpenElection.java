@@ -10,16 +10,17 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.mail.MessagingException;
 
 import com.rau.evoting.ElGamal.ElGamalHelper;
+import com.rau.evoting.data.ElectionDP;
+import com.rau.evoting.data.ElectionTrusteeDP;
+import com.rau.evoting.data.ElectionVoterDP;
+import com.rau.evoting.data.ElectonAnswerDP;
 import com.rau.evoting.data.SqlDataProvider;
 import com.rau.evoting.models.Answer;
 import com.rau.evoting.models.Election;
 import com.rau.evoting.models.Trustee;
 import com.rau.evoting.utils.MailService;
 import com.rau.evoting.utils.Util;
-import com.restfb.DefaultFacebookClient;
-import com.restfb.FacebookClient;
 import com.restfb.types.Group;
-import com.restfb.types.User;
 
 public class OpenElection {
 	private Election election;
@@ -72,7 +73,7 @@ public class OpenElection {
 	}
 	
 	public ArrayList<Trustee> getTrustees() {
-		trustees = SqlDataProvider.getInstance().getElectionTrustees(election.getId()); //fix
+		trustees = ElectionTrusteeDP.getElectionTrustees(election.getId()); //fix
 		return trustees;
 	}
 
@@ -189,7 +190,7 @@ public class OpenElection {
 	}
 
 	public String navigateAnswers() {
-		answers = SqlDataProvider.getInstance().getElectionAnswers(election.getId());
+		answers = ElectonAnswerDP.getElectionAnswers(election.getId());
 		return "Answers";
 	}
 	
@@ -202,7 +203,7 @@ public class OpenElection {
 		//User user = fbClient.fetchObject("me", User.class); 
 		//String userId = user.getId();
 		int userId = (int)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId");
-		int elId = SqlDataProvider.getInstance().insertElecttion(new Election(0, name, description),userId);
+		int elId = ElectionDP.insert(new Election(0, name, description),userId);
 		election = new Election(elId, name, description);
 		answers = new ArrayList<Answer>();
 		trustees = new ArrayList<Trustee>();
@@ -235,14 +236,14 @@ public class OpenElection {
 			answers.add(new Answer(maxId, answer));
 			answer = "";
 		}
-		SqlDataProvider.getInstance().insertAnswers(election.getId(), answers);
+		ElectonAnswerDP.insertAnswers(election.getId(), answers);
 		return "OpenElection?faces-redirect=true";
 	}
 	
 	public String addTrustee() {
 		String message = "Hello, you are chosen trustee for  " + election.getName() + " election\n Please, generate your key: \n";
 		String token = Util.generateRandomToken();
-		int trId = SqlDataProvider.getInstance().insertTrustee(election.getId(), new Trustee(0, trusteeEmail, false,token));
+		int trId = ElectionTrusteeDP.insertTrustee(election.getId(), new Trustee(0, trusteeEmail, false,token));
 		String url = "http://localhost:8080/Evoting/TrusteeHome.xhtml?trId=" + trId + "&token=" + token;
 		String encodedUrl = url;
 		try {
@@ -263,10 +264,10 @@ public class OpenElection {
 	}
 	
 	public String setElection(int id) {
-		election = SqlDataProvider.getInstance().getElection(id);
-		answers = SqlDataProvider.getInstance().getElectionAnswers(election.getId());
-		trustees = SqlDataProvider.getInstance().getElectionTrustees(election.getId());
-		selectedGroup = SqlDataProvider.getInstance().getElectionVoterByGroup(election.getId());
+		election = ElectionDP.getElection(id);
+		answers = ElectonAnswerDP.getElectionAnswers(election.getId());
+		trustees = ElectionTrusteeDP.getElectionTrustees(election.getId());
+		selectedGroup = ElectionVoterDP.getElectionVoterByGroup(election.getId());
 		if(selectedGroup == null) {
 			selectedVoteMode = "all";
 		}
@@ -278,8 +279,8 @@ public class OpenElection {
 	
 	public String open() {
 		ElGamalHelper elHelper = new ElGamalHelper();
-		String pbKey = elHelper.getElectionPublicKey(SqlDataProvider.getInstance().getElectionTrusteesPublicKeys(election.getId()));
-		SqlDataProvider.getInstance().openElection(election.getId(),pbKey);
+		String pbKey = elHelper.getElectionPublicKey(ElectionTrusteeDP.getElectionTrusteesPublicKeys(election.getId()));
+		ElectionDP.openElection(election.getId(),pbKey);
 		return "Elections?faces-redirect=true";
 	}
 	
@@ -289,9 +290,9 @@ public class OpenElection {
 	}
 
 	public String fromVoters() {
-		SqlDataProvider.getInstance().deleteElectionVoters(election.getId());
+		ElectionVoterDP.deleteElectionVoters(election.getId());
 		if(!selectedVoteMode.equals("all")) {
-			SqlDataProvider.getInstance().setElectionVotersByGroup(election.getId(), selectedGroup);
+			ElectionVoterDP.setElectionVotersByGroup(election.getId(), selectedGroup);
 		}
 		return "OpenElection";
 	}

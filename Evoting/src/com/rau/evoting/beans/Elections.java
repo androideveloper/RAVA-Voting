@@ -1,34 +1,11 @@
 package com.rau.evoting.beans;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
-import javax.annotation.PostConstruct;
-import javax.faces.application.Application;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
-import javax.faces.el.MethodBinding;
-import javax.servlet.http.HttpServletRequest;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-
-import com.rau.evoting.data.SqlDataProvider;
+import com.rau.evoting.data.ElectionDP;
 import com.rau.evoting.models.Election;
-import com.rau.evoting.utils.FacebookService;
-import com.restfb.Connection;
-import com.restfb.DefaultFacebookClient;
-import com.restfb.FacebookClient;
-import com.restfb.types.Group;
-import com.restfb.types.User;
 
 /**
  * @author Aram
@@ -54,7 +31,7 @@ public class Elections {
 	public ArrayList<Election> getEls() {
 		//els = SqlDataProvider.getInstance().loadOpenElections(); 
 		int userId = (int)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId");
-		els = SqlDataProvider.getInstance().loadOpenElectionsforUser(userId);
+		els = ElectionDP.loadOpenElectionsforUser(userId);
 		return els;
 	}
 

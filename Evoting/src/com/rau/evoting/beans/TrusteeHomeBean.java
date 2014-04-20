@@ -8,9 +8,7 @@ import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.myfaces.context.servlet.RequestParameterMap;
-
-import com.rau.evoting.data.SqlDataProvider;
+import com.rau.evoting.data.ElectionTrusteeDP;
 import com.rau.evoting.models.Trustee;
 
 public class TrusteeHomeBean {
@@ -28,7 +26,7 @@ public class TrusteeHomeBean {
 		if(reqMap.containsKey("trId")) {
 			tempTrId = Integer.valueOf(reqMap.get("trId"));
 			token = reqMap.get("token");
-			Trustee tr = SqlDataProvider.getInstance().getElectionTrustee(tempTrId);
+			Trustee tr = ElectionTrusteeDP.getElectionTrustee(tempTrId);
 			System.out.println(token + " ... " + tr.getToken());
 			if(!tr.getToken().equals(token)) {
 				error = true;
