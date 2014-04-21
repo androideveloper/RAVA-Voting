@@ -9,6 +9,7 @@ import javax.mail.MessagingException;
 
 import org.primefaces.model.StreamedContent;
 
+import com.rau.evoting.ElGamal.ChaumPedersenProof;
 import com.rau.evoting.ElGamal.ElGamalHelper;
 import com.rau.evoting.data.ElectionDP;
 import com.rau.evoting.data.ElectionVoteDP;
@@ -19,6 +20,7 @@ import com.rau.evoting.models.Election;
 import com.rau.evoting.models.User;
 import com.rau.evoting.utils.BarcodeHelper;
 import com.rau.evoting.utils.MailService;
+import com.rau.evoting.utils.Pair;
 import com.rau.evoting.utils.StringHelper;
 import com.rau.evoting.utils.Util;
 
@@ -51,6 +53,8 @@ public class Vote {
 	private String publicKey;
 	private BigInteger r1;
 	private BigInteger r2;
+	private String chaumPedersen1;
+	private String chaumPedersen2;
 	
 	public Vote() {
 		userId = (int)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId");
@@ -122,7 +126,13 @@ public class Vote {
 	
 	public String vote() {
 		// vote
-		receiptId = ElectionVoteDP.setElectionVote(elId, userId,selectedDecodedList, (selectedDecodedList==1?decoded1:decoded2), encoded1,encoded2, selectedVote);
+		
+		ChaumPedersenProof chaum = new ChaumPedersenProof();
+		Pair<BigInteger, BigInteger> proof = chaum.generate(new BigInteger(publicKey),(selectedDecodedList==1?r2:r1));
+		
+		receiptId = ElectionVoteDP.setElectionVote(elId, userId,selectedDecodedList,
+				(selectedDecodedList==1?decoded1:decoded2), encoded1,encoded2, selectedVote, 
+				proof.getFirst().toString(), proof.getSecond().toString());
 		
 		String message = "  Reciept Id: " + receiptId + "\n " +
 				" hash1: " + hash1 + "\n " +

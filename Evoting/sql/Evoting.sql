@@ -51,7 +51,9 @@ create table ElectionVotes
 	auditSequence varchar(256),
 	encoded1 varchar(1024),
 	encoded2 varchar(1024),
-	answerId int
+	answerId int,
+	chaumPedersen1 varchar(1024),
+	chaumPedersen2 varchar(1024)
 );
 
 create table TempTrustees

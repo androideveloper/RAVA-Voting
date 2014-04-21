@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.rau.evoting.ElGamal.ChaumPedersenProof;
 import com.rau.evoting.models.Vote;
 
 public class ElectionVoteDP {
@@ -19,16 +20,20 @@ public class ElectionVoteDP {
 	public static final String ENCODED1 = "encoded1";
 	public static final String ENCODED2 = "encoded2";
 	public static final String ANSWER_ID = "answerId";
+	public static final String CHAUM_PEDERSEN1 = "chaumPedersen1";
+	public static final String CHAUM_PEDERSEN2 = "chaumPedersen2";
 	
 	
-	public static int setElectionVote(int elId, int voterId, int auditBallot, String auditSequence, String encoded1, String encoded2, int answerId) {
+	public static int setElectionVote(int elId, int voterId, int auditBallot, String auditSequence, 
+			String encoded1, String encoded2, int answerId, String chaumPedersen1, String chaumPedersen2) {
 		int id = 0;
 		Connection con = null;
 		try {
 			con =  SqlDataProvider.getInstance().getConnection();
 			String sql = "insert into " + TABLE_NAME + "( "
 					+ ELECTION_ID + "," + USER_ID +  "," + AUDIT_BALLOT +  "," 
-					+ AUDIT_SEQUENCE + "," + ENCODED1 + "," + ENCODED2 + "," + ANSWER_ID + ") values(?,?,?,?,?,?,?)" 
+					+ AUDIT_SEQUENCE + "," + ENCODED1 + "," + ENCODED2 + "," + ANSWER_ID 
+					+ "," + CHAUM_PEDERSEN1 +  "," + CHAUM_PEDERSEN2 + ") values(?,?,?,?,?,?,?,?,?)" 
 					+ " select SCOPE_IDENTITY() as " + ID;
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setInt(1, elId);
@@ -38,6 +43,8 @@ public class ElectionVoteDP {
 			statement.setString(5, encoded1);
 			statement.setString(6, encoded2);
 			statement.setInt(7, answerId);
+			statement.setString(8, chaumPedersen1);
+			statement.setString(9, chaumPedersen2);
 			ResultSet rs = statement.executeQuery();
 			if(rs.next()) {
 				id = rs.getInt(ID);
@@ -69,7 +76,8 @@ public class ElectionVoteDP {
 			if(rs.next()) {
 				vote = new Vote(rs.getInt(ID), rs.getInt(ELECTION_ID), rs.getInt(USER_ID),
 						rs.getInt(AUDIT_BALLOT), rs.getString(ENCODED1), rs.getString(ENCODED2),
-						rs.getString(AUDIT_SEQUENCE), rs.getInt(ANSWER_ID));
+						rs.getString(AUDIT_SEQUENCE), rs.getInt(ANSWER_ID),
+						rs.getString(CHAUM_PEDERSEN1), rs.getString(CHAUM_PEDERSEN2));
 						
 			}
 		} catch (SQLException e) {
