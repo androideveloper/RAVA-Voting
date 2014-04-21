@@ -6,8 +6,13 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:c="http://java.sun.com/jsp/jstl/core">
 <head>
-<link rel="stylesheet" type="text/css" href="style/evoting.css"  media="all" />
+<link rel="stylesheet" type="text/css" href="style/evoting.css"
+	media="all" />
+<link rel="stylesheet" href="style/foundation.css" />
+<link rel="stylesheet" href="style/foundation-tweaks.css" />
+<script src="scripts/vendor/modernizr.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>RAVA Voting</title>
 </head>
 <body>
@@ -15,26 +20,41 @@
 		<ui:insert name="header">
 			<ui:include src="/template/CommonHeader.xhtml"></ui:include>
 		</ui:insert>
-		
+
 		<ui:remove>
-		<h:commandButton id="createElection" value="create election" action="create"></h:commandButton>
-		<h:commandButton id="userElections" value="my elections" action="UserElections"></h:commandButton>
-		<h:commandButton id="receipts" value="receipts" action="Receipt"></h:commandButton>
+			<h:commandButton id="createElection" value="create election"
+				action="create"></h:commandButton>
+			<h:commandButton id="userElections" value="my elections"
+				action="UserElections"></h:commandButton>
+			<h:commandButton id="receipts" value="receipts" action="Receipt"></h:commandButton>
 		</ui:remove>
-		<p> </p>
+		<p></p>
 		<ui:repeat var="el" value="#{elections.els}">
 			<div class="highlight-box-margin">
 				<ui:remove>
-				<h:commandLink value="#{el.name}" action="#{elect.fromElections(el.id)}"></h:commandLink>
+					<h:commandLink value="#{el.name}"
+						action="#{elect.fromElections(el.id)}"></h:commandLink>
 				</ui:remove>
-				<h:link value="#{el.name}" outcome="Election"> 
+				<h:link value="#{el.name}" outcome="Election">
 					<f:param name="elId" value="#{el.id}"></f:param>
 				</h:link>
-				<br />
-				#{el.description}
+				<br /> #{el.description}
 			</div>
 		</ui:repeat>
 
 	</h:form>
+
+	<div class="footer" id="footer">
+		logged in as &#160;
+		<h:outputText value="#{home.username}" style="font-weight:bold" />
+	</div>
+
+	<script src="scripts/vendor/jquery.js"></script>
+	<script src="scripts/vendor/fastclick.js"></script>
+	<script src="scripts/foundation.min.js"></script>
+
+	<script>
+		$(document).foundation();
+	</script>
 </body>
 </html>

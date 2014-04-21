@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
@@ -16,36 +16,35 @@
 <title>RAVA Voting</title>
 </head>
 <body>
-
 	<h:form>
 		<ui:insert name="header">
 			<ui:include src="/template/CommonHeader.xhtml"></ui:include>
 		</ui:insert>
-
-		<ui:repeat var="el" value="#{userEl.els}">
-			<div class="highlight-box-margin">
-				<h:link value="#{el.name}" outcome="Election"
-					rendered="#{el.state == 'ONE'}">
-					<f:param name="elId" value="#{el.id}"></f:param>
-				</h:link>
-				<h:commandLink value="#{el.name}"
-					action="#{election.setElection(el.id)}"
-					rendered="#{el.state == 'ZERO'}">
-				</h:commandLink>
-				<ui:remove>
-					<div class="algnRight">
-						<h:outputLabel value="Not" rendered="#{el.state == 0}"></h:outputLabel>
-						Opened
-					</div>
-				</ui:remove>
-				<div class="algnRight">
-					<h:outputLabel value="#{el.state.stateName}"></h:outputLabel>
-				</div>
-				<br /> #{el.description}
-			</div>
-
-		</ui:repeat>
-		<p></p>
+		<div id="head">
+			<h1>Create new election</h1>
+		</div>
+		<table class="pretty">
+			<tbody>
+				<tr>
+					<th>Name:</th>
+					<td><h:inputText id="name" value="#{newElection.name}"
+							required="true" label="name" size="60"></h:inputText> <h:message
+							for="name" styleClass="message"></h:message></td>
+				</tr>
+				<tr>
+					<th>Description:</th>
+					<td><h:inputTextarea id="desc"
+							value="#{newElection.description}" label="description" rows="10"
+							cols="60">
+						</h:inputTextarea> <h:message for="desc"></h:message></td>
+				</tr>
+			</tbody>
+		</table>
+		<h:commandButton value="next"
+			action="#{election.createElection(newElection.name, newElection.description)}"
+			styleClass="button tiny" style="margin: 20px;"></h:commandButton>
+		<h:commandButton value="cancel" action="Home" immediate="true"
+			styleClass="button tiny"></h:commandButton>
 	</h:form>
 
 	<div class="footer" id="footer">

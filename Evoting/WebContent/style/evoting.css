@@ -2,9 +2,9 @@
 
 .commandLinks {
 	margin: 5px;
-    padding: 5px 5px 5px 20px; /* 20px makes room for your background image */
-    /*border: 1px solid #aaa; */
-    
+	padding: 5px 5px 5px 20px;
+	/* 20px makes room for your background image */
+	/*border: 1px solid #aaa; */
 }
 
 .commandLinks .create {
@@ -40,7 +40,7 @@
 h1 {
 	color: grey;
 	font-size: 20px;
-	text-align: center; 
+	text-align: center;
 }
 
 .center {
@@ -55,32 +55,31 @@ h1 {
 }
 
 table.pretty {
-    background: none repeat scroll 0 0 whitesmoke;
-    border-collapse: collapse;
-    margin: 0.5em;
-    width: 100%;
+	background: none repeat scroll 0 0 whitesmoke;
+	border-collapse: collapse;
+	margin: 0.5em;
+	width: 70%;
 }
 
 table.pretty  th {
-    border: 1px solid silver; 
-    padding: 0.3em;
-    vertical-align: top; 
+	border: 1px solid silver;
+	padding: 0.3em;
+	vertical-align: top;
 }
 
-
 table.pretty  td {
-    border: 1px solid silver; 
-    padding: 0.3em;
-    vertical-align: top; 
+	border: 1px solid silver;
+	padding: 0.3em;
+	vertical-align: top;
 }
 
 table.vote {
 	border-collapse: collapse;
 }
 
-table.vote th, td {
-	font-size:  20px;
-	padding:  17px;
+table.vote th,td {
+	font-size: 20px;
+	padding: 17px;
 	border: none;
 }
 
@@ -107,7 +106,7 @@ table.vote th, td {
 }
 
 .content {
-	margin-left:  20px;
+	margin-left: 20px;
 }
 
 .marg td {
@@ -124,41 +123,41 @@ table.vote th, td {
 }
 
 .algnRight {
-	float: right; 
-	display:inline;	
+	float: right;
+	display: inline;
 }
 
 .algnLeft {
-	float: left; 
-	display:inline;
+	float: left;
+	display: inline;
 }
 
 .algnRightMargin {
 	margin: 20px;
-	float: right; 
-	display:inline;	
+	float: right;
+	display: inline;
 }
 
 .algnRight-marginTop {
 	margin-top: 50px;
-	float: right; 
-	display:inline;	
+	float: right;
+	display: inline;
 }
 
 .algnLeft-marginTop {
-	margin-top: 50px; 
-	float: left; 
-	display:inline;
+	margin-top: 50px;
+	float: left;
+	display: inline;
 }
 
 .algnCenter {
-	margin:0px auto; 
+	margin: 0px auto;
 	width: 550px;
 	vertical-align: middle;
 }
 
 .algnCenter1 {
-	margin:20px auto; 
+	margin: 20px auto;
 	width: 550px;
 	vertical-align: middle;
 }
@@ -169,7 +168,7 @@ table.vote th, td {
 
 .logo {
 	width: 800px;
-	height: 150px;	
+	height: 150px;
 	border: none;
 }
 
@@ -189,17 +188,19 @@ table.vote th, td {
     color: black;
     padding: 10px;
 } */
-
 .highlight-box-margin {
-    background: none repeat scroll 0 0 #EEEEEE;
-    border: 1px solid #888888;
-    color: black;
-    margin-right: 300px;
-    padding: 10px;
+	background: none repeat scroll 0 0 #EEEEEE;
+	border: 1px solid #888888;
+	color: black;
+	padding: 10px;
+	width: 60%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 0.5em;
 }
-  
+
 .logout {
 	border: none;
 	background-color: aqua;
 	float: right;
-}  
+}

@@ -1,10 +1,10 @@
 package com.rau.evoting.beans;
 
-public class NewVoting {
+public class NewElection {
 	private String name;
 	private String description;
 	
-	public NewVoting() {
+	public NewElection() {
 		
 	}
 

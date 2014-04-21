@@ -71,8 +71,8 @@
     </managed-bean>
     
     <managed-bean>
-        <managed-bean-name>newVoting</managed-bean-name>
-        <managed-bean-class>com.rau.evoting.beans.NewVoting</managed-bean-class>
+        <managed-bean-name>newElection</managed-bean-name>
+        <managed-bean-class>com.rau.evoting.beans.NewElection</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
     
@@ -104,7 +104,7 @@
 		<from-view-id>/Home.xhtml</from-view-id>
 		 <navigation-case>
     	    <from-outcome>create</from-outcome> 
-    	    <to-view-id>/NewVoting.xhtml</to-view-id>
+    	    <to-view-id>/NewElection.xhtml</to-view-id>
     	</navigation-case>
     	<navigation-case>
     	    <from-outcome>my</from-outcome>
@@ -121,7 +121,7 @@
 	</navigation-rule>
 	
     <navigation-rule>
-		<from-view-id>/NewVoting.xhtml</from-view-id>
+		<from-view-id>/NewElection.xhtml</from-view-id>
 	 	<navigation-case>
     		<from-outcome>next</from-outcome>
     		<to-view-id>/OpenElection.xhtml</to-view-id>
