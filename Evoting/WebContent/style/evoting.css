@@ -1,5 +1,9 @@
 @CHARSET "UTF-8";
 
+.link {
+	font-size: 2em;
+}
+
 .commandLinks {
 	margin: 5px;
 	padding: 5px 5px 5px 20px;
@@ -26,10 +30,6 @@
 	text-decoration: none;
 	font-size: 1.4em;
 	color: teal;
-}
-
-.button {
-	margin-right: 20px;
 }
 
 .header {
@@ -96,7 +96,7 @@ table.vote th,td {
 	padding: 50px;
 }
 
-.margin1 {
+.margin20 {
 	margin: 20px;
 }
 

@@ -9,20 +9,25 @@
 <head>
 <link rel="stylesheet" type="text/css" href="style/evoting.css"
 	media="all" />
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-<title>Insert title here</title>
+<link rel="stylesheet" href="style/foundation.css" />
+<link rel="stylesheet" href="style/foundation-tweaks.css" />
+<script src="scripts/vendor/modernizr.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Vote</title>
 </head>
 <body>
 	<h:form id="voteForm">
 		<ui:insert name="header">
 			<ui:include src="/template/CommonHeader.xhtml"></ui:include>
 		</ui:insert>
-		
+
 		<div style="overflow: hidden;">
 			<div class="algnLeft">
 				<ul>
 					<ui:repeat var="ans" value="#{vote.answers}">
-						<li> <h:outputText value="#{ans.id}: #{ans.answer}"></h:outputText> </li>
+						<li><h:outputText value="#{ans.id}: #{ans.answer}"></h:outputText>
+						</li>
 					</ui:repeat>
 				</ul>
 			</div>
@@ -40,87 +45,111 @@
 				</div>
 			</h:panelGroup>
 
-			<h:panelGroup rendered="#{vote.showShuffle}">	
-				<div class="algnCenter">				
-					<table >
+			<h:panelGroup rendered="#{vote.showShuffle}">
+				<div class="algnCenter">
+					<table>
 						<tr>
 							<td>
 								<ul>
 									<ui:repeat var="id" value="#{vote.a1}">
-										<li> <h:outputText value="#{id}"></h:outputText> </li>
+										<li><h:outputText value="#{id}"></h:outputText></li>
 									</ui:repeat>
 								</ul>
 							</td>
 							<td>
 								<ul>
 									<ui:repeat var="id" value="#{vote.a2}">
-										<li> <h:outputText value="#{id}"></h:outputText> </li>
+										<li><h:outputText value="#{id}"></h:outputText></li>
 									</ui:repeat>
 								</ul>
 							</td>
 						</tr>
-					</table>	
-				</div>
-			</h:panelGroup>	
-						
-			<h:panelGroup rendered="#{vote.showDecode}">
-				<div class="algnCenter">
-					<p:graphicImage value="#{vote.barcode1}" styleClass="algnLeft-marginTop"></p:graphicImage>
-					<p:graphicImage value="#{vote.barcode2}" styleClass="algnRight-marginTop"></p:graphicImage>
+					</table>
 				</div>
 			</h:panelGroup>
-					
-				
-			<h:panelGroup rendered="#{vote.showDecoded2}" styleClass="margin1">
+
+			<h:panelGroup rendered="#{vote.showDecode}">
 				<div class="algnCenter">
-					<ui:remove><h:outputText>You select first ballot for decode:</h:outputText></ui:remove>
+					<p:graphicImage value="#{vote.barcode1}"
+						styleClass="algnLeft-marginTop"></p:graphicImage>
+					<p:graphicImage value="#{vote.barcode2}"
+						styleClass="algnRight-marginTop"></p:graphicImage>
+				</div>
+			</h:panelGroup>
+
+
+			<h:panelGroup rendered="#{vote.showDecoded2}" styleClass="margin20">
+				<div class="algnCenter">
+					<ui:remove>
+						<h:outputText>You select first ballot for decode:</h:outputText>
+					</ui:remove>
 					<ul>
 						<ui:repeat var="id" value="#{vote.a1}">
-							<li> <h:outputText value="#{id}"></h:outputText> </li>
+							<li><h:outputText value="#{id}"></h:outputText></li>
 						</ui:repeat>
 					</ul>
 				</div>
-			</h:panelGroup>	
-			<h:panelGroup rendered="#{vote.showDecoded1}" styleClass="margin1">
+			</h:panelGroup>
+			<h:panelGroup rendered="#{vote.showDecoded1}" styleClass="margin20">
 				<div class="algnCenter">
-					<ui:remove><h:outputText>You select second ballot for decode:</h:outputText></ui:remove>
+					<ui:remove>
+						<h:outputText>You select second ballot for decode:</h:outputText>
+					</ui:remove>
 					<ul>
 						<ui:repeat var="id" value="#{vote.a2}">
-							<li> <h:outputText value="#{id}"></h:outputText> </li>
+							<li><h:outputText value="#{id}"></h:outputText></li>
 						</ui:repeat>
 					</ul>
 				</div>
-			</h:panelGroup>		
-					
+			</h:panelGroup>
+
 		</div>
-				
-		<h:panelGroup rendered="#{vote.showDecode}" styleClass="margin1">
-			<h:outputText> Select auditing ballot: </h:outputText> 
-			<h:selectOneMenu id="selectList" value="#{vote.selectedDecodedList}" style="margin: 10px;">
+
+		<h:panelGroup rendered="#{vote.showDecode}" styleClass="margin20">
+			<h:outputText> Select auditing ballot: </h:outputText>
+			<h:selectOneMenu id="selectList" value="#{vote.selectedDecodedList}"
+				style="margin: 10px;">
 				<f:selectItem itemLabel="1" itemValue="1"></f:selectItem>
 				<f:selectItem itemLabel="2" itemValue="2"></f:selectItem>
 			</h:selectOneMenu>
 			<h:commandButton value="next">
-				<f:ajax event="click" listener="#{vote.decode}" render="voteForm" execute="selectList"></f:ajax>
+				<f:ajax event="click" listener="#{vote.decode}" render="voteForm"
+					execute="selectList"></f:ajax>
 			</h:commandButton>
 		</h:panelGroup>
-		
-		<h:commandButton value="shuffle" styleClass="margin1" rendered="#{vote.showShuffle}">
+
+		<h:commandButton value="shuffle" styleClass="margin20"
+			rendered="#{vote.showShuffle}">
 			<f:ajax event="click" listener="#{vote.shuffle}" render="voteForm"></f:ajax>
 		</h:commandButton>
 		<h:commandButton value="encode" rendered="#{vote.showEncode}">
 			<f:ajax event="click" listener="#{vote.encode}" render="voteForm"></f:ajax>
 		</h:commandButton>
-		
-		<h:panelGroup rendered="#{vote.showDecoded1 or vote.showDecoded2}" styleClass="margin1">
+
+		<h:panelGroup rendered="#{vote.showDecoded1 or vote.showDecoded2}"
+			styleClass="margin20">
 			<h:outputText rendered="#{vote.showDecoded2}">Select answer to vote in first ballot </h:outputText>
-			<h:outputText rendered="#{vote.showDecoded1}">Select answer to vote in second ballot </h:outputText> 
+			<h:outputText rendered="#{vote.showDecoded1}">Select answer to vote in second ballot </h:outputText>
 			<h:selectOneMenu value="#{vote.selectedVote}" style="margin: 10px;">
-				<f:selectItems value="#{vote.answers}" var="ans" itemValue="#{ans.id}" itemLabel="#{ans.id}"></f:selectItems>
+				<f:selectItems value="#{vote.answers}" var="ans"
+					itemValue="#{ans.id}" itemLabel="#{ans.id}"></f:selectItems>
 			</h:selectOneMenu>
 			<h:commandButton value="vote" action="#{vote.vote}"></h:commandButton>
 		</h:panelGroup>
-			
+
 	</h:form>
+
+	<div class="footer" id="footer">
+		logged in as &#160;
+		<h:outputText value="#{home.username}" style="font-weight:bold" />
+	</div>
+
+	<script src="scripts/vendor/jquery.js"></script>
+	<script src="scripts/vendor/fastclick.js"></script>
+	<script src="scripts/foundation.min.js"></script>
+
+	<script>
+		$(document).foundation();
+	</script>
 </body>
 </html>
