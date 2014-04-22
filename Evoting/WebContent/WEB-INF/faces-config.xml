@@ -105,26 +105,31 @@
 		 <navigation-case>
     	    <from-outcome>create</from-outcome> 
     	    <to-view-id>/NewElection.xhtml</to-view-id>
+    	    <redirect/>
     	</navigation-case>
     	<navigation-case>
     	    <from-outcome>my</from-outcome>
     	    <to-view-id>/UserElections.xhtml</to-view-id>
+    	    <redirect/>
     	</navigation-case>
     	<navigation-case>
     	    <from-outcome>vote</from-outcome>
     	    <to-view-id>/Elections.xhtml</to-view-id>
+    	    <redirect/>
     	</navigation-case>
     	<navigation-case>
     	    <from-outcome>receipts</from-outcome> 
     	    <to-view-id>/Receipt.xhtml</to-view-id>
-    	</navigation-case>
-	</navigation-rule>
+    	    <redirect/>
+    	</navigation-case>    	
+</navigation-rule>
 	
     <navigation-rule>
 		<from-view-id>/NewElection.xhtml</from-view-id>
 	 	<navigation-case>
     		<from-outcome>next</from-outcome>
     		<to-view-id>/OpenElection.xhtml</to-view-id>
+    		<redirect/>
     	</navigation-case>
 	</navigation-rule>    
 		
@@ -133,6 +138,7 @@
 	 	<navigation-case>
     		<from-outcome>open</from-outcome>
     		<to-view-id>/Elections.xhtml</to-view-id>
+    		<redirect/>
     	</navigation-case>
 	</navigation-rule>  
 	  

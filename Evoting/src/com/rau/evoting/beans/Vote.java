@@ -84,7 +84,7 @@ public class Vote {
 		election = ElectionDP.getElection(elId);
 		publicKey = election.getPublicKey();
 		
-		return "Vote";
+		return "Vote?faces-redirect=true";
 	}
 	
 	public void shuffle(AjaxBehaviorEvent event) {

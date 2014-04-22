@@ -29,12 +29,14 @@
 			<ul class="side-nav">
 				<li><h:commandLink styleClass="link"
 						action="#{election.navigateAnswers}" value="answers">
+						<ui:remove>
 						<f:setPropertyActionListener target="#{back.lastPage}"
 							value="OpenElection"></f:setPropertyActionListener>
+						</ui:remove>
 					</h:commandLink></li>
 				<li><h:commandLink styleClass="link"
-						action="#{election.navigateTrustees}">trustees</h:commandLink></li>
-				<li><h:commandLink styleClass="link" action="Voters">voters</h:commandLink></li>
+						action="Trustees?faces-redirect=true">trustees</h:commandLink></li>
+				<li><h:commandLink styleClass="link" action="Voters?faces-redirect=true">voters</h:commandLink></li>
 
 			</ul>
 		</div>

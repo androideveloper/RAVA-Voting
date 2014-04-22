@@ -20,14 +20,6 @@
 		<ui:insert name="header">
 			<ui:include src="/template/CommonHeader.xhtml"></ui:include>
 		</ui:insert>
-
-		<ui:remove>
-			<h:commandButton id="createElection" value="create election"
-				action="create"></h:commandButton>
-			<h:commandButton id="userElections" value="my elections"
-				action="UserElections"></h:commandButton>
-			<h:commandButton id="receipts" value="receipts" action="Receipt"></h:commandButton>
-		</ui:remove>
 		<p></p>
 		<ui:repeat var="el" value="#{elections.els}">
 			<div class="highlight-box-margin">
@@ -35,7 +27,7 @@
 					<h:commandLink value="#{el.name}"
 						action="#{elect.fromElections(el.id)}"></h:commandLink>
 				</ui:remove>
-				<h:link value="#{el.name}" outcome="Election">
+				<h:link value="#{el.name}" outcome="Election?faces-redirect=true">
 					<f:param name="elId" value="#{el.id}"></f:param>
 				</h:link>
 				<br /> #{el.description}

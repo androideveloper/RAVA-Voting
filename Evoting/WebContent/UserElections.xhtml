@@ -24,7 +24,7 @@
 
 		<ui:repeat var="el" value="#{userEl.els}">
 			<div class="highlight-box-margin">
-				<h:link value="#{el.name}" outcome="Election"
+				<h:link value="#{el.name}" outcome="Election?faces-redirect=true"
 					rendered="#{el.state == 'ONE'}">
 					<f:param name="elId" value="#{el.id}"></f:param>
 				</h:link>
@@ -32,12 +32,6 @@
 					action="#{election.setElection(el.id)}"
 					rendered="#{el.state == 'ZERO'}">
 				</h:commandLink>
-				<ui:remove>
-					<div class="algnRight">
-						<h:outputLabel value="Not" rendered="#{el.state == 0}"></h:outputLabel>
-						Opened
-					</div>
-				</ui:remove>
 				<div class="algnRight">
 					<h:outputLabel value="#{el.state.stateName}"></h:outputLabel>
 				</div>

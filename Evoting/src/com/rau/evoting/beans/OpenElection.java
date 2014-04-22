@@ -191,11 +191,11 @@ public class OpenElection {
 
 	public String navigateAnswers() {
 		answers = ElectonAnswerDP.getElectionAnswers(election.getId());
-		return "Answers";
+		return "Answers?faces-redirect=true";
 	}
 	
 	public String navigateTrustees() {
-		return "Trustees";
+		return "Trustees?faces-redirect=true";
 	}
 		
 	public String createElection(String name, String description) {
@@ -274,7 +274,7 @@ public class OpenElection {
 		else {
 			selectedVoteMode = "";
 		}
-		return "OpenElection";
+		return "OpenElection?faces-redirect=true";
 	}
 	
 	public String open() {
@@ -294,7 +294,7 @@ public class OpenElection {
 		if(!selectedVoteMode.equals("all")) {
 			ElectionVoterDP.setElectionVotersByGroup(election.getId(), selectedGroup);
 		}
-		return "OpenElection";
+		return "OpenElection?faces-redirect=true";
 	}
 	
 }
