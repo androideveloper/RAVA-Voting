@@ -22,7 +22,7 @@
 			<ui:include src="/template/CommonHeader.xhtml"></ui:include>
 		</ui:insert>
 
-		<div style="overflow: hidden;">
+		<div style="overflow: hidden;" class="margin20">
 			<div class="algnLeft">
 				<ul>
 					<ui:repeat var="ans" value="#{vote.answers}">
@@ -112,17 +112,18 @@
 				<f:selectItem itemLabel="1" itemValue="1"></f:selectItem>
 				<f:selectItem itemLabel="2" itemValue="2"></f:selectItem>
 			</h:selectOneMenu>
-			<h:commandButton value="next">
+			<h:commandButton value="next" styleClass="button tiny">
 				<f:ajax event="click" listener="#{vote.decode}" render="voteForm"
 					execute="selectList"></f:ajax>
 			</h:commandButton>
 		</h:panelGroup>
 
-		<h:commandButton value="shuffle" styleClass="margin20"
-			rendered="#{vote.showShuffle}">
+		<h:commandButton value="shuffle" styleClass="button tiny"
+			style="margin: 20px;" rendered="#{vote.showShuffle}">
 			<f:ajax event="click" listener="#{vote.shuffle}" render="voteForm"></f:ajax>
 		</h:commandButton>
-		<h:commandButton value="encode" rendered="#{vote.showEncode}">
+		<h:commandButton value="encode" rendered="#{vote.showEncode}"
+			styleClass="button tiny">
 			<f:ajax event="click" listener="#{vote.encode}" render="voteForm"></f:ajax>
 		</h:commandButton>
 
@@ -134,7 +135,8 @@
 				<f:selectItems value="#{vote.answers}" var="ans"
 					itemValue="#{ans.id}" itemLabel="#{ans.id}"></f:selectItems>
 			</h:selectOneMenu>
-			<h:commandButton value="vote" action="#{vote.vote}"></h:commandButton>
+			<h:commandButton value="vote" action="#{vote.vote}"
+				styleClass="button tiny"></h:commandButton>
 		</h:panelGroup>
 
 	</h:form>
