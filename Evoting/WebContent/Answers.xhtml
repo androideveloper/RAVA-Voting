@@ -16,33 +16,48 @@
 <title>Answers</title>
 </head>
 <body>
-	<h:form>
+	<h:form id="answersForm">
 		<ui:insert name="header">
 			<ui:include src="/template/CommonHeader.xhtml"></ui:include>
 		</ui:insert>
+		<div class="center">
+			<h:commandLink immediate="true" value="#{election.election.name}"
+				action="OpenElection" styleClass="link1"></h:commandLink>
+		</div>
 		<table class="margLeft">
 			<ui:repeat var="ans" value="#{election.answers}">
 				<tr>
 					<td>Answer ##{ans.id}</td>
-					<td><h:inputText value="#{ans.answer}"></h:inputText></td>
+					<td><h:inputText id="answer" label="answer"
+							value="#{ans.answer}" required="true"></h:inputText> <h:message
+							for="answer" styleClass="message"></h:message></td>
 				</tr>
 			</ui:repeat>
+		</table>
+
+		<table class="margLeft">
 			<tr>
-				<td>Answer ##{election.maxId}</td>
+				<td>New Answer</td>
 				<td><h:inputText value="#{election.answer}"></h:inputText></td>
 			</tr>
 		</table>
 		<div>
 			<h:commandButton value="add answer" styleClass="button small"
-				style="margin: 20px;" action="#{election.addAnswer}"></h:commandButton>
-			<h:commandButton value="remove answer" styleClass="button small"
-				action="#{election.removeAnswer}" rendered="#{election.showRemove}"></h:commandButton>
+				style="margin: 20px;">
+				<f:ajax event="click" listener="#{election.addAnswer}"
+					render="answersForm" execute="answersForm"></f:ajax>
+			</h:commandButton>
+			<h:commandButton immediate="true" value="remove answer"
+				styleClass="button small" rendered="#{election.showRemove}">
+				<f:ajax event="click" listener="#{election.removeAnswer}"
+					render="answersForm"></f:ajax>
+			</h:commandButton>
 		</div>
 		<div>
 			<h:commandButton value="ok" styleClass="button tiny"
 				style="margin: 20px;" action="#{election.addAnswers}"></h:commandButton>
-			<h:commandButton value="cancel" styleClass="button tiny"
-				action="#{election.cancelAnswers}"></h:commandButton>
+			<h:commandButton immediate="true" value="cancel"
+				styleClass="button tiny" action="#{election.cancelAnswers}"></h:commandButton>
 		</div>
 	</h:form>
 
