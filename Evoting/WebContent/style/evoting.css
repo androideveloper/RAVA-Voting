@@ -97,7 +97,7 @@ table.vote th,td {
 }
 
 .margin20 {
-	margin: 20px;
+	margin: 20px !important;
 }
 
 .marg {
@@ -197,10 +197,4 @@ table.vote th,td {
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 0.5em;
-}
-
-.logout {
-	border: none;
-	background-color: aqua;
-	float: right;
 }

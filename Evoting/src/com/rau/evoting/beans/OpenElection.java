@@ -26,10 +26,8 @@ public class OpenElection {
 	private Election election;
 	private ArrayList<Answer> answers;
 	private ArrayList<Trustee> trustees;
-	private String trusteeName;
 	private String trusteeEmail;
 	private String answer;
-	private boolean disabled;
 	private boolean showRemove;
 	private boolean canOpen;
 	private String openningMessage;
@@ -41,7 +39,6 @@ public class OpenElection {
 
 	public OpenElection() {
 		// trustees = new ArrayList<Trustee>();
-		disabled = false; // no need
 		// selectedVoteMode = "all";
 		// answers = new ArrayList<Answer>();
 		accessToken = (String) FacesContext.getCurrentInstance()
@@ -81,14 +78,6 @@ public class OpenElection {
 		this.trustees = trustees;
 	}
 
-	public String getTrusteeName() {
-		return trusteeName;
-	}
-
-	public void setTrusteeName(String trusteeName) {
-		this.trusteeName = trusteeName;
-	}
-
 	public String getTrusteeEmail() {
 		return trusteeEmail;
 	}
@@ -125,14 +114,6 @@ public class OpenElection {
 
 	public void setGroups(ArrayList<Group> groups) {
 		this.groups = groups;
-	}
-
-	public boolean isDisabled() {
-		return disabled;
-	}
-
-	public void setDisabled(boolean disabled) {
-		this.disabled = disabled;
 	}
 
 	public boolean isShowRemove() {
@@ -191,9 +172,6 @@ public class OpenElection {
 	}
 
 	public String createElection(String name, String description) {
-		// FacebookClient fbClient = new DefaultFacebookClient(accessToken);
-		// User user = fbClient.fetchObject("me", User.class);
-		// String userId = user.getId();
 		int userId = (int) FacesContext.getCurrentInstance()
 				.getExternalContext().getSessionMap().get("userId");
 		int elId = ElectionDP
@@ -232,6 +210,15 @@ public class OpenElection {
 	}
 
 	public String addTrustee() {
+		
+		if (trusteeEmail.equals(""))
+			return "";
+
+		for (Trustee trustee : trustees) {
+			if (trustee.getEmail().equals(trusteeEmail))
+				return "";
+		}
+
 		String message = "Hello, you are chosen trustee for  "
 				+ election.getName()
 				+ " election\n Please, generate your key: \n";
@@ -253,10 +240,9 @@ public class OpenElection {
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}
-		trusteeName = "";
 		trusteeEmail = "";
 
-		return "Trustees?faces-redirect=true";
+		return "";
 	}
 
 	public String setElection(int id) {
@@ -279,11 +265,6 @@ public class OpenElection {
 				.getElectionTrusteesPublicKeys(election.getId()));
 		ElectionDP.openElection(election.getId(), pbKey);
 		return "Elections?faces-redirect=true";
-	}
-
-	public void ajaxListener(AjaxBehaviorEvent event) {
-		System.out.println("event: " + event.getSource().toString());
-		disabled = !disabled;
 	}
 
 	public String fromVoters() {
