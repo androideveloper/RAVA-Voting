@@ -37,6 +37,8 @@ public class Receipt {
 			}
 
 		} catch (Exception e) {
+			showReceipt = true;
+			receiptFound = false;
 			System.out.println("Receipt -> setBallot -> Parse exception");
 		}
 	}
