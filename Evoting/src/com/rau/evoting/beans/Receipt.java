@@ -9,29 +9,35 @@ import com.rau.evoting.utils.StringHelper;
 public class Receipt {
 
 	private String id;
-	private Vote vote;	
+	private Vote vote;
 	private String hash1;
 	private String hash2;
 	private boolean showReceipt;
-	
+	private boolean receiptFound;
+
 	public Receipt() {
 		showReceipt = false;
+		receiptFound = false;
 		vote = null;
 	}
-	
+
 	public void setBallot(AjaxBehaviorEvent event) {
-		
+
 		try {
-			int recId = Integer.parseInt(id); 
+			int recId = Integer.parseInt(id);
 			vote = ElectionVoteDP.getVote(recId);
-			if(vote != null) {
+			if (vote != null) {
 				hash1 = StringHelper.getSHA256hash(vote.getEncoded1());
 				hash2 = StringHelper.getSHA256hash(vote.getEncoded2());
 				showReceipt = true;
+				receiptFound = true;
+			} else {
+				showReceipt = true;
+				receiptFound = false;
 			}
-			
+
 		} catch (Exception e) {
-			System.out.println("exception");
+			System.out.println("Receipt -> setBallot -> Parse exception");
 		}
 	}
 
@@ -73,6 +79,14 @@ public class Receipt {
 
 	public void setShowReceipt(boolean showReceipt) {
 		this.showReceipt = showReceipt;
+	}
+
+	public boolean isReceiptFound() {
+		return receiptFound;
+	}
+
+	public void setReceiptFound(boolean receiptFound) {
+		this.receiptFound = receiptFound;
 	}
 
 }

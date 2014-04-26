@@ -32,7 +32,8 @@
 			</div>
 		</div>
 
-		<h:panelGroup rendered="#{receipt.showReceipt}">
+		<h:panelGroup
+			rendered="#{receipt.showReceipt and receipt.receiptFound}">
 			<div style="text-align: center;">
 				<p>Receipt ID: #{receipt.vote.id}</p>
 				<p>Hash1: #{receipt.hash1}</p>
@@ -40,6 +41,13 @@
 				<p>Audit ballot: #{receipt.vote.auditBallot} -
 					#{receipt.vote.auditSequence}</p>
 				<p>Your choice: #{receipt.vote.answerId}</p>
+			</div>
+		</h:panelGroup>
+
+		<h:panelGroup
+			rendered="#{receipt.showReceipt and !receipt.receiptFound}">
+			<div style="text-align: center;">
+				<p>Receipt #{receipt.id} not found</p>
 			</div>
 		</h:panelGroup>
 	</h:form>
