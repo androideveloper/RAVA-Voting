@@ -23,7 +23,7 @@
 			<ui:include src="/template/CommonHeader.xhtml"></ui:include>
 		</ui:insert>
 		<div class="center">
-			<h:commandLink value="#{election.election.name}"
+			<h:commandLink immediate="true" value="#{election.election.name}"
 				action="OpenElection" styleClass="link1"></h:commandLink>
 		</div>
 
