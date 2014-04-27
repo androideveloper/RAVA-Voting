@@ -30,12 +30,23 @@ public class ElectionVoteDP {
 		Connection con = null;
 		try {
 			con =  SqlDataProvider.getInstance().getConnection();
-			String sql = "insert into " + TABLE_NAME + "( "
+			
+			String sql = "select * from " + TABLE_NAME + " where " + ELECTION_ID + " = ? and "
+					+ USER_ID + " = ? ";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setInt(1, elId);
+			statement.setInt(2, voterId);
+			ResultSet rs = statement.executeQuery();
+			if(rs.next()) {
+				return -1;
+			}
+			
+			sql = "insert into " + TABLE_NAME + "( "
 					+ ELECTION_ID + "," + USER_ID +  "," + AUDIT_BALLOT +  "," 
 					+ AUDIT_SEQUENCE + "," + ENCODED1 + "," + ENCODED2 + "," + ANSWER_ID 
 					+ "," + CHAUM_PEDERSEN1 +  "," + CHAUM_PEDERSEN2 + ") values(?,?,?,?,?,?,?,?,?)" 
 					+ " select SCOPE_IDENTITY() as " + ID;
-			PreparedStatement statement = con.prepareStatement(sql);
+			statement = con.prepareStatement(sql);
 			statement.setInt(1, elId);
 			statement.setInt(2, voterId);
 			statement.setInt(3, auditBallot);
@@ -45,7 +56,7 @@ public class ElectionVoteDP {
 			statement.setInt(7, answerId);
 			statement.setString(8, chaumPedersen1);
 			statement.setString(9, chaumPedersen2);
-			ResultSet rs = statement.executeQuery();
+			rs = statement.executeQuery();
 			if(rs.next()) {
 				id = rs.getInt(ID);
 			}
