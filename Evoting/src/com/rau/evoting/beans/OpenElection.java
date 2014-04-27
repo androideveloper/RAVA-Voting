@@ -239,6 +239,7 @@ public class OpenElection {
 					"Trustee for " + election.getName() + " evoting", message);
 		} catch (MessagingException e) {
 			e.printStackTrace();
+			ElectionTrusteeDP.deleteTrustee(trId);
 		}
 		trusteeEmail = "";
 
