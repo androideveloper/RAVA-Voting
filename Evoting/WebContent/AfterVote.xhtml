@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="style/foundation.css" />
 <link rel="stylesheet" href="style/foundation-tweaks.css" />
 <script src="scripts/vendor/modernizr.js"></script>
+<script src="scripts/print.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Vote receipt</title>
@@ -25,6 +26,33 @@
 			<p>Your vote has been correctly added.</p>
 			<p>Your Receipt ID: #{vote.receiptId}</p>
 			<p>Your Receipt information was sent to your email.</p>
+		</div>
+
+		<div style="text-align: center;" id="receipt">
+			<table class="centerAll">
+				<tbody>
+					<tr>
+						<td><h:outputText value="hash1: #{vote.hash1}"></h:outputText></td>
+					</tr>
+					<tr>
+						<td><h:outputText value="hash2: #{vote.hash2}"></h:outputText></td>
+					</tr>
+					<tr>
+						<td><h:outputText value="selected audit ballot: "></h:outputText>
+							<h:outputText
+								value="#{vote.selectedDecodedList} - #{vote.selectedDecodedList==1?vote.decoded1:vote.decoded2}" />
+						</td>
+					</tr>
+					<tr>
+						<td><h:outputText value="your choice: #{vote.selectedVote}"></h:outputText></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div style="text-align: center;">
+			<input type="button" class="button tiny" value="Print"
+				onclick="return printReceipt()" />
 		</div>
 	</h:form>
 

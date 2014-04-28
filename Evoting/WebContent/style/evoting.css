@@ -47,6 +47,11 @@ h1 {
 	text-align: center;
 }
 
+.centerAll {
+	margin-left: auto;
+	margin-right: auto;
+}
+
 .RAVA {
 	color: olive;
 	font-size: 36px;

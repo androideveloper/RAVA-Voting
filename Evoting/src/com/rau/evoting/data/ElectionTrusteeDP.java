@@ -288,5 +288,27 @@ public class ElectionTrusteeDP {
 		}
 		return elId;
 	}
+	
+	public static void deleteTrustee(int id){
+		Connection con = null;
+		try {
+			con =  SqlDataProvider.getInstance().getConnection();
+			String sql = "delete from " + TABLE_NAME + " where " + ID + " = ?";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setInt(1, id);
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return;
+	}
 
 }

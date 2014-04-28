@@ -133,6 +133,10 @@ public class Vote {
 		receiptId = ElectionVoteDP.setElectionVote(elId, userId,selectedDecodedList,
 				(selectedDecodedList==1?decoded1:decoded2), encoded1,encoded2, selectedVote, 
 				proof.getFirst().toString(), proof.getSecond().toString());
+
+		if(receiptId == -1) {
+			return "Home?faces-redirect=true";
+		}
 		
 		String message = "  Reciept Id: " + receiptId + "\n " +
 				" hash1: " + hash1 + "\n " +
