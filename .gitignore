@@ -4,5 +4,5 @@
 # generated files
 build/
 .metadata/
-bin
-gen
+bin/
+gen/
