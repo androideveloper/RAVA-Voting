@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">RavaVoting</string>
+    <string name="section_scan_receipt">Scan receipt</string>
+    <string name="section_my_elections">My elections</string>
+    <string name="section_vote">Vote in election</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_example">Example action</string>
+    <string name="action_settings">Settings</string>
+    <string name="scan">Scan</string>
+
+</resources>
