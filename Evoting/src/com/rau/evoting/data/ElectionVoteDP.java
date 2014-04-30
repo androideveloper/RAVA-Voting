@@ -11,6 +11,7 @@ import com.rau.evoting.models.Vote;
 public class ElectionVoteDP {
 
 	public static final String TABLE_NAME = "ElectionVotes";
+	public static final String CUTTED_TABLE_NAME = "CuttedVotes";
 	
 	public static final String ID = "id";
 	public static final String ELECTION_ID = "electId";
@@ -22,6 +23,7 @@ public class ElectionVoteDP {
 	public static final String ANSWER_ID = "answerId";
 	public static final String CHAUM_PEDERSEN1 = "chaumPedersen1";
 	public static final String CHAUM_PEDERSEN2 = "chaumPedersen2";
+	public static final String ENCODED_SEQUENCE = "encodedSequence";
 	
 	
 	public static int setElectionVote(int elId, int voterId, int auditBallot, String auditSequence, 
@@ -103,6 +105,38 @@ public class ElectionVoteDP {
 			}
 		}
 		return vote;
+	}
+	
+	public static void cutVotes(int elId) {
+		Connection con = null;
+		try {
+			con =  SqlDataProvider.getInstance().getConnection();
+			String sql = "insert into " + CUTTED_TABLE_NAME 
+					+ "(" + ELECTION_ID + "," + ENCODED_SEQUENCE + "," + ANSWER_ID + ") "
+					+ " (select " + ELECTION_ID +"," + ENCODED1 + "," + ANSWER_ID
+					+ " from " + TABLE_NAME + " where " + ELECTION_ID + "  = ? "
+						+ " and " + AUDIT_BALLOT + " = 2 "
+					+ " union all select " + ELECTION_ID +"," + ENCODED2 + "," + ANSWER_ID
+					+ " from " + TABLE_NAME + " where " + ELECTION_ID + "  = ? "
+						+ " and " + AUDIT_BALLOT + " = 1 ) ";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setInt(1, elId);
+			statement.setInt(2, elId);
+			
+			statement.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return ;
 	}
 	
 }

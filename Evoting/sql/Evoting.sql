@@ -10,8 +10,8 @@ create table Users
 create table Elections
 (
 	id int primary key identity(1,1),
-	name varchar(50) not null,
-	descript varchar(512),
+	name varchar(512) not null,
+	descript varchar(4096),
 	openState tinyint,   
 	creatorId int foreign key references Users(id),
 	publicKey varchar(max) 
@@ -32,7 +32,7 @@ create table ElectionAnswers
 (
 	electId int foreign key references Elections(id),
 	answerId int not null,
-	answer varchar(50) not null
+	answer varchar(100) not null
 );
 
 create table ElectionVoters
@@ -56,12 +56,20 @@ create table ElectionVotes
 	chaumPedersen2 varchar(1024)
 );
 
-create table TempTrustees
+create table CuttedVotes
 (
 	id int primary key identity(1,1),
 	electId int foreign key references Elections(id),
-	email varchar(50)
+	encodedSequence varchar(1024),
+	answerId int
 );
+
+--create table TempTrustees
+--(
+--	id int primary key identity(1,1),
+--	electId int foreign key references Elections(id),
+--	email varchar(50)
+--);
 
 create table UserGroups
 (
@@ -70,7 +78,7 @@ create table UserGroups
 );
 
 
-drop table TempTrustees
+--drop table TempTrustees
 drop table ElectionVoters
 drop table ElectionVotes
 drop table ElectionAnswers
