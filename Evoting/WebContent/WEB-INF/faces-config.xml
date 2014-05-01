@@ -88,6 +88,12 @@
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
     
+     <managed-bean>
+        <managed-bean-name>decode</managed-bean-name>
+        <managed-bean-class>com.rau.evoting.beans.DecodeVotes</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
     <managed-bean>
         <managed-bean-name>generate</managed-bean-name>
         <managed-bean-class>com.rau.evoting.beans.Generate</managed-bean-class>

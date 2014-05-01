@@ -11,9 +11,9 @@ public class SqlDataProvider {
 	private static SqlDataProvider dataprovider;
 
 	private SqlDataProvider() {
-		this.dbUrl = "jdbc:jtds:sqlserver://localhost/Evoting;";
+		this.dbUrl = "jdbc:jtds:sqlserver://localhost/Evoting;instance=SQLEXPRESS;";
 		this.username = "sa";
-		this.password = "SaSa111";
+		this.password = "sa";
 
 		String driver = "net.sourceforge.jtds.jdbc.Driver";
 

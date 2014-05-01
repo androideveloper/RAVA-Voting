@@ -45,6 +45,121 @@ public class OpenElection {
 				.getExternalContext().getSessionMap().get("accessToken");
 	}
 
+	public String navigateAnswers() {
+		answers = ElectonAnswerDP.getElectionAnswers(election.getId());
+		answer = "";
+		return "Answers?faces-redirect=true";
+	}
+
+	public String navigateTrustees() {
+		return "Trustees?faces-redirect=true";
+	}
+
+	public String createElection(String name, String description) {
+		int userId = (int) FacesContext.getCurrentInstance()
+				.getExternalContext().getSessionMap().get("userId");
+		int elId = ElectionDP
+				.insert(new Election(0, name, description), userId);
+		election = new Election(elId, name, description);
+		answers = new ArrayList<Answer>();
+		trustees = new ArrayList<Trustee>();
+		selectedVoteMode = "all";
+		selectedGroup = null;
+		return "next";
+	}
+
+	public void addAnswer(AjaxBehaviorEvent even) {
+		if (!answer.equals("")) {
+			answers.add(new Answer(answers.size() + 1, answer));
+			answer = "";
+		}
+		return;
+	}
+
+	public void removeAnswer(AjaxBehaviorEvent even) {
+		if (answers.size() > 0) {
+			answers.remove(answers.size() - 1);
+		}
+		answer = "";
+		return;
+	}
+
+	public String cancelAnswers() {
+		return "OpenElection?faces-redirect=true";
+	}
+
+	public String addAnswers() {
+		ElectonAnswerDP.insertAnswers(election.getId(), answers);
+		return "OpenElection?faces-redirect=true";
+	}
+
+	public String addTrustee() {
+
+		if (trusteeEmail.equals(""))
+			return "";
+
+		for (Trustee trustee : trustees) {
+			if (trustee.getEmail().equals(trusteeEmail))
+				return "";
+		}
+
+		String message = "Hello, you are chosen trustee for  "
+				+ election.getName()
+				+ " election\n Please, generate your key: \n";
+		String token = Util.generateRandomToken();
+		int trId = ElectionTrusteeDP.insertTrustee(election.getId(),
+				new Trustee(0, trusteeEmail, false, token));
+		String url = "http://localhost:8080/Evoting/TrusteeHome.xhtml?trId="
+				+ trId + "&token=" + token;
+		String encodedUrl = url;
+		try {
+			encodedUrl = URLEncoder.encode(url, "UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+		}
+		message += url; // or encoded
+		try {
+			MailService.sendMessage(trusteeEmail,
+					"Trustee for " + election.getName() + " election", message);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+			ElectionTrusteeDP.deleteTrustee(trId);
+		}
+		trusteeEmail = "";
+
+		return "";
+	}
+
+	public String setElection(int id) {
+		election = ElectionDP.getElection(id);
+		answers = ElectonAnswerDP.getElectionAnswers(election.getId());
+		trustees = ElectionTrusteeDP.getElectionTrustees(election.getId());
+		selectedGroup = ElectionVoterDP.getElectionVoterByGroup(election
+				.getId());
+		if (selectedGroup == null) {
+			selectedVoteMode = "all";
+		} else {
+			selectedVoteMode = "";
+		}
+		return "OpenElection?faces-redirect=true";
+	}
+
+	public String open() {
+		String pbKey = ElGamalHelper.getElectionPublicKey(ElectionTrusteeDP
+				.getElectionTrusteesPublicKeys(election.getId()));
+		ElectionDP.openElection(election.getId(), pbKey);
+		return "Elections?faces-redirect=true";
+	}
+
+	public String fromVoters() {
+		ElectionVoterDP.deleteElectionVoters(election.getId());
+		if (!selectedVoteMode.equals("all")) {
+			ElectionVoterDP.setElectionVotersByGroup(election.getId(),
+					selectedGroup);
+		}
+		return "OpenElection?faces-redirect=true";
+	}
+	
 	public Election getElection() {
 		return election;
 	}
@@ -159,121 +274,6 @@ public class OpenElection {
 
 	public void setOpenningMessage(String openningMessage) {
 		this.openningMessage = openningMessage;
-	}
-
-	public String navigateAnswers() {
-		answers = ElectonAnswerDP.getElectionAnswers(election.getId());
-		answer = "";
-		return "Answers?faces-redirect=true";
-	}
-
-	public String navigateTrustees() {
-		return "Trustees?faces-redirect=true";
-	}
-
-	public String createElection(String name, String description) {
-		int userId = (int) FacesContext.getCurrentInstance()
-				.getExternalContext().getSessionMap().get("userId");
-		int elId = ElectionDP
-				.insert(new Election(0, name, description), userId);
-		election = new Election(elId, name, description);
-		answers = new ArrayList<Answer>();
-		trustees = new ArrayList<Trustee>();
-		selectedVoteMode = "all";
-		selectedGroup = null;
-		return "next";
-	}
-
-	public void addAnswer(AjaxBehaviorEvent even) {
-		if (!answer.equals("")) {
-			answers.add(new Answer(answers.size() + 1, answer));
-			answer = "";
-		}
-		return;
-	}
-
-	public void removeAnswer(AjaxBehaviorEvent even) {
-		if (answers.size() > 0) {
-			answers.remove(answers.size() - 1);
-		}
-		answer = "";
-		return;
-	}
-
-	public String cancelAnswers() {
-		return "OpenElection?faces-redirect=true";
-	}
-
-	public String addAnswers() {
-		ElectonAnswerDP.insertAnswers(election.getId(), answers);
-		return "OpenElection?faces-redirect=true";
-	}
-
-	public String addTrustee() {
-
-		if (trusteeEmail.equals(""))
-			return "";
-
-		for (Trustee trustee : trustees) {
-			if (trustee.getEmail().equals(trusteeEmail))
-				return "";
-		}
-
-		String message = "Hello, you are chosen trustee for  "
-				+ election.getName()
-				+ " election\n Please, generate your key: \n";
-		String token = Util.generateRandomToken();
-		int trId = ElectionTrusteeDP.insertTrustee(election.getId(),
-				new Trustee(0, trusteeEmail, false, token));
-		String url = "http://localhost:8080/Evoting/TrusteeHome.xhtml?trId="
-				+ trId + "&token=" + token;
-		String encodedUrl = url;
-		try {
-			encodedUrl = URLEncoder.encode(url, "UTF-8");
-		} catch (UnsupportedEncodingException e1) {
-			e1.printStackTrace();
-		}
-		message += url; // or encoded
-		try {
-			MailService.sendMessage(trusteeEmail,
-					"Trustee for " + election.getName() + " evoting", message);
-		} catch (MessagingException e) {
-			e.printStackTrace();
-			ElectionTrusteeDP.deleteTrustee(trId);
-		}
-		trusteeEmail = "";
-
-		return "";
-	}
-
-	public String setElection(int id) {
-		election = ElectionDP.getElection(id);
-		answers = ElectonAnswerDP.getElectionAnswers(election.getId());
-		trustees = ElectionTrusteeDP.getElectionTrustees(election.getId());
-		selectedGroup = ElectionVoterDP.getElectionVoterByGroup(election
-				.getId());
-		if (selectedGroup == null) {
-			selectedVoteMode = "all";
-		} else {
-			selectedVoteMode = "";
-		}
-		return "OpenElection?faces-redirect=true";
-	}
-
-	public String open() {
-		String pbKey = ElGamalHelper.getElectionPublicKey(ElectionTrusteeDP
-				.getElectionTrusteesPublicKeys(election.getId()));
-		ElectionDP.openElection(election.getId(), pbKey);
-		return "Elections?faces-redirect=true";
-	}
-
-	public String fromVoters() {
-		ElectionVoterDP.deleteElectionVoters(election.getId());
-		if (!selectedVoteMode.equals("all")) {
-			ElectionVoterDP.setElectionVotersByGroup(election.getId(),
-					selectedGroup);
-		}
-		return "OpenElection?faces-redirect=true";
 	}
 
 }

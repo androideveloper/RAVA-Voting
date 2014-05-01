@@ -1,18 +1,21 @@
 package com.rau.evoting.beans;
 
+import java.util.List;
+
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
+import javax.mail.MessagingException;
 
 import com.rau.evoting.data.ElectionDP;
+import com.rau.evoting.data.ElectionTrusteeDP;
 import com.rau.evoting.data.ElectionVoteDP;
-import com.rau.evoting.data.SqlDataProvider;
 import com.rau.evoting.models.Election;
+import com.rau.evoting.models.Trustee;
+import com.rau.evoting.utils.MailService;
 
 public class OpenedElection {
 	
 	private int elId;
 	private Election election;
-	private boolean creator = true;
 	
 	public OpenedElection() {
 	}
@@ -34,14 +37,6 @@ public class OpenedElection {
 		this.elId = elId;
 	}
 
-	public boolean isCreator() {
-		return creator;
-	}
-
-	public void setCreator(boolean creator) {
-		this.creator = creator;
-	}
-
 /*	public void preRender(){
 		System.out.println("election id: " + elId);
 		election = ElectionDP.getElection(elId);
@@ -53,10 +48,24 @@ public class OpenedElection {
 	}
 	*/
 	public String closeElection(){
-		System.out.println("aaaa");
 		elId = Integer.valueOf(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("elId"));
 		System.out.println("el id is " + elId);
 		ElectionVoteDP.cutVotes(elId);
+		election = ElectionDP.getElection(elId);
+		//send mail to all trustees make async!!!!!
+		List<Trustee> trustees = ElectionTrusteeDP.getElectionTrustees(elId);
+		String message = "Please follow this link to upload your private key and decode election votes: \n";
+		String title = "Trustee for " + election.getName() + " election";
+		String url = "http://localhost:8080/Evoting/DecodeVotes.xhtml?elId=" + elId;
+		for(Trustee tr : trustees) {
+			url += "&trId=" + tr.getId() + "&token=" + tr.getToken();
+			message += url;
+			try {
+				MailService.sendMessage(tr.getEmail(), title, message);
+			} catch (MessagingException e) {
+				e.printStackTrace();
+			}
+		}
 		return "";
 	}
 	

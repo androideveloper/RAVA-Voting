@@ -15,31 +15,27 @@ public class TrusteeHomeBean {
 	private String appId = "515272745187738";
 	private String appSecret = "e37f4bd94fc533c364ad291a2ecbba09";
 	
-	private int tempTrId;
 	private String token;
-	private int electionId;
 	private String login = "Please login for your trustee dashboard";
 	private boolean error;
 	
 	public TrusteeHomeBean() {
+		int trusteeId;
+		error = true;
 		Map<String,String> reqMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 		if(reqMap.containsKey("trId")) {
-			tempTrId = Integer.valueOf(reqMap.get("trId"));
+			trusteeId = Integer.valueOf(reqMap.get("trId"));
 			token = reqMap.get("token");
-			Trustee tr = ElectionTrusteeDP.getElectionTrustee(tempTrId);
+			Trustee tr = ElectionTrusteeDP.getElectionTrustee(trusteeId);
 			System.out.println(token + " ... " + tr.getToken());
-			if(!tr.getToken().equals(token)) {
-				error = true;
-			}
-			else {
+			if(tr.getToken().equals(token)) {
 				error = false;
-				FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("trId", tempTrId);
+				FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("trId", trusteeId);
 			}
 		}
 	}
 	
 	public void fbLogin(ActionEvent event) {
-		HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest(); 
 		String fUrl = "https://www.facebook.com/dialog/oauth?"
 			      + "client_id=" + appId + "&"
 			      + "redirect_uri=" + "http://localhost:8080/Evoting/TrusteeElection.xhtml"+"&"  
@@ -55,14 +51,6 @@ public class TrusteeHomeBean {
 			e.printStackTrace();
 			System.out.println("Error");
 		}
-	}
-
-	public int getTempTrId() {
-		return tempTrId;
-	}
-
-	public void setTempTrId(int tempTrId) {
-		this.tempTrId = tempTrId;
 	}
 
 	public String getLogin() {

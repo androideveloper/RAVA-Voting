@@ -17,7 +17,6 @@
 </head>
 <f:metadata>
 	<f:viewParam name="elId" value="#{elect.elId}"></f:viewParam>
-<!-- 	<f:event listener="#{elect.preRender}" type="preRenderView"></f:event> -->
 </f:metadata>
 <body>
 	<h:form>
@@ -28,7 +27,8 @@
 			<h1>#{elect.election.name}</h1>
 			<p class="margin20">#{elect.election.description}</p>
 		</div>
-		<h:commandButton value="Vote" action="#{vote.fromElection()}"
+
+		<h:commandButton value="Close" action="#{elect.closeElection()}"
 			styleClass="button tiny" style="margin-left: 20px;">
 			<f:param name="elId" value="#{elect.election.id}"></f:param>
 		</h:commandButton>

@@ -14,7 +14,7 @@ public class ElectionTrusteeDP {
 
 	public static final String ID = "id";
 	public static final String ELECTION_ID = "electId";
-	public static final String TRUSTEE_ID = "trusteeId";
+	public static final String USER_ID = "userId";
 	public static final String EMAIL = "email";
 	public static final String IS_GENERATED = "isGenerated";
 	public static final String PUBLIC_KEY = "publicKey";
@@ -26,14 +26,14 @@ public class ElectionTrusteeDP {
 		try {
 			con =  SqlDataProvider.getInstance().getConnection();
 
-			String sql = "select "  + TRUSTEE_ID + "," +  EMAIL + "," + IS_GENERATED  + "," 
+			String sql = "select "  + USER_ID + "," +  EMAIL + "," + IS_GENERATED  + "," 
 					+ TOKEN + " from " + TABLE_NAME + " where " + ELECTION_ID + " = ?";
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setInt(1, elId);
 			ResultSet rs = statement.executeQuery();
 
 			while (rs.next()) {
-				Trustee tr = new Trustee(rs.getInt(TRUSTEE_ID),
+				Trustee tr = new Trustee(rs.getInt(USER_ID),
 						rs.getString(EMAIL), rs.getBoolean(IS_GENERATED),
 						rs.getString(TOKEN));
 				l.add(tr);
@@ -60,7 +60,7 @@ public class ElectionTrusteeDP {
 		try {
 			con =  SqlDataProvider.getInstance().getConnection();
 
-			String sql = "select " + TRUSTEE_ID + "," +  EMAIL + "," + IS_GENERATED  + "," 
+			String sql = "select "+ ID + "," + USER_ID + "," +  EMAIL + "," + IS_GENERATED  + "," 
 					+ TOKEN + "," +  PUBLIC_KEY + " from " + TABLE_NAME + " where " + ELECTION_ID + " = ?";
 			// sql +=
 			// "union select id as trusteeId,email,0 as isGenerated from TempTrustees where electId = ?";
@@ -70,7 +70,7 @@ public class ElectionTrusteeDP {
 			ResultSet rs = statement.executeQuery();
 
 			while (rs.next()) {
-				Trustee tr = new Trustee(rs.getInt(TRUSTEE_ID),
+				Trustee tr = new Trustee(rs.getInt(ID), rs.getInt(USER_ID),
 						rs.getString(EMAIL), rs.getBoolean(IS_GENERATED),
 						rs.getString(PUBLIC_KEY), elId ,rs.getString(TOKEN));
 				l.add(tr);
@@ -126,14 +126,14 @@ public class ElectionTrusteeDP {
 		try {
 			con =  SqlDataProvider.getInstance().getConnection();
 
-			String sql = "select " + TRUSTEE_ID + "," +  EMAIL +"," +  IS_GENERATED + "," 
+			String sql = "select " + ID + "," + USER_ID + "," +  EMAIL +"," +  IS_GENERATED + "," 
 					+ PUBLIC_KEY + "," +  ELECTION_ID + "," + TOKEN + " from " + TABLE_NAME + " where " + ID + " = ?";
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setInt(1, id);
 			ResultSet rs = statement.executeQuery();
 
 			if (rs.next()) {
-				tr = new Trustee(rs.getInt(TRUSTEE_ID),
+				tr = new Trustee(rs.getInt(ID),rs.getInt(USER_ID),
 						rs.getString(EMAIL), rs.getBoolean(IS_GENERATED),
 						rs.getString(PUBLIC_KEY), rs.getInt(ELECTION_ID),
 						rs.getString(TOKEN));
@@ -160,7 +160,7 @@ public class ElectionTrusteeDP {
 		try {
 			con =  SqlDataProvider.getInstance().getConnection();
 			String sql = "insert into " + TABLE_NAME + "(" + ELECTION_ID + "," 
-					+ TRUSTEE_ID + "," + EMAIL + "," + IS_GENERATED + "," + TOKEN 
+					+ USER_ID + "," + EMAIL + "," + IS_GENERATED + "," + TOKEN 
 					+ ") values(?,?,?,?,?) select SCOPE_IDENTITY() as " + ID;
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setInt(1, elId);
@@ -191,7 +191,7 @@ public class ElectionTrusteeDP {
 		Connection con = null;
 		try {
 			con =  SqlDataProvider.getInstance().getConnection();
-			String sql = "update " + TABLE_NAME + " set " + TRUSTEE_ID + " = ?, " + EMAIL + " = ? where " + ID + " = ?";
+			String sql = "update " + TABLE_NAME + " set " + USER_ID + " = ?, " + EMAIL + " = ? where " + ID + " = ?";
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setInt(1, trustee.getId());
 			statement.setString(2, trustee.getEmail());
@@ -217,7 +217,7 @@ public class ElectionTrusteeDP {
 		try {
 			con =  SqlDataProvider.getInstance().getConnection();
 			String sql = "update " + TABLE_NAME + " set " + IS_GENERATED + " = 1 where " 
-					+ ELECTION_ID + " = ? and " + TRUSTEE_ID + " = ?";
+					+ ELECTION_ID + " = ? and " + USER_ID + " = ?";
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setInt(1, elId);
 			statement.setInt(2, trId);

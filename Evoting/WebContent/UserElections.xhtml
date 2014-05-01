@@ -24,14 +24,19 @@
 
 		<ui:repeat var="el" value="#{userEl.els}">
 			<div class="highlight-box-margin">
-				<h:link value="#{el.name}" outcome="Election?faces-redirect=true"
-					rendered="#{el.state == 'ONE'}">
-					<f:param name="elId" value="#{el.id}"></f:param>
-				</h:link>
 				<h:commandLink value="#{el.name}"
 					action="#{election.setElection(el.id)}"
 					rendered="#{el.state == 'ZERO'}">
 				</h:commandLink>
+				<h:link value="#{el.name}"
+					outcome="OpenedElection?faces-redirect=true"
+					rendered="#{el.state == 'ONE'}">
+					<f:param name="elId" value="#{el.id}"></f:param>
+				</h:link>
+				<h:link value="#{el.name}" outcome=""
+					rendered="#{el.state == 'TWO'}">
+					<f:param name="elId" value="#{el.id}"></f:param>
+				</h:link>
 				<div class="algnRight">
 					<h:outputLabel value="#{el.state.stateName}"></h:outputLabel>
 				</div>

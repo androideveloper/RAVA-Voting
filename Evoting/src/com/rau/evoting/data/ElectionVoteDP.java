@@ -122,7 +122,12 @@ public class ElectionVoteDP {
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setInt(1, elId);
 			statement.setInt(2, elId);
+			statement.executeUpdate();
 			
+			sql = " update " + ElectionDP.TABLE_NAME + " set " + ElectionDP.OPEN_STATE + " = 2 "
+					+ " where id = ? ";
+			statement = con.prepareStatement(sql);
+			statement.setInt(1, elId);
 			statement.executeUpdate();
 			
 		} catch (SQLException e) {

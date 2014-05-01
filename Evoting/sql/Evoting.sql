@@ -21,7 +21,7 @@ create table ElectionTrustees
 (
 	id int primary key identity(1,1),
 	electId int foreign key references Elections(id),
-	trusteeId int,
+	userId int,
 	email varchar(50),
 	isGenerated tinyint,
 	publicKey varchar(max),

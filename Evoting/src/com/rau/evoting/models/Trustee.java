@@ -2,29 +2,40 @@ package com.rau.evoting.models;
 
 public class Trustee {
 	private int id;
+	private int userId;
 	private String email;
 	private boolean generated;
 	private String publicKey;
 	private int electId;
 	private String token;
 	
-	public Trustee(int id, String email, boolean isGenerated, String token) {
-		this.id = id;
+	public Trustee(int userId, String email, boolean isGenerated, String token) {
+		this.userId = userId;
 		this.email = email;
 		this.generated = isGenerated;
 		this.token = token;
 	}
 	
-	public Trustee(int id, String email, boolean isGenerated, String publicKey, int electId) {
-		this.id = id;
+	public Trustee(int userId, String email, boolean isGenerated, String publicKey, int electId) {
+		this.userId = userId;
 		this.email = email;
 		this.generated = isGenerated;
 		this.publicKey = publicKey;
 		this.electId = electId;
 	}
 	
-	public Trustee(int id, String email, boolean isGenerated, String publicKey, int electId, String token) {
+	public Trustee(int userId, String email, boolean isGenerated, String publicKey, int electId, String token) {
+		this.userId = userId;
+		this.email = email;
+		this.generated = isGenerated;
+		this.publicKey = publicKey;
+		this.electId = electId;
+		this.token = token;
+	}
+	
+	public Trustee(int id,int userId, String email, boolean isGenerated, String publicKey, int electId, String token) {
 		this.id = id;
+		this.userId = userId;
 		this.email = email;
 		this.generated = isGenerated;
 		this.publicKey = publicKey;
@@ -38,6 +49,14 @@ public class Trustee {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 	public String getEmail() {

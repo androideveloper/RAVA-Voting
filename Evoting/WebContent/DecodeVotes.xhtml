@@ -13,31 +13,23 @@
 <script src="scripts/vendor/modernizr.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Election</title>
+<title>Decode Votes</title>
 </head>
-<f:metadata>
-	<f:viewParam name="elId" value="#{elect.elId}"></f:viewParam>
-<!-- 	<f:event listener="#{elect.preRender}" type="preRenderView"></f:event> -->
-</f:metadata>
 <body>
 	<h:form>
-		<ui:insert name="header">
-			<ui:include src="/template/CommonHeader.xhtml"></ui:include>
-		</ui:insert>
-		<div id="info">
-			<h1>#{elect.election.name}</h1>
-			<p class="margin20">#{elect.election.description}</p>
-		</div>
-		<h:commandButton value="Vote" action="#{vote.fromElection()}"
-			styleClass="button tiny" style="margin-left: 20px;">
-			<f:param name="elId" value="#{elect.election.id}"></f:param>
-		</h:commandButton>
+		<h:panelGroup rendered="#{decode.validToken}">
+			<div class="row">
+				<div class="large-12 columns">
+					<p>Please enter your private key:</p>
+					<h:inputText value="#{decode.privateKey}"></h:inputText>
+					<h:commandButton value="decode" styleClass="button tiny"></h:commandButton>
+				</div>
+			</div>
+		</h:panelGroup>
+		<h:outputText rendered="#{!decode.validToken}" styleClass="center">Invalid url</h:outputText>
 	</h:form>
 
-	<div class="footer" id="footer">
-		logged in as &#160;
-		<h:outputText value="#{home.username}" style="font-weight:bold" />
-	</div>
+
 
 	<script src="scripts/vendor/jquery.js"></script>
 	<script src="scripts/vendor/fastclick.js"></script>

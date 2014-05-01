@@ -22,13 +22,13 @@ import com.restfb.types.User;
 public class TrusteeElectionBean {
 	private String accessToken;
 	
-	private int tempTrId;
+	private int trusteeId;
 	private Election election;
 	private Trustee trustee;
 	
 	public TrusteeElectionBean() {	
-		tempTrId = Integer.valueOf(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("trId").toString());
-		System.out.println(tempTrId);
+		trusteeId = Integer.valueOf(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("trId").toString());
+		System.out.println(trusteeId);
 	}
 	
 	@PostConstruct
@@ -36,22 +36,23 @@ public class TrusteeElectionBean {
 		HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		String code = req.getParameter("code");
 		accessToken = FacebookService.getInstance().getAccessToken(code, "TrusteeElection.xhtml");
-		trustee = ElectionTrusteeDP.getElectionTrustee(tempTrId);
+		trustee = ElectionTrusteeDP.getElectionTrustee(trusteeId);
 		election = ElectionDP.getElection(trustee.getElectId());
 		FacebookClient fbClient = new DefaultFacebookClient(accessToken);
 		User user = fbClient.fetchObject("me", User.class);
 		int userId = UserDP.insert(user.getId(), user.getEmail());
 		trustee.setEmail(user.getEmail());
-		trustee.setId(userId);
-		ElectionTrusteeDP.updateTrustee(tempTrId, trustee);
+		trustee.setUserId(userId);
+		ElectionTrusteeDP.updateTrustee(trusteeId, trustee);
 	}
 
-	public int getTempTrId() {
-		return tempTrId;
+	
+	public int getTrusteeId() {
+		return trusteeId;
 	}
 
-	public void setTempTrId(int tempTrId) {
-		this.tempTrId = tempTrId;
+	public void setTrusteeId(int trusteeId) {
+		this.trusteeId = trusteeId;
 	}
 
 	public Election getElection() {
@@ -76,7 +77,7 @@ public class TrusteeElectionBean {
 		ElGamalHelper elHelper = new ElGamalHelper();
 		trustee.setPublicKey(elHelper.getPublicKey());
 		trustee.setGenerated(true);
-		ElectionTrusteeDP.setTrusteePublicKey(trustee.getPublicKey(), tempTrId);
+		ElectionTrusteeDP.setTrusteePublicKey(trustee.getPublicKey(), trusteeId);
 		
 		try {
 			FileWriter fw = new FileWriter(file);
