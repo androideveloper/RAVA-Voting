@@ -210,7 +210,7 @@ public class OpenElection {
 	}
 
 	public String addTrustee() {
-		
+
 		if (trusteeEmail.equals(""))
 			return "";
 
@@ -261,8 +261,7 @@ public class OpenElection {
 	}
 
 	public String open() {
-		ElGamalHelper elHelper = new ElGamalHelper();
-		String pbKey = elHelper.getElectionPublicKey(ElectionTrusteeDP
+		String pbKey = ElGamalHelper.getElectionPublicKey(ElectionTrusteeDP
 				.getElectionTrusteesPublicKeys(election.getId()));
 		ElectionDP.openElection(election.getId(), pbKey);
 		return "Elections?faces-redirect=true";
