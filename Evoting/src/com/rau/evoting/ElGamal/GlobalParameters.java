@@ -14,6 +14,7 @@ public class GlobalParameters {
 		ElGamalParametersGenerator gen = new ElGamalParametersGenerator();
 		gen.init(100, 5, new SecureRandom());
 		params = gen.generateParameters();
+
 	}
 
 	public static GlobalParameters getInstance() {
@@ -30,6 +31,9 @@ public class GlobalParameters {
 	}
 
 	public static ElGamalParameters getParams() {
+		if (params == null)
+			getInstance();
+
 		return params;
 	}
 

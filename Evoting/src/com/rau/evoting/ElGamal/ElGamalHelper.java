@@ -19,26 +19,37 @@ public class ElGamalHelper {
 	private ElGamalEngine engine;
 	private BigInteger r = null;
 	private Charset charset = Charset.forName("ISO-8859-1");
-	
-	
+
 	public ElGamalHelper() {
-		
+
 		GlobalParameters.getInstance();
 		params = GlobalParameters.getParams();
-		
+
 		prKeyParams = new ElGamalPrivateKeyParameters(
 				RandomHelper.randomNonZeroBigInteger(params.getP().subtract(
 						new BigInteger("1"))), params);
 		pubKeyParams = new ElGamalPublicKeyParameters(params.getG().modPow(
-				prKeyParams.getX(), params.getP()), params); 
+				prKeyParams.getX(), params.getP()), params);
 		engine = new ElGamalEngine();
 	}
-	
-	public ElGamalHelper(String pubKey){
+
+	public ElGamalHelper(String pubKey) {
 		GlobalParameters.getInstance();
 		params = GlobalParameters.getParams();
-		
-		pubKeyParams = new ElGamalPublicKeyParameters(new BigInteger(pubKey), params);
+
+		pubKeyParams = new ElGamalPublicKeyParameters(new BigInteger(pubKey),
+				params);
+		engine = new ElGamalEngine();
+	}
+
+	public ElGamalHelper(String pubKey, String prKey) {
+		GlobalParameters.getInstance();
+		params = GlobalParameters.getParams();
+
+		prKeyParams = new ElGamalPrivateKeyParameters(new BigInteger(prKey),
+				params);
+		pubKeyParams = new ElGamalPublicKeyParameters(new BigInteger(pubKey),
+				params);
 		engine = new ElGamalEngine();
 	}
 
@@ -51,13 +62,13 @@ public class ElGamalHelper {
 	}
 
 	public String oldDecode(String codedText) {
-		byte[] in = codedText.getBytes(charset); 
+		byte[] in = codedText.getBytes(charset);
 		engine.init(false, prKeyParams);
 		byte[] b = engine.processBlock(in, 0, in.length);
 		String decoded = new String(b, charset);
 		return decoded;
 	}
-	
+
 	public String newEncode(String text) {
 		EncryptEngine eng = new EncryptEngine();
 		eng.initForEncrypt(pubKeyParams);
@@ -70,7 +81,7 @@ public class ElGamalHelper {
 
 	public String newDecode(String codedText) {
 		DecryptEngine eng = new DecryptEngine();
-		byte[] in = codedText.getBytes(charset); 
+		byte[] in = codedText.getBytes(charset);
 		eng.initForDecrypt(prKeyParams);
 		byte[] b = eng.decode(in, 0, in.length);
 		String decoded = new String(b, charset);
@@ -87,12 +98,10 @@ public class ElGamalHelper {
 		key = res.toString();
 		return key;
 	}
-	
-	
 
 	public int getPrivateKeyHash() {
 		return prKeyParams.getX().hashCode();
-	}    
+	}
 
 	public String getPrivateKey() {
 		return prKeyParams.getX().toString();
@@ -116,7 +125,6 @@ public class ElGamalHelper {
 
 	public BigInteger getR() {
 		return r;
-	}	
-	
+	}
 
 }
