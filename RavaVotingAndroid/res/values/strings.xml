@@ -10,5 +10,11 @@
     <string name="action_example">Example action</string>
     <string name="action_settings">Settings</string>
     <string name="scan">Scan</string>
+    <string name="a">Encryption a:</string>
+    <string name="b">Encryption b:</string>
+    <string name="message">Message:</string>
+    <string name="message_bigint">Number representation of message:</string>
+    <string name="receipt_info">Receipt info</string>
+    <string name="next">Next</string>
 
 </resources>

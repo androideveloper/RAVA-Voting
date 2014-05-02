@@ -1,6 +1,7 @@
 package com.rava.voting.ui;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -67,14 +68,21 @@ public class ScannerFragment extends Fragment {
 
 		@Override
 		public void onClick(View v) {
-			IntentIntegrator integrator = new IntentIntegrator(
+		/*	IntentIntegrator integrator = new IntentIntegrator(
 					ScannerFragment.this);
 			integrator.addExtra("SCAN_WIDTH", 500);
 			integrator.addExtra("SCAN_HEIGHT", 500);
 			integrator
 					.addExtra("PROMPT_MESSAGE",
 							"Place a receipt barcode inside the viewfinder square to scan it");
-			integrator.initiateScan(IntentIntegrator.QR_CODE_TYPES);
+			integrator.initiateScan(IntentIntegrator.QR_CODE_TYPES); */
+			
+			FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
+			ReceiptInfoFragment frag = ReceiptInfoFragment.newInstance("111111", "121312312412", "1.2.3");
+			ft.replace(R.id.container, frag, ReceiptInfoFragment.TAG);
+			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+			ft.addToBackStack(null);
+			ft.commit();
 		}
 
 	}
