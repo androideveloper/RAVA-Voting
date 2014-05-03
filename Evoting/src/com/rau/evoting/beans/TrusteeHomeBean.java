@@ -21,14 +21,15 @@ public class TrusteeHomeBean {
 	
 	public TrusteeHomeBean() {
 		int trusteeId;
-		error = true;
 		Map<String,String> reqMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 		if(reqMap.containsKey("trId")) {
 			trusteeId = Integer.valueOf(reqMap.get("trId"));
 			token = reqMap.get("token");
 			Trustee tr = ElectionTrusteeDP.getElectionTrustee(trusteeId);
 			System.out.println(token + " ... " + tr.getToken());
-			if(tr.getToken().equals(token)) {
+			if(!tr.getToken().equals(token)) {
+				error = true;
+			} else {
 				error = false;
 				FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("trId", trusteeId);
 			}

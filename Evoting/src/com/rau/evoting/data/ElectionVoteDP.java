@@ -4,14 +4,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import com.rau.evoting.ElGamal.ChaumPedersenProof;
+import com.rau.evoting.models.Answer;
+import com.rau.evoting.models.CutVote;
+import com.rau.evoting.models.Trustee;
 import com.rau.evoting.models.Vote;
 
 public class ElectionVoteDP {
 
 	public static final String TABLE_NAME = "ElectionVotes";
-	public static final String CUTTED_TABLE_NAME = "CuttedVotes";
+	public static final String CUT_TABLE_NAME = "CutVotes";
 	
 	public static final String ID = "id";
 	public static final String ELECTION_ID = "electId";
@@ -23,7 +27,8 @@ public class ElectionVoteDP {
 	public static final String ANSWER_ID = "answerId";
 	public static final String CHAUM_PEDERSEN1 = "chaumPedersen1";
 	public static final String CHAUM_PEDERSEN2 = "chaumPedersen2";
-	public static final String ENCODED_SEQUENCE = "encodedSequence";
+	
+	public static final String ANSWER_SEQUENCE = "answersSequence";
 	
 	
 	public static int setElectionVote(int elId, int voterId, int auditBallot, String auditSequence, 
@@ -111,8 +116,8 @@ public class ElectionVoteDP {
 		Connection con = null;
 		try {
 			con =  SqlDataProvider.getInstance().getConnection();
-			String sql = "insert into " + CUTTED_TABLE_NAME 
-					+ "(" + ELECTION_ID + "," + ENCODED_SEQUENCE + "," + ANSWER_ID + ") "
+			String sql = "insert into " + CUT_TABLE_NAME 
+					+ "(" + ELECTION_ID + "," + ANSWER_SEQUENCE + "," + ANSWER_ID + ") "
 					+ " (select " + ELECTION_ID +"," + ENCODED1 + "," + ANSWER_ID
 					+ " from " + TABLE_NAME + " where " + ELECTION_ID + "  = ? "
 						+ " and " + AUDIT_BALLOT + " = 2 "
@@ -142,6 +147,72 @@ public class ElectionVoteDP {
 			}
 		}
 		return ;
+	}
+	
+	public static ArrayList<CutVote> getCutVotes(int elId){
+		ArrayList<CutVote> l = new ArrayList<CutVote>();
+		Connection con = null;
+		try {
+			con =  SqlDataProvider.getInstance().getConnection();
+
+			String sql = "select "  + ELECTION_ID + "," +  ANSWER_SEQUENCE + "," + ANSWER_ID 
+					 + " from " + CUT_TABLE_NAME + " where " + ELECTION_ID + " = ?";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setInt(1, elId);
+			ResultSet rs = statement.executeQuery();
+
+			while (rs.next()) {
+				CutVote vote = new CutVote(rs.getInt(ELECTION_ID),
+						rs.getString(ANSWER_SEQUENCE), rs.getInt(ANSWER_ID));
+				l.add(vote);
+			}
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return l;
+	}
+	
+	public static void updateCutVotes(ArrayList<CutVote> votes, int elId) {
+		Connection con = null;
+		try {
+			con =  SqlDataProvider.getInstance().getConnection();
+			con.setAutoCommit(false);
+			String deleteSql = "delete from " + CUT_TABLE_NAME + " where " + ELECTION_ID + " = ?";
+			PreparedStatement delStat = con.prepareStatement(deleteSql);
+			delStat.setInt(1, elId);
+			delStat.executeUpdate();
+
+			String sql = "insert into " + CUT_TABLE_NAME + "(" + ELECTION_ID + "," + ANSWER_SEQUENCE + "," 
+					+ ANSWER_ID + ") values(?,?,?)";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setInt(1, elId);
+			for (CutVote vote : votes) {
+				statement.setString(2, vote.getAnswersSequence());
+				statement.setInt(3, vote.getAnswerId());
+				statement.executeUpdate();
+			}
+			con.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return;
 	}
 	
 }

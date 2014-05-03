@@ -66,7 +66,7 @@ public class OpenedElection {
 				e.printStackTrace();
 			}
 		}
-		return "";
+		return "Home?faces-redirect=true";
 	}
 	
 	public String fromElections(int id) {

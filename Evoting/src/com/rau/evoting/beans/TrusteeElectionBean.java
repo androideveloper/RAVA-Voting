@@ -83,7 +83,7 @@ public class TrusteeElectionBean {
 			FileWriter fw = new FileWriter(file);
 			fw.write(elHelper.getPrivateKey());
 			fw.close();
-			MailService.sendMessageWithFile(trustee.getEmail(), "Private Key", "This is your private key for " + election.getName() + " evoting", filename);
+			MailService.sendMessageWithFile(trustee.getEmail(), "Private Key", "This is your private key for " + election.getName() + " election", filename);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
