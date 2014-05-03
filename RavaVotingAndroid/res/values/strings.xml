@@ -18,6 +18,19 @@
     <string name="next">Next</string>
     <string name="y1">y1:</string>
     <string name="y2">y2:</string>
-    <string name="note1">Note that y1 = a and y2 = b/m</string>
+    <string name="a1">a1:</string>
+    <string name="a2">a2:</string>
+    <string name="result1">Result1:</string>
+    <string name="result2">Result2:</string>
+    <string name="c">c:</string>
+    <string name="s">s:</string>
+    <string name="note1">Note that <b>  y1 </b> = a and <b>  y2 </b>= b/m</string>
+    <string name="note2">Note that a1 = g^k and a2 = y^k </string>
+    <string name="next_note1">To generate random k and calculate a1 and a2 click next</string>
+    <string name="next_note2">To calculate <b>  c </b> click next</string>
+    <string name="next_note3">To get <b>  s </b> click next</string>
+    <string name="next_note4">To calculate result click next</string>
+    <string name="next_note5">As you can see Result1 is equals to a1 and Result2 is equals to a2</string>
+    <string name="next_error">Ooops your message is wrong encoded!!!</string>
 
 </resources>
