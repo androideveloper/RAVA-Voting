@@ -16,5 +16,8 @@
     <string name="message_bigint">Number representation of message:</string>
     <string name="receipt_info">Receipt info</string>
     <string name="next">Next</string>
+    <string name="y1">y1:</string>
+    <string name="y2">y2:</string>
+    <string name="note1">Note that y1 = a and y2 = b/m</string>
 
 </resources>

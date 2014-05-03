@@ -101,6 +101,55 @@
                 android:layout_weight="1"
                 android:singleLine="true" />
         </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/textview_y1_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:text="@string/y1"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textview_y1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:singleLine="true" />
+
+            <TextView
+                android:id="@+id/textview_y2_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:text="@string/y2"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textview_y2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:singleLine="true" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/textview_note"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:text="@string/note1"
+                android:textStyle="bold" />
+        </TableRow>
     </TableLayout>
 
     <Button

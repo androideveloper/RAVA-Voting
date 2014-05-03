@@ -24,6 +24,8 @@ public class ReceiptInfoFragment extends Fragment {
 	private TextView mTextViewB;
 	private TextView mTextViewMessage;
 	private TextView mTextViewMessageBigInt;
+	private TextView mTextViewY1;
+	private TextView mTextViewY2;
 	
 	
 	public static ReceiptInfoFragment newInstance(String a, String b, String message) {
@@ -45,6 +47,8 @@ public class ReceiptInfoFragment extends Fragment {
 		mTextViewB = (TextView)root.findViewById(R.id.textview_b);
 		mTextViewMessage = (TextView)root.findViewById(R.id.textview_message);
 		mTextViewMessageBigInt = (TextView)root.findViewById(R.id.textview_message_bigint);
+		mTextViewY1 = (TextView)root.findViewById(R.id.textview_y1);
+		mTextViewY2 = (TextView)root.findViewById(R.id.textview_y2);
 		return root;
 	}
 
@@ -59,11 +63,16 @@ public class ReceiptInfoFragment extends Fragment {
 		Charset charset = Charset.forName("ISO-8859-1");
 		byte[] bytes = message.getBytes(charset);
 		BigInteger messageBigint = new BigInteger(bytes);
+		BigInteger y1 = a;
+		BigInteger p = new BigInteger("1111111111111111");
+		BigInteger y2 = b.divide(messageBigint).mod(p);
 		
 		mTextViewA.setText(a.toString());
 		mTextViewB.setText(b.toString());
 		mTextViewMessage.setText(message);
 		mTextViewMessageBigInt.setText(messageBigint.toString());
+		mTextViewY1.setText(y1.toString());
+		mTextViewY2.setText(y2.toString());
 		
 	}
 
