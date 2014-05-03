@@ -56,11 +56,11 @@ create table ElectionVotes
 	chaumPedersen2 varchar(1024)
 );
 
-create table CuttedVotes
+create table CutVotes
 (
 	id int primary key identity(1,1),
 	electId int foreign key references Elections(id),
-	encodedSequence varchar(1024),
+	answersSequence varchar(1024),
 	answerId int
 );
 
@@ -83,6 +83,7 @@ drop table ElectionVoters
 drop table ElectionVotes
 drop table ElectionAnswers
 drop table ElectionTrustees
+drop table CutVotes
 drop table Elections
 drop table UserGroups
 drop table Users
@@ -115,3 +116,5 @@ alter table Elections
 add publicKey varchar(max)
 
 delete from ElectionVotes
+
+select * from CutVotes
