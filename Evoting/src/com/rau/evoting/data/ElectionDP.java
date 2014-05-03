@@ -278,6 +278,40 @@ public class ElectionDP {
 		return l;
 	}
 	
+	public static ArrayList<Election> getUserVotedElections(int userId) {
+		ArrayList<Election> l = new ArrayList<Election>();
+		Connection con = null;
+		ElectionState states[] = ElectionState.values();
+		try {
+			con = SqlDataProvider.getInstance().getConnection();
+			String sql = "select e.* from " + TABLE_NAME + " as e join " + ElectionVoteDP.TABLE_NAME + " as v " 
+				+ " on(e." + ID + " = v." + ElectionVoteDP.ELECTION_ID + " )  where v." + ElectionVoteDP.USER_ID + "= ?";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setInt(1, userId);
+			ResultSet rs = statement.executeQuery();
+			while (rs.next()) {
+				Election el = new Election(rs.getInt(ID),
+						rs.getString(NAME), rs.getString(DESCRIPTION),
+						states[rs.getInt(OPEN_STATE)], userId,
+						rs.getString(PUBLIC_KEY));
+				l.add(el);
+			}
+			rs.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return l;
+	}
+	
 	public static Election getTrusteeElection(int id) {
 		Connection con = null;
 		Election el = null;

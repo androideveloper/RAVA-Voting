@@ -52,6 +52,12 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
     
+     <managed-bean>
+        <managed-bean-name>votedEl</managed-bean-name>
+        <managed-bean-class>com.rau.evoting.beans.UserVotedElections</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
     <managed-bean>
         <managed-bean-name>vote</managed-bean-name>
         <managed-bean-class>com.rau.evoting.beans.Vote</managed-bean-class>
@@ -116,6 +122,11 @@
     	<navigation-case>
     	    <from-outcome>my</from-outcome>
     	    <to-view-id>/UserElections.xhtml</to-view-id>
+    	    <redirect/>
+    	</navigation-case>
+    	<navigation-case>
+    	    <from-outcome>myVoted</from-outcome>
+    	    <to-view-id>/UserVotedElections.xhtml</to-view-id>
     	    <redirect/>
     	</navigation-case>
     	<navigation-case>

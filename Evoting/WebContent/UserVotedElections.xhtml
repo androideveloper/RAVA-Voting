@@ -13,7 +13,7 @@
 <script src="scripts/vendor/modernizr.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>My Elections</title>
+<title>My Voted Elections</title>
 </head>
 <body>
 
@@ -22,14 +22,10 @@
 			<ui:include src="/template/CommonHeader.xhtml"></ui:include>
 		</ui:insert>
 
-		<ui:repeat var="el" value="#{userEl.els}">
+		<ui:repeat var="el" value="#{votedEl.els}">
 			<div class="highlight-box-margin">
-				<h:commandLink value="#{el.name}"
-					action="#{election.setElection(el.id)}"
-					rendered="#{el.state == 'ZERO'}">
-				</h:commandLink>
 				<h:link value="#{el.name}"
-					outcome="OpenedElection?faces-redirect=true"
+					outcome="Election?faces-redirect=true"
 					rendered="#{el.state == 'ONE'}">
 					<f:param name="elId" value="#{el.id}"></f:param>
 				</h:link>
