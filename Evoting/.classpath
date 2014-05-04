@@ -46,5 +46,6 @@
 	<classpathentry exported="true" kind="lib" path="WebContent/WEB-INF/lib/qrgen-1.2-sources.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/core-2.3.0.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/javase-2.3.0.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/gson-2.2.4.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
