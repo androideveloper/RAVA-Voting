@@ -24,10 +24,18 @@
 		<ui:insert name="header">
 			<ui:include src="/template/CommonHeader.xhtml"></ui:include>
 		</ui:insert>
-		<div id="info">
+		<div id="info" class="margin20">
 			<h1>#{elect.election.name}</h1>
-			<p class="margin20">#{elect.election.description}</p>
+			<p >#{elect.election.description}</p>
+			<p >Election public key is: #{elect.election.publicKey} </p>
+			<p>Trustees: </p>
+			<ul>
+			<ui:repeat var="tr" value="#{elect.trustees}">
+				<li><h:outputText value="#{tr.email}"></h:outputText> </li>
+			</ui:repeat>
+			</ul>
 		</div>
+		
 		<h:commandButton value="Vote" action="#{vote.fromElection()}"
 			styleClass="button tiny" style="margin-left: 20px;">
 			<f:param name="elId" value="#{elect.election.id}"></f:param>

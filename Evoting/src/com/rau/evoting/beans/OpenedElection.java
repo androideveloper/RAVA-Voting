@@ -1,8 +1,10 @@
 package com.rau.evoting.beans;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.mail.MessagingException;
 
 import com.rau.evoting.data.ElectionDP;
@@ -11,11 +13,13 @@ import com.rau.evoting.data.ElectionVoteDP;
 import com.rau.evoting.models.Election;
 import com.rau.evoting.models.Trustee;
 import com.rau.evoting.utils.MailService;
+import com.rau.evoting.utils.Util;
 
 public class OpenedElection {
 	
 	private int elId;
 	private Election election;
+	private ArrayList<Trustee> trustees;
 	
 	public OpenedElection() {
 	}
@@ -37,7 +41,16 @@ public class OpenedElection {
 		this.elId = elId;
 	}
 
-/*	public void preRender(){
+	public ArrayList<Trustee> getTrustees() {
+		ElectionTrusteeDP.getElectionTrustees(elId);
+		return trustees;
+	}
+
+	public void setTrustees(ArrayList<Trustee> trustees) {
+		this.trustees = trustees;
+	}
+
+	/*	public void preRender(){
 		System.out.println("election id: " + elId);
 		election = ElectionDP.getElection(elId);
 		int userId = (int) FacesContext.getCurrentInstance()
@@ -68,7 +81,7 @@ public class OpenedElection {
 		}
 		return "Home?faces-redirect=true";
 	}
-	
+
 	public String fromElections(int id) {
 		election = ElectionDP.getElection(id);
 		/*FacesContext context = FacesContext.getCurrentInstance();
