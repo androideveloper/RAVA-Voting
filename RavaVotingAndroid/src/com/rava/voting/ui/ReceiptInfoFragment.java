@@ -53,10 +53,10 @@ public class ReceiptInfoFragment extends Fragment {
 
 	private int clicks = 0;
 
-	private BigInteger p = new BigInteger("1212898912");
-	private BigInteger g = new BigInteger("34545346346");
-	private BigInteger y = new BigInteger("99894234797432");
-	private BigInteger r = new BigInteger("43245626364");
+	private BigInteger p ;
+	private BigInteger g ;
+	private BigInteger y;
+	//private BigInteger r = new BigInteger("43245626364");
 	private BigInteger a;
 	private BigInteger b;
 	private BigInteger y1;
@@ -125,9 +125,14 @@ public class ReceiptInfoFragment extends Fragment {
 				new BigIntegerTypeAdapter()).create();
 		mChaumPedersen = gson.fromJson(content, ChaumPedersen.class);
 		
-		a = new BigInteger("111111");
-		b = new BigInteger("121312312412");
-		String message = "1.2.3";
+		a = mChaumPedersen.getA();
+		b = mChaumPedersen.getB();
+		String message = mChaumPedersen.getMessage();
+		
+		p = mChaumPedersen.getP();   
+		g = mChaumPedersen.getG();
+		y = mChaumPedersen.getY();
+		
 		Charset charset = Charset.forName("ISO-8859-1");
 		byte[] bytes = message.getBytes(charset);
 		BigInteger messageBigint = new BigInteger(bytes);
@@ -158,9 +163,9 @@ public class ReceiptInfoFragment extends Fragment {
 				mTableRowStep2.setVisibility(View.VISIBLE);
 
 				// change to random
-				k = new BigInteger("1231365");
-				a1 = g.modPow(k, p);
-				a2 = y.modPow(k, p);
+				//k = new BigInteger("1231365");
+				a1 = mChaumPedersen.getA1();// g.modPow(k, p);
+				a2 = mChaumPedersen.getA2(); //y.modPow(k, p);
 
 				mTextViewA1.setText(a1.toString());
 				mTextViewA2.setText(a2.toString());
@@ -188,8 +193,8 @@ public class ReceiptInfoFragment extends Fragment {
 			case 3:
 				mTableRowS.setVisibility(View.VISIBLE);
 
-				BigInteger temp2 = c.multiply(r).mod(p);
-				s = k.subtract(temp2).mod(p);
+				//BigInteger temp2 = c.multiply(r).mod(p);
+				s = mChaumPedersen.getS(); //k.subtract(temp2).mod(p);
 
 				mTextViewS.setText(s.toString());
 
