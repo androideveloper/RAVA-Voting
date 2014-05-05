@@ -135,11 +135,11 @@ public class Vote {
 
 		ChaumPedersenProof chaum = new ChaumPedersenProof();
 		ChaumPedersen cp = chaum.generate(new BigInteger(publicKey),
-				(selectedDecodedList == 1 ? r2 : r1));
-		cp.setMessage(selectedDecodedList == 1 ? decoded2 : decoded1);
+				(selectedDecodedList == 1 ? r1 : r2));
+		cp.setMessage(selectedDecodedList == 1 ? decoded1 : decoded2);
 
 		Pair<BigInteger, BigInteger> enc = CryptoUtil
-				.getEncodedA_B(selectedDecodedList == 1 ? encoded2 : encoded1);
+				.getEncodedA_B(selectedDecodedList == 1 ? encoded1 : encoded2);
 
 		cp.setA(enc.getFirst());
 		cp.setB(enc.getSecond());
