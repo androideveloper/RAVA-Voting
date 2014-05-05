@@ -49,13 +49,17 @@ create table ElectionVotes
 	userId int foreign key references Users(id),
 	auditBallot tinyint,
 	auditSequence varchar(256),
-	encoded1 nvarchar(1024),
-	encoded2 nvarchar(1024),
+	encoded1 varchar(1024),--collate SQL_Latin1_General_CP850_CS_AS,
+	encoded2 varchar(1024),-- collate SQL_Latin1_General_CP850_CS_AS,
+	--enc1 varchar(1024),
+	--enc2 varchar(1024) ,
 	answerId int,
 	--chaumPedersen1 varchar(1024),
 	--chaumPedersen2 varchar(1024)
 	chaumPedersen varchar(max)
 );
+
+SELECT SERVERPROPERTY('Collation')
 
 create table CutVotes
 (
