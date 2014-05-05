@@ -13,6 +13,10 @@ import android.widget.Button;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.rau.evoting.ElGamal.BigIntegerTypeAdapter;
+import com.rau.evoting.ElGamal.ChaumPedersen;
 import com.rava.voting.R;
 
 public class ReceiptInfoFragment extends Fragment {
@@ -64,14 +68,13 @@ public class ReceiptInfoFragment extends Fragment {
 	private BigInteger s;
 	private BigInteger res1;
 	private BigInteger res2;
+	
+	private ChaumPedersen mChaumPedersen;
 
-	public static ReceiptInfoFragment newInstance(String a, String b,
-			String message) {
+	public static ReceiptInfoFragment newInstance(String content) {
 		ReceiptInfoFragment fragment = new ReceiptInfoFragment();
 		Bundle args = new Bundle();
-		args.putString("a", a);
-		args.putString("b", b);
-		args.putString("message", message);
+		args.putString("content", content);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -95,7 +98,8 @@ public class ReceiptInfoFragment extends Fragment {
 		mTextViewRes1 = (TextView) root.findViewById(R.id.textview_res1);
 		mTextViewRes2 = (TextView) root.findViewById(R.id.textview_res2);
 		mTextViewNote = (TextView) root.findViewById(R.id.textview_note);
-		mTextViewNextNote = (TextView) root.findViewById(R.id.textview_next_note);
+		mTextViewNextNote = (TextView) root
+				.findViewById(R.id.textview_next_note);
 		mButtonNext = (Button) root.findViewById(R.id.button_next);
 		mButtonNext.setOnClickListener(new NextClick());
 		mTableRowA = (TableRow) root.findViewById(R.id.tablerow_a);
@@ -115,9 +119,15 @@ public class ReceiptInfoFragment extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 
 		Bundle args = getArguments();
-		a = new BigInteger(args.getString("a"));
-		b = new BigInteger(args.getString("b"));
-		String message = args.getString("message");
+		String content = args.getString("content");
+		
+		Gson gson = new GsonBuilder().registerTypeAdapter(BigInteger.class,
+				new BigIntegerTypeAdapter()).create();
+		mChaumPedersen = gson.fromJson(content, ChaumPedersen.class);
+		
+		a = new BigInteger("111111");
+		b = new BigInteger("121312312412");
+		String message = "1.2.3";
 		Charset charset = Charset.forName("ISO-8859-1");
 		byte[] bytes = message.getBytes(charset);
 		BigInteger messageBigint = new BigInteger(bytes);
@@ -146,69 +156,72 @@ public class ReceiptInfoFragment extends Fragment {
 				mTableRowMessage.setVisibility(View.GONE);
 				mTableRowMessageBigInt.setVisibility(View.GONE);
 				mTableRowStep2.setVisibility(View.VISIBLE);
-				
+
 				// change to random
 				k = new BigInteger("1231365");
 				a1 = g.modPow(k, p);
 				a2 = y.modPow(k, p);
-				
+
 				mTextViewA1.setText(a1.toString());
 				mTextViewA2.setText(a2.toString());
-				
+
 				mTextViewNote.setText(getResources().getString(R.string.note2));
-				mTextViewNextNote.setText(getResources().getString(R.string.next_note2));
-				
+				mTextViewNextNote.setText(getResources().getString(
+						R.string.next_note2));
+
 				break;
-			
+
 			case 2:
 				mTableRowC.setVisibility(View.VISIBLE);
 				String temp = y1.toString().concat(y2.toString());
 				long t2 = temp.hashCode();
 				c = BigInteger.valueOf(t2);
-				
+
 				mTextViewC.setText(c.toString());
-				
+
 				mTextViewNote.setVisibility(View.GONE);
-				mTextViewNextNote.setText(getResources().getString(R.string.next_note3));
-				
+				mTextViewNextNote.setText(getResources().getString(
+						R.string.next_note3));
+
 				break;
-				
+
 			case 3:
 				mTableRowS.setVisibility(View.VISIBLE);
-				
+
 				BigInteger temp2 = c.multiply(r).mod(p);
 				s = k.subtract(temp2).mod(p);
-				
+
 				mTextViewS.setText(s.toString());
-				
-				//mTextViewNote.setVisibility(View.GONE);
-				mTextViewNextNote.setText(getResources().getString(R.string.next_note4));
-				
+
+				// mTextViewNote.setVisibility(View.GONE);
+				mTextViewNextNote.setText(getResources().getString(
+						R.string.next_note4));
+
 				break;
 			case 4:
 				mButtonNext.setVisibility(View.GONE);
 				mTableRowRes.setVisibility(View.VISIBLE);
-				
+
 				res1 = g.modPow(s, p).multiply(y1.modPow(c, p).mod(p));
 				res2 = y.modPow(s, p).multiply(y2.modPow(c, p).mod(p));
-				
+
 				mTextViewRes1.setText(res1.toString());
 				mTextViewRes2.setText(res2.toString());
-				
-				if (a1.equals(res1) && a2.equals(res2)){
-					mTextViewNextNote.setText(getResources().getString(R.string.next_note5));
-				}else{
-					mTextViewNextNote.setText(getResources().getString(R.string.next_error));
-					mTextViewNextNote.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+
+				if (a1.equals(res1) && a2.equals(res2)) {
+					mTextViewNextNote.setText(getResources().getString(
+							R.string.next_note5));
+				} else {
+					mTextViewNextNote.setText(getResources().getString(
+							R.string.next_error));
+					mTextViewNextNote.setTextColor(getResources().getColor(
+							android.R.color.holo_red_dark));
 				}
-				
+
 				break;
-			
-				
+
 			}
 
-			
-		
 		}
 
 	}

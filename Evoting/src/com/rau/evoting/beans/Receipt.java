@@ -2,8 +2,11 @@ package com.rau.evoting.beans;
 
 import javax.faces.event.AjaxBehaviorEvent;
 
+import org.primefaces.model.StreamedContent;
+
 import com.rau.evoting.data.ElectionVoteDP;
 import com.rau.evoting.models.Vote;
+import com.rau.evoting.utils.BarcodeHelper;
 import com.rau.evoting.utils.StringHelper;
 
 public class Receipt {
@@ -14,11 +17,20 @@ public class Receipt {
 	private String hash2;
 	private boolean showReceipt;
 	private boolean receiptFound;
+	private StreamedContent barcodeReceipt;
 
 	public Receipt() {
+	}
+
+	public String navigateTo() {
+		id = "";
 		showReceipt = false;
 		receiptFound = false;
 		vote = null;
+		barcodeReceipt = null;
+		hash1 = "";
+		hash2 = "";
+		return "receipts";
 	}
 
 	public void setBallot(AjaxBehaviorEvent event) {
@@ -29,6 +41,9 @@ public class Receipt {
 			if (vote != null) {
 				hash1 = StringHelper.getSHA256hash(vote.getEncoded1());
 				hash2 = StringHelper.getSHA256hash(vote.getEncoded2());
+				System.out.println(vote.getChaumPedersen());
+				barcodeReceipt = BarcodeHelper.getBarcodeFromString(vote
+						.getChaumPedersen());
 				showReceipt = true;
 				receiptFound = true;
 			} else {
@@ -89,6 +104,14 @@ public class Receipt {
 
 	public void setReceiptFound(boolean receiptFound) {
 		this.receiptFound = receiptFound;
+	}
+
+	public StreamedContent getBarcodeReceipt() {
+		return barcodeReceipt;
+	}
+
+	public void setBarcodeReceipt(StreamedContent barcodeReceipt) {
+		this.barcodeReceipt = barcodeReceipt;
 	}
 
 }

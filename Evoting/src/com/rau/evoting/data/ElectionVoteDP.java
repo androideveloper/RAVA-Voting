@@ -48,7 +48,7 @@ public class ElectionVoteDP {
 					+ ELECTION_ID + "," + USER_ID +  "," + AUDIT_BALLOT +  "," 
 					+ AUDIT_SEQUENCE + "," + ENCODED1 + "," + ENCODED2 + "," + ANSWER_ID 
 					+ "," + CHAUM_PEDERSEN  
-					+ ") values(?,?,?,?,?,?,?,?,?)" 
+					+ ") values(?,?,?,?,?,?,?,?)" 
 					+ " select SCOPE_IDENTITY() as " + ID;
 			statement = con.prepareStatement(sql);
 			statement.setInt(1, elId);

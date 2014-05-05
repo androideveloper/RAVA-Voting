@@ -40,6 +40,7 @@ public class Vote {
 	private String encoded2;
 	private StreamedContent barcode1;
 	private StreamedContent barcode2;
+	private StreamedContent barcodeReceipt;
 	private int selectedDecodedList;
 	private boolean showDecode;
 	private boolean showDecoded1;
@@ -77,6 +78,7 @@ public class Vote {
 		selectedVote = 1;
 		barcode1 = null;
 		barcode2 = null;
+		barcodeReceipt = null;
 		encoded1 = null;
 		encoded2 = null;
 		a1 = new ArrayList<Integer>();
@@ -136,11 +138,12 @@ public class Vote {
 				(selectedDecodedList == 1 ? r2 : r1));
 		cp.setMessage(selectedDecodedList == 1 ? decoded2 : decoded1);
 
-		Pair<BigInteger, BigInteger> enc = CryptoUtil.getEncodedA_B(selectedDecodedList == 1 ? encoded2 : encoded1);
-		
+		Pair<BigInteger, BigInteger> enc = CryptoUtil
+				.getEncodedA_B(selectedDecodedList == 1 ? encoded2 : encoded1);
+
 		cp.setA(enc.getFirst());
 		cp.setB(enc.getSecond());
-		
+
 		Gson gson = new GsonBuilder().registerTypeAdapter(BigInteger.class,
 				new BigIntegerTypeAdapter()).create();
 		chaumPedersen = gson.toJson(cp);
@@ -149,6 +152,7 @@ public class Vote {
 				selectedDecodedList, (selectedDecodedList == 1 ? decoded1
 						: decoded2), encoded1, encoded2, selectedVote,
 				chaumPedersen);
+		barcodeReceipt = BarcodeHelper.getBarcodeFromString(chaumPedersen);
 
 		if (receiptId == -1) {
 			return "Home?faces-redirect=true";
@@ -224,6 +228,14 @@ public class Vote {
 
 	public void setBarcode2(StreamedContent encoded2) {
 		this.barcode2 = encoded2;
+	}
+
+	public StreamedContent getBarcodeReceipt() {
+		return barcodeReceipt;
+	}
+
+	public void setBarcodeReceipt(StreamedContent barcodeReceipt) {
+		this.barcodeReceipt = barcodeReceipt;
 	}
 
 	public int getSelectedDecodedList() {

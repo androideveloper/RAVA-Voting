@@ -20,7 +20,6 @@ public class ScannerFragment extends Fragment {
 	public static final String TAG = "ScannerFragment";
 
 	private Button mButtonScan;
-	private TextView mTextViewFormat;
 	private TextView mTextViewContent;
 
 	public static ScannerFragment newInstance() {
@@ -39,7 +38,6 @@ public class ScannerFragment extends Fragment {
 		View root = inflater.inflate(R.layout.fragment_scanner, container,
 				false);
 		mButtonScan = (Button) root.findViewById(R.id.button_scan);
-		mTextViewFormat = (TextView) root.findViewById(R.id.scan_format);
 		mTextViewContent = (TextView) root.findViewById(R.id.scan_content);
 
 		mButtonScan.setOnClickListener(new ScanClick());
@@ -51,15 +49,20 @@ public class ScannerFragment extends Fragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		IntentResult scanningResult = IntentIntegrator.parseActivityResult(
 				requestCode, resultCode, data);
-		if (scanningResult != null) {
-			String format = scanningResult.getFormatName();
+		if (scanningResult != null && scanningResult.getContents() != null) {
 			String content = scanningResult.getContents();
-			mTextViewFormat.setText("FORMAT: " + format);
 			mTextViewContent.setText("CONTENT: " + content);
+
+			FragmentTransaction ft = getActivity().getFragmentManager()
+					.beginTransaction();
+			ReceiptInfoFragment frag = ReceiptInfoFragment.newInstance(content);
+			ft.replace(R.id.container, frag, ReceiptInfoFragment.TAG);
+			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+			ft.addToBackStack(null);
+			ft.commit();
 		} else {
 			Toast.makeText(getActivity(), "No result", Toast.LENGTH_SHORT)
 					.show();
-			mTextViewFormat.setText("No result");
 			mTextViewContent.setText("No result");
 		}
 	}
@@ -68,21 +71,14 @@ public class ScannerFragment extends Fragment {
 
 		@Override
 		public void onClick(View v) {
-		/*	IntentIntegrator integrator = new IntentIntegrator(
+			IntentIntegrator integrator = new IntentIntegrator(
 					ScannerFragment.this);
 			integrator.addExtra("SCAN_WIDTH", 500);
 			integrator.addExtra("SCAN_HEIGHT", 500);
 			integrator
 					.addExtra("PROMPT_MESSAGE",
 							"Place a receipt barcode inside the viewfinder square to scan it");
-			integrator.initiateScan(IntentIntegrator.QR_CODE_TYPES); */
-			
-			FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
-			ReceiptInfoFragment frag = ReceiptInfoFragment.newInstance("111111", "121312312412", "1.2.3");
-			ft.replace(R.id.container, frag, ReceiptInfoFragment.TAG);
-			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-			ft.addToBackStack(null);
-			ft.commit();
+			integrator.initiateScan(IntentIntegrator.QR_CODE_TYPES);
 		}
 
 	}
