@@ -31,9 +31,8 @@ import com.rau.evoting.utils.Util;
 
 public class Vote {
 
-	private ArrayList<Answer> answers;
-	private ArrayList<Integer> a1;
-	private ArrayList<Integer> a2;
+	private ArrayList<Answer> answers1;
+	private ArrayList<Answer> answers2;
 	private boolean showEncode;
 	private boolean showShuffle;
 	private String encoded1;
@@ -68,25 +67,26 @@ public class Vote {
 	public String fromElection() {
 		elId = Integer.valueOf(FacesContext.getCurrentInstance()
 				.getExternalContext().getRequestParameterMap().get("elId"));
-		answers = ElectonAnswerDP.getElectionAnswers(elId);
+		answers1 = ElectonAnswerDP.getElectionAnswers(elId);
+		answers2 = ElectonAnswerDP.getElectionAnswers(elId);
 		showEncode = false;
 		showShuffle = true;
 		selectedDecodedList = 1;
+		selectedVote = 0;
 		showDecode = false;
 		showDecoded1 = false;
 		showDecoded2 = false;
-		selectedVote = 1;
 		barcode1 = null;
 		barcode2 = null;
 		barcodeReceipt = null;
 		encoded1 = null;
 		encoded2 = null;
-		a1 = new ArrayList<Integer>();
+		/*a1 = new ArrayList<Integer>();
 		a2 = new ArrayList<Integer>();
 		for (Answer ans : answers) {
 			a1.add(ans.getId());
 			a2.add(ans.getId());
-		}
+		}*/
 		election = ElectionDP.getElection(elId);
 		publicKey = election.getPublicKey();
 
@@ -94,19 +94,19 @@ public class Vote {
 	}
 
 	public void shuffle(AjaxBehaviorEvent event) {
-		Util.shuffle(a1);
-		Util.shuffle(a2);
+		Util.shuffle(answers1);
+		Util.shuffle(answers2);
 		showEncode = true;
 	}
 
 	public void encode(AjaxBehaviorEvent event) {
 		showShuffle = false;
-		decoded1 = StringHelper.converInttListToString(a1);
+		decoded1 = StringHelper.convertAnswersIdsToString(answers1);
 		ElGamalHelper e1 = new ElGamalHelper(publicKey);
 		encoded1 = e1.encodeBigInt(decoded1);
 		System.out.println("enc + dec: " + encoded1 + " " + decoded1);
 		barcode1 = BarcodeHelper.getBarcodeFromString(encoded1);
-		decoded2 = StringHelper.converInttListToString(a2);
+		decoded2 = StringHelper.convertAnswersIdsToString(answers2);
 		r1 = e1.getR();
 		ElGamalHelper e2 = new ElGamalHelper(publicKey);
 		encoded2 = e2.encodeBigInt(decoded2);
@@ -132,7 +132,24 @@ public class Vote {
 
 	public String vote() {
 		// vote
-
+		
+		if(selectedDecodedList == 1) {
+			//selectedVote = a2.indexOf(selectedVote) + 1;
+			for(int i = 0; i < answers2.size(); ++i) {
+				if(answers2.get(i).getId() == selectedVote) {
+					selectedVote = i+1;
+					break;
+				}
+			}
+		} else {
+			for(int i = 0; i < answers1.size(); ++i) {
+				if(answers1.get(i).getId() == selectedVote) {
+					selectedVote = i+1;
+					break;
+				}
+			}
+		}
+		
 		ChaumPedersenProof chaum = new ChaumPedersenProof();
 		ChaumPedersen cp = chaum.generate(new BigInteger(publicKey),
 				(selectedDecodedList == 1 ? r1 : r2));
@@ -174,28 +191,21 @@ public class Vote {
 		return "AfterVote?faces-redirect=true";
 	}
 
-	public ArrayList<Answer> getAnswers() {
-		return answers;
+	
+	public ArrayList<Answer> getAnswers1() {
+		return answers1;
 	}
 
-	public void setAnswers(ArrayList<Answer> answers) {
-		this.answers = answers;
+	public void setAnswers1(ArrayList<Answer> answers1) {
+		this.answers1 = answers1;
 	}
 
-	public ArrayList<Integer> getA1() {
-		return a1;
+	public ArrayList<Answer> getAnswers2() {
+		return answers2;
 	}
 
-	public void setA1(ArrayList<Integer> a1) {
-		this.a1 = a1;
-	}
-
-	public ArrayList<Integer> getA2() {
-		return a2;
-	}
-
-	public void setA2(ArrayList<Integer> a2) {
-		this.a2 = a2;
+	public void setAnswers2(ArrayList<Answer> answers2) {
+		this.answers2 = answers2;
 	}
 
 	public boolean isShowEncode() {

@@ -42,7 +42,7 @@ public class OpenedElection {
 	}
 
 	public ArrayList<Trustee> getTrustees() {
-		ElectionTrusteeDP.getElectionTrustees(elId);
+		trustees = ElectionTrusteeDP.getElectionTrustees(elId);
 		return trustees;
 	}
 
