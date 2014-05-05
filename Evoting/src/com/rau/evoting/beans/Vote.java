@@ -103,13 +103,13 @@ public class Vote {
 		showShuffle = false;
 		decoded1 = StringHelper.converInttListToString(a1);
 		ElGamalHelper e1 = new ElGamalHelper(publicKey);
-		encoded1 = e1.encode(decoded1);
+		encoded1 = e1.encodeBigInt(decoded1);
 		System.out.println("enc + dec: " + encoded1 + " " + decoded1);
 		barcode1 = BarcodeHelper.getBarcodeFromString(encoded1);
 		decoded2 = StringHelper.converInttListToString(a2);
 		r1 = e1.getR();
 		ElGamalHelper e2 = new ElGamalHelper(publicKey);
-		encoded2 = e2.encode(decoded2);
+		encoded2 = e2.encodeBigInt(decoded2);
 		System.out.println("enc + dec2: " + encoded2 + " " + decoded2);
 		barcode2 = BarcodeHelper.getBarcodeFromString(encoded2);
 		r2 = e2.getR();

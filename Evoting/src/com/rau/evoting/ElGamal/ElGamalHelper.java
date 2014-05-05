@@ -16,7 +16,7 @@ public class ElGamalHelper {
 	private ElGamalPrivateKeyParameters prKeyParams;
 	private ElGamalPublicKeyParameters pubKeyParams;
 	private BigInteger r = null;
-	private Charset charset = Charset.forName("ISO-8859-1");
+	private Charset charset = Charset.forName("ISO-8859-1");//Charset.forName("UTF-8");//Charset.forName("ISO-8859-1");
 
 	public ElGamalHelper() {
 
@@ -25,12 +25,20 @@ public class ElGamalHelper {
 						new BigInteger("1"))), params);
 		pubKeyParams = new ElGamalPublicKeyParameters(params.getG().modPow(
 				prKeyParams.getX(), params.getP()), params);
+		
+		System.out.println("public:" + pubKeyParams.getY());
+		System.out.println("public:" + pubKeyParams.getY().toString());
+		System.out.println("private:" + prKeyParams.getX());
 	}
 
 	public ElGamalHelper(String pubKey) {
 		
 		pubKeyParams = new ElGamalPublicKeyParameters(new BigInteger(pubKey),
 				params);
+		
+		System.out.println("public:" + pubKeyParams.getY());
+		//System.out.println("public:" + pubKeyParams.getY().toString());
+		//System.out.println("private:" + prKeyParams.getX());
 	}
 
 	public ElGamalHelper(String pubKey, String prKey) {
@@ -39,6 +47,10 @@ public class ElGamalHelper {
 				params);
 		pubKeyParams = new ElGamalPublicKeyParameters(new BigInteger(pubKey),
 				params);
+		
+		System.out.println("public:" + pubKeyParams.getY());
+		//System.out.println("public:" + pubKeyParams.getY().toString());
+		System.out.println("private:" + prKeyParams.getX());
 	}
 
 	public String encode(String text) {
@@ -48,12 +60,33 @@ public class ElGamalHelper {
 		byte[] b = eng.encode(in, 0, in.length);
 		r = eng.getR();
 		String encoded = new String(b, charset);
+
+		return encoded;
+	}
+	
+	public String encodeBigInt(String text) {
+		EncryptEngine eng = new EncryptEngine();
+		eng.initForEncrypt(pubKeyParams);
+		byte[] in = text.getBytes(charset);
+		byte[] b = eng.encode(in, 0, in.length);
+		r = eng.getR();
+		String encoded = (new BigInteger(b)).toString();
 		return encoded;
 	}
 
 	public String decode(String codedText) {
 		DecryptEngine eng = new DecryptEngine();
 		byte[] in = codedText.getBytes(charset);
+		eng.initForDecrypt(prKeyParams);
+		byte[] b = eng.decode(in, 0, in.length);
+		String decoded = new String(b, charset);
+		return decoded;
+	}
+	
+	public String decodeBigInt(String codedText) {
+		DecryptEngine eng = new DecryptEngine();
+		BigInteger bg = new BigInteger(codedText);
+		byte[] in = bg.toByteArray(); 
 		eng.initForDecrypt(prKeyParams);
 		byte[] b = eng.decode(in, 0, in.length);
 		String decoded = new String(b, charset);

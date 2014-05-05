@@ -39,7 +39,7 @@ public class BarcodeHelper {
 		String s = StringHelper.converInttListToString(list);
 		// System.out.println("string:" + s);
 		ElGamalHelper e = new ElGamalHelper(pubKey);
-		String encoded = e.encode(s);
+		String encoded = e.encodeBigInt(s);
 		System.out.println("encoded:" + encoded);
 		return getBarcodeFromString(encoded);
 	}

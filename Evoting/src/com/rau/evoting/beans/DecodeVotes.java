@@ -18,33 +18,39 @@ public class DecodeVotes {
 	private int electId;
 	private String privateKey = "";
 	private boolean validToken;
-	
+
 	public DecodeVotes() {
 		Map<String, String> reqMap = FacesContext.getCurrentInstance()
 				.getExternalContext().getRequestParameterMap();
 		validToken = true;
-		if(reqMap.containsKey("trId")){
+		if (reqMap.containsKey("trId")) {
 			electId = Integer.valueOf(reqMap.get("elId"));
 			int trId = Integer.valueOf(reqMap.get("trId"));
 			String token = reqMap.get("token");
 			Trustee tr = ElectionTrusteeDP.getElectionTrustee(trId);
-			if(!tr.getToken().equals(token)) {
+			if (!tr.getToken().equals(token)) {
 				validToken = false;
 			} else {
 				validToken = true;
 			}
 		}
 	}
-	
+
 	public String decode() {
-		electId =  Integer.valueOf(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("elId"));
+		electId = Integer.valueOf(FacesContext.getCurrentInstance()
+				.getExternalContext().getRequestParameterMap().get("elId"));
 		System.out.println("private key is: " + privateKey);
 		System.out.println("election id is: " + electId);
-		Election election =  ElectionDP.getElection(electId);
-		ElGamalHelper gamal = new ElGamalHelper(election.getPublicKey(), privateKey);
+		Election election = ElectionDP.getElection(electId);
+		ElGamalHelper gamal = new ElGamalHelper(election.getPublicKey(),
+				privateKey);
+
 		ArrayList<CutVote> votes = ElectionVoteDP.getCutVotes(election.getId());
-		for(CutVote vote: votes){
-			vote.setAnswersSequence(gamal.decode(vote.getAnswersSequence()));
+		for (CutVote vote : votes) {
+			System.out.println("encoded answer sequence: "
+					+ vote.getAnswersSequence());
+			vote.setAnswersSequence(gamal.decodeBigInt(vote
+					.getAnswersSequence()));
 			System.out.println("answer sequence: " + vote.getAnswersSequence());
 		}
 		ElectionVoteDP.updateCutVotes(votes, election.getId());
@@ -73,5 +79,5 @@ public class DecodeVotes {
 
 	public void setElectId(int electId) {
 		this.electId = electId;
-	}	
+	}
 }
