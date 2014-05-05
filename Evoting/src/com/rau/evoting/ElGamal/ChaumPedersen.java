@@ -1,9 +1,14 @@
 package com.rau.evoting.ElGamal;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 
-public class ChaumPedersen {
+public class ChaumPedersen implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private BigInteger p;
 	private BigInteger g;
 	private BigInteger y;
@@ -19,9 +24,16 @@ public class ChaumPedersen {
 	public ChaumPedersen(BigInteger p, BigInteger g, BigInteger y,
 			BigInteger a, BigInteger b, String message, BigInteger a1,
 			BigInteger a2, BigInteger s) {
+		super();
+		this.p = p;
+		this.g = g;
+		this.y = y;
 		this.a = a;
 		this.b = b;
 		this.message = message;
+		this.a1 = a1;
+		this.a2 = a2;
+		this.s = s;
 	}
 
 	public BigInteger getP() {
