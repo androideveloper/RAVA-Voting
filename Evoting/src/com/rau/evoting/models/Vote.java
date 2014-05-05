@@ -1,6 +1,5 @@
 package com.rau.evoting.models;
 
-import java.math.BigInteger;
 
 public class Vote {
 
@@ -12,12 +11,14 @@ public class Vote {
 	private String encoded2;
 	private String auditSequence;
 	private int answerId;
-	private String chaumPedersen1;
-	private String chaumPedersen2;
-	
+	private String chaumPedersen;
+
+	// private String chaumPedersen1;
+	// private String chaumPedersen2;
+
 	public Vote(int id, int electId, int voterId, int auditBallot,
-			String encoded1, String encoded2, String auditSequence, int answerId, 
-			String chaumPedersen1, String chaumPedersen2) {
+			String encoded1, String encoded2, String auditSequence,
+			int answerId, String chaumPedersen) {
 		this.id = id;
 		this.electId = electId;
 		this.voterId = voterId;
@@ -26,8 +27,7 @@ public class Vote {
 		this.encoded2 = encoded2;
 		this.auditSequence = auditSequence;
 		this.answerId = answerId;
-		this.chaumPedersen1 = chaumPedersen1;
-		this.chaumPedersen2 = chaumPedersen2;
+		this.chaumPedersen = chaumPedersen;
 	}
 
 	public int getId() {
@@ -94,20 +94,12 @@ public class Vote {
 		this.answerId = answerId;
 	}
 
-	public String getChaumPedersen1() {
-		return chaumPedersen1;
+	public String getChaumPedersen() {
+		return chaumPedersen;
 	}
 
-	public void setChaumPedersen1(String chaumPedersen1) {
-		this.chaumPedersen1 = chaumPedersen1;
+	public void setChaumPedersen(String chaumPedersen) {
+		this.chaumPedersen = chaumPedersen;
 	}
 
-	public String getChaumPedersen2() {
-		return chaumPedersen2;
-	}
-
-	public void setChaumPedersen2(String chaumPedersen2) {
-		this.chaumPedersen2 = chaumPedersen2;
-	}	
-	
 }

@@ -9,7 +9,12 @@ import javax.mail.MessagingException;
 
 import org.primefaces.model.StreamedContent;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.rau.evoting.ElGamal.BigIntegerTypeAdapter;
+import com.rau.evoting.ElGamal.ChaumPedersen;
 import com.rau.evoting.ElGamal.ChaumPedersenProof;
+import com.rau.evoting.ElGamal.CryptoUtil;
 import com.rau.evoting.ElGamal.ElGamalHelper;
 import com.rau.evoting.data.ElectionDP;
 import com.rau.evoting.data.ElectionVoteDP;
@@ -24,9 +29,8 @@ import com.rau.evoting.utils.Pair;
 import com.rau.evoting.utils.StringHelper;
 import com.rau.evoting.utils.Util;
 
-
 public class Vote {
-	
+
 	private ArrayList<Answer> answers;
 	private ArrayList<Integer> a1;
 	private ArrayList<Integer> a2;
@@ -48,18 +52,18 @@ public class Vote {
 	private String hash1;
 	private String hash2;
 	private int receiptId;
-		
+
 	private Election election;
 	private String publicKey;
 	private BigInteger r1;
 	private BigInteger r2;
-	private String chaumPedersen1;
-	private String chaumPedersen2;
-	
+	private String chaumPedersen;
+
 	public Vote() {
-		userId = (int)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId");
+		userId = (int) FacesContext.getCurrentInstance().getExternalContext()
+				.getSessionMap().get("userId");
 	}
-	
+
 	public String fromElection() {
 		elId = Integer.valueOf(FacesContext.getCurrentInstance()
 				.getExternalContext().getRequestParameterMap().get("elId"));
@@ -77,22 +81,22 @@ public class Vote {
 		encoded2 = null;
 		a1 = new ArrayList<Integer>();
 		a2 = new ArrayList<Integer>();
-		for(Answer ans : answers) {
+		for (Answer ans : answers) {
 			a1.add(ans.getId());
 			a2.add(ans.getId());
 		}
 		election = ElectionDP.getElection(elId);
 		publicKey = election.getPublicKey();
-		
+
 		return "Vote?faces-redirect=true";
 	}
-	
+
 	public void shuffle(AjaxBehaviorEvent event) {
 		Util.shuffle(a1);
 		Util.shuffle(a2);
 		showEncode = true;
 	}
-	
+
 	public void encode(AjaxBehaviorEvent event) {
 		showShuffle = false;
 		decoded1 = StringHelper.converInttListToString(a1);
@@ -110,39 +114,51 @@ public class Vote {
 		showEncode = false;
 		showDecode = true;
 	}
-	
+
 	public void decode(AjaxBehaviorEvent event) {
 		showDecode = false;
 		hash1 = StringHelper.getSHA256hash(encoded1);
 		hash2 = StringHelper.getSHA256hash(encoded2);
-		if(selectedDecodedList == 1){
+		if (selectedDecodedList == 1) {
 			showDecoded1 = true;
-			//make decode logic
+			// make decode logic
 		} else {
 			showDecoded2 = true;
-			//make decode logic
+			// make decode logic
 		}
 	}
-	
+
 	public String vote() {
 		// vote
-		
-		ChaumPedersenProof chaum = new ChaumPedersenProof();
-		Pair<BigInteger, BigInteger> proof = chaum.generate(new BigInteger(publicKey),(selectedDecodedList==1?r2:r1));
-		
-		receiptId = ElectionVoteDP.setElectionVote(elId, userId,selectedDecodedList,
-				(selectedDecodedList==1?decoded1:decoded2), encoded1,encoded2, selectedVote, 
-				proof.getFirst().toString(), proof.getSecond().toString());
 
-		if(receiptId == -1) {
+		ChaumPedersenProof chaum = new ChaumPedersenProof();
+		ChaumPedersen cp = chaum.generate(new BigInteger(publicKey),
+				(selectedDecodedList == 1 ? r2 : r1));
+		cp.setMessage(selectedDecodedList == 1 ? decoded2 : decoded1);
+
+		Pair<BigInteger, BigInteger> enc = CryptoUtil.getEncodedA_B(selectedDecodedList == 1 ? encoded2 : encoded1);
+		
+		cp.setA(enc.getFirst());
+		cp.setB(enc.getSecond());
+		
+		Gson gson = new GsonBuilder().registerTypeAdapter(BigInteger.class,
+				new BigIntegerTypeAdapter()).create();
+		chaumPedersen = gson.toJson(cp);
+
+		receiptId = ElectionVoteDP.setElectionVote(elId, userId,
+				selectedDecodedList, (selectedDecodedList == 1 ? decoded1
+						: decoded2), encoded1, encoded2, selectedVote,
+				chaumPedersen);
+
+		if (receiptId == -1) {
 			return "Home?faces-redirect=true";
 		}
-		
-		String message = "  Reciept Id: " + receiptId + "\n " +
-				" hash1: " + hash1 + "\n " +
-				" hash2: " + hash2 + "\n " +
-				" selected audit ballot: " + selectedDecodedList + " - " + (selectedDecodedList==1?decoded1:decoded2) + "\n " +
-				" your choice: " + selectedVote;
+
+		String message = "  Reciept Id: " + receiptId + "\n " + " hash1: "
+				+ hash1 + "\n " + " hash2: " + hash2 + "\n "
+				+ " selected audit ballot: " + selectedDecodedList + " - "
+				+ (selectedDecodedList == 1 ? decoded1 : decoded2) + "\n "
+				+ " your choice: " + selectedVote;
 		String subject = "Receipt for " + election.getName() + " election";
 		User user = UserDP.getUser(userId);
 		try {
@@ -153,7 +169,7 @@ public class Vote {
 		}
 		return "AfterVote?faces-redirect=true";
 	}
-	
+
 	public ArrayList<Answer> getAnswers() {
 		return answers;
 	}
@@ -161,7 +177,7 @@ public class Vote {
 	public void setAnswers(ArrayList<Answer> answers) {
 		this.answers = answers;
 	}
-	
+
 	public ArrayList<Integer> getA1() {
 		return a1;
 	}
@@ -177,7 +193,7 @@ public class Vote {
 	public void setA2(ArrayList<Integer> a2) {
 		this.a2 = a2;
 	}
-	
+
 	public boolean isShowEncode() {
 		return showEncode;
 	}
@@ -209,7 +225,7 @@ public class Vote {
 	public void setBarcode2(StreamedContent encoded2) {
 		this.barcode2 = encoded2;
 	}
-	
+
 	public int getSelectedDecodedList() {
 		return selectedDecodedList;
 	}
@@ -217,7 +233,7 @@ public class Vote {
 	public void setSelectedDecodedList(int selectedDecodedList) {
 		this.selectedDecodedList = selectedDecodedList;
 	}
-	
+
 	public boolean isShowDecode() {
 		return showDecode;
 	}
@@ -249,7 +265,7 @@ public class Vote {
 	public void setSelectedVote(int selectedVote) {
 		this.selectedVote = selectedVote;
 	}
-	
+
 	public String getHash1() {
 		return hash1;
 	}
@@ -265,7 +281,7 @@ public class Vote {
 	public void setHash2(String hash2) {
 		this.hash2 = hash2;
 	}
-		
+
 	public String getDecoded1() {
 		return decoded1;
 	}

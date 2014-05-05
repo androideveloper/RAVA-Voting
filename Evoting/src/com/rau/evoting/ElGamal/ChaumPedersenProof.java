@@ -1,12 +1,17 @@
 package com.rau.evoting.ElGamal;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 
 import com.rau.evoting.utils.Pair;
 import com.rau.evoting.utils.RandomHelper;
 
-public class ChaumPedersenProof {
+public class ChaumPedersenProof implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private BigInteger y1;
 	private BigInteger y2;
 	private BigInteger a1;
@@ -23,8 +28,8 @@ public class ChaumPedersenProof {
 	private BigInteger res1;
 	private BigInteger res2;
 
-
-	public Pair<BigInteger, BigInteger> generate(BigInteger pubKey, BigInteger r) {
+	
+	public ChaumPedersen generate(BigInteger pubKey, BigInteger r) {
 		g = GlobalParameters.getParams().getG();
 		p = GlobalParameters.getParams().getP();
 		y = pubKey;
@@ -38,7 +43,8 @@ public class ChaumPedersenProof {
 		ProverIteration2();
 		VerifierIteration2();
 
-		return new Pair<BigInteger, BigInteger>(res1, res2);
+		ChaumPedersen cp = new ChaumPedersen(p, g, y, null, null, null, a1, a2, s);
+		return cp;
 	}
 
 	public Pair<BigInteger, BigInteger> ProverIteration1() {

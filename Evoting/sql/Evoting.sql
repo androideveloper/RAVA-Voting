@@ -52,8 +52,9 @@ create table ElectionVotes
 	encoded1 varchar(1024),
 	encoded2 varchar(1024),
 	answerId int,
-	chaumPedersen1 varchar(1024),
-	chaumPedersen2 varchar(1024)
+	--chaumPedersen1 varchar(1024),
+	--chaumPedersen2 varchar(1024)
+	chaumPedersen varchar(max)
 );
 
 create table CutVotes
@@ -87,6 +88,7 @@ drop table CutVotes
 drop table Elections
 drop table UserGroups
 drop table Users
+drop table TempTrustees
 
 
 insert into Users(fbId) values ('123')
@@ -106,7 +108,7 @@ where id = 2
 select * from ElectionTrustees
 
 select * from ElectionVotes 
-where id = '3'
+select * from CutVotes
 
 select publicKey 
 from ElectionTrustees 
