@@ -156,11 +156,14 @@ public class Vote {
 		cp.setMessage(selectedDecodedList == 1 ? decoded1 : decoded2);
 
 		Pair<BigInteger, BigInteger> enc = CryptoUtil
-				.getEncodedA_B(selectedDecodedList == 1 ? encoded1 : encoded2);
+				.getBigIntEncodedA_B(selectedDecodedList == 1 ? encoded1 : encoded2);
 
 		cp.setA(enc.getFirst());
 		cp.setB(enc.getSecond());
 
+		System.out.println("a" + cp.getA());
+		System.out.println("b" + cp.getB());
+		
 		Gson gson = new GsonBuilder().registerTypeAdapter(BigInteger.class,
 				new BigIntegerTypeAdapter()).create();
 		chaumPedersen = gson.toJson(cp);

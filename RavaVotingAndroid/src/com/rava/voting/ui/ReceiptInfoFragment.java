@@ -181,6 +181,7 @@ public class ReceiptInfoFragment extends Fragment {
 				String temp = y1.toString().concat(y2.toString());
 				long t2 = temp.hashCode();
 				c = BigInteger.valueOf(t2);
+				c = new BigInteger("111");
 
 				mTextViewC.setText(c.toString());
 
@@ -207,8 +208,8 @@ public class ReceiptInfoFragment extends Fragment {
 				mButtonNext.setVisibility(View.GONE);
 				mTableRowRes.setVisibility(View.VISIBLE);
 
-				res1 = g.modPow(s, p).multiply(y1.modPow(c, p).mod(p));
-				res2 = y.modPow(s, p).multiply(y2.modPow(c, p).mod(p));
+				res1 = g.modPow(s, p).multiply(y1.modPow(c, p)).mod(p);
+				res2 = y.modPow(s, p).multiply(y2.modPow(c, p)).mod(p);
 
 				mTextViewRes1.setText(res1.toString());
 				mTextViewRes2.setText(res2.toString());
