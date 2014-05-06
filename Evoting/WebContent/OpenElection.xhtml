@@ -44,7 +44,7 @@
 		<h:panelGroup styleClass="margin20" rendered="#{not election.canOpen}">
 			<h:outputText value="#{election.openningMessage}"></h:outputText>
 		</h:panelGroup>
-		<h:commandButton value="Open voting" rendered="#{election.canOpen}"
+		<h:commandButton value="Open" rendered="#{election.canOpen}"
 			action="#{election.open}" styleClass="button tiny"
 			style="margin: 20px;"></h:commandButton>
 	</h:form>

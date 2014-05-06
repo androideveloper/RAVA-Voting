@@ -127,7 +127,7 @@ public class OpenElection {
 		}
 		trusteeEmail = "";
 
-		return "";
+		return "Trustees?faces-redirect=true";
 	}
 
 	public String setElection(int id) {
