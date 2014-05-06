@@ -67,7 +67,7 @@ public class MainActivity extends Activity implements
 			fragmentManager
 					.beginTransaction()
 					.replace(R.id.container,
-							PlaceholderFragment.newInstance(position)).commit();
+							ElectionsFragment.newInstance()).commit();
 			break;
 
 		case 2:
