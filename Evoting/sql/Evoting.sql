@@ -7,6 +7,12 @@ create table Users
 	email varchar(50),
 );
 
+create table UserGroups
+(
+	userId int foreign key references Users(id),
+	groupId varchar(100)
+);
+
 create table Elections
 (
 	id int primary key identity(1,1),
@@ -23,16 +29,18 @@ create table ElectionTrustees
 	electId int foreign key references Elections(id),
 	userId int,
 	email varchar(50),
-	isGenerated tinyint,
+	isGenerated bit,
 	publicKey varchar(max),
-	token varchar(50)
+	token varchar(50),
+	isDecoded bit
 );
 
 create table ElectionAnswers
 (
 	electId int foreign key references Elections(id),
 	answerId int not null,
-	answer varchar(100) not null
+	answer varchar(100) not null,
+	numberOfVotes int default(0)
 );
 
 create table ElectionVoters
@@ -59,7 +67,7 @@ create table ElectionVotes
 	chaumPedersen varchar(max)
 );
 
-SELECT SERVERPROPERTY('Collation')
+--SELECT SERVERPROPERTY('Collation')
 
 create table CutVotes
 (
@@ -69,6 +77,14 @@ create table CutVotes
 	answerId int
 );
 
+--create table CountVotes
+--(
+--	id int primary key identity(1,1),
+--	electId int foreign key references Elections(id),
+--	answerId int,
+--	amount int
+--);
+
 --create table TempTrustees
 --(
 --	id int primary key identity(1,1),
@@ -76,11 +92,7 @@ create table CutVotes
 --	email varchar(50)
 --);
 
-create table UserGroups
-(
-	userId int foreign key references Users(id),
-	groupId varchar(100)
-);
+
 
 
 --drop table TempTrustees
@@ -92,7 +104,7 @@ drop table CutVotes
 drop table Elections
 drop table UserGroups
 drop table Users
-drop table TempTrustees
+
 
 
 insert into Users(fbId) values ('123')
@@ -110,6 +122,8 @@ where id = 2
 
 
 select * from ElectionTrustees
+
+select * from ElectionAnswers
 
 select * from ElectionVotes 
 select * from CutVotes

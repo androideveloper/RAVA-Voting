@@ -18,7 +18,7 @@ import com.rau.evoting.ElGamal.CryptoUtil;
 import com.rau.evoting.ElGamal.ElGamalHelper;
 import com.rau.evoting.data.ElectionDP;
 import com.rau.evoting.data.ElectionVoteDP;
-import com.rau.evoting.data.ElectonAnswerDP;
+import com.rau.evoting.data.ElectionAnswerDP;
 import com.rau.evoting.data.UserDP;
 import com.rau.evoting.models.Answer;
 import com.rau.evoting.models.Election;
@@ -67,8 +67,8 @@ public class Vote {
 	public String fromElection() {
 		elId = Integer.valueOf(FacesContext.getCurrentInstance()
 				.getExternalContext().getRequestParameterMap().get("elId"));
-		answers1 = ElectonAnswerDP.getElectionAnswers(elId);
-		answers2 = ElectonAnswerDP.getElectionAnswers(elId);
+		answers1 = ElectionAnswerDP.getElectionAnswers(elId);
+		answers2 = ElectionAnswerDP.getElectionAnswers(elId);
 		showEncode = false;
 		showShuffle = true;
 		selectedDecodedList = 1;

@@ -8,13 +8,14 @@ import java.util.ArrayList;
 
 import com.rau.evoting.models.Answer;
 
-public class ElectonAnswerDP {
+public class ElectionAnswerDP {
 
 	public static final String TABLE_NAME = "ElectionAnswers";
 	
 	public static final String ELECTION_ID = "electId";
 	public static final String ANSWER_ID = "answerId";
 	public static final String ANSWER = "answer";
+	public static final String NUMBER_OF_VOTES = "numberOfVotes";
 	
 	public static ArrayList<Answer> getElectionAnswers(int elId) {
 		ArrayList<Answer> answers = new ArrayList<Answer>();
@@ -22,14 +23,14 @@ public class ElectonAnswerDP {
 		try {
 			con =  SqlDataProvider.getInstance().getConnection();
 
-			String sql = "select * from " + TABLE_NAME + " where " + ELECTION_ID + " = ?";
+			String sql = "select * from " + TABLE_NAME + " where " + ELECTION_ID + " = ? order by " + ANSWER_ID;
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setInt(1, elId);
 			ResultSet rs = statement.executeQuery();
 
 			while (rs.next()) {
 				Answer ans = new Answer(rs.getInt(ANSWER_ID),
-						rs.getString(ANSWER));
+						rs.getString(ANSWER), rs.getInt(NUMBER_OF_VOTES));
 				answers.add(ans);
 			}
 			rs.close();
@@ -112,12 +113,13 @@ public class ElectonAnswerDP {
 			delStat.executeUpdate();
 
 			String sql = "insert into " + TABLE_NAME + "(" + ELECTION_ID + "," + ANSWER_ID + "," 
-					+ ANSWER + ") values(?,?,?)";
+					+ ANSWER + NUMBER_OF_VOTES +  ") values(?,?,?,?)";
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setInt(1, elId);
 			for (Answer ans : answers) {
 				statement.setInt(2, ans.getId());
 				statement.setString(3, ans.getAnswer());
+				statement.setInt(4,ans.getNumberOfVotes());
 				statement.executeUpdate();
 			}
 			con.commit();

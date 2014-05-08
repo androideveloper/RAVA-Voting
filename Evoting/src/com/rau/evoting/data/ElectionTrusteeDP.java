@@ -19,6 +19,7 @@ public class ElectionTrusteeDP {
 	public static final String IS_GENERATED = "isGenerated";
 	public static final String PUBLIC_KEY = "publicKey";
 	public static final String TOKEN = "token";
+	public static final String IS_DECODED = "isDecoded";
 	
 	public static ArrayList<Trustee> getElectionNotTempTrustees(int elId) {
 		ArrayList<Trustee> l = new ArrayList<Trustee>();
@@ -259,6 +260,42 @@ public class ElectionTrusteeDP {
 			}
 		}
 		return;
+	}
+	
+	public static boolean setTrusteeDecoded(int trId, int elId) {
+		Connection con = null;
+		boolean allDecoded = false;
+		try {
+			con =  SqlDataProvider.getInstance().getConnection();
+			String sql = "update " + TABLE_NAME + " set " + IS_DECODED + " = 1 where " 
+					+ ID + " = ? " ;
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setInt(1, trId);
+			statement.executeUpdate();
+			
+			sql = "select * from " + TABLE_NAME + " where " + IS_DECODED + " = 0 and "
+					+ ELECTION_ID +" = ? ";
+			statement = con.prepareStatement(sql);
+			statement.setInt(1, elId);
+			ResultSet rs = statement.executeQuery();
+						
+			if(! rs.next()) {
+				allDecoded = true;
+			}
+			rs.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return allDecoded;
 	}
 
 	public static int getTrusteeElectionId(int id) {

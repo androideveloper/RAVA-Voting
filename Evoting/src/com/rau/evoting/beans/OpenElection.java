@@ -13,7 +13,7 @@ import com.rau.evoting.ElGamal.ElGamalHelper;
 import com.rau.evoting.data.ElectionDP;
 import com.rau.evoting.data.ElectionTrusteeDP;
 import com.rau.evoting.data.ElectionVoterDP;
-import com.rau.evoting.data.ElectonAnswerDP;
+import com.rau.evoting.data.ElectionAnswerDP;
 import com.rau.evoting.data.SqlDataProvider;
 import com.rau.evoting.models.Answer;
 import com.rau.evoting.models.Election;
@@ -46,7 +46,7 @@ public class OpenElection {
 	}
 
 	public String navigateAnswers() {
-		answers = ElectonAnswerDP.getElectionAnswers(election.getId());
+		answers = ElectionAnswerDP.getElectionAnswers(election.getId());
 		answer = "";
 		return "Answers?faces-redirect=true";
 	}
@@ -89,7 +89,7 @@ public class OpenElection {
 	}
 
 	public String addAnswers() {
-		ElectonAnswerDP.insertAnswers(election.getId(), answers);
+		ElectionAnswerDP.insertAnswers(election.getId(), answers);
 		return "OpenElection?faces-redirect=true";
 	}
 
@@ -132,7 +132,7 @@ public class OpenElection {
 
 	public String setElection(int id) {
 		election = ElectionDP.getElection(id);
-		answers = ElectonAnswerDP.getElectionAnswers(election.getId());
+		answers = ElectionAnswerDP.getElectionAnswers(election.getId());
 		trustees = ElectionTrusteeDP.getElectionTrustees(election.getId());
 		selectedGroup = ElectionVoterDP.getElectionVoterByGroup(election
 				.getId());
