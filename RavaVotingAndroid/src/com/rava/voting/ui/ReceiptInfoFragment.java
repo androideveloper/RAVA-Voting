@@ -27,6 +27,10 @@ public class ReceiptInfoFragment extends Fragment {
 	// public static final String KEY_B = "KEY_B";
 	// public static final String KEY_MESSAGE = "KEY_MESSAGE";
 
+	
+	private TextView mTextViewP;
+	private TextView mTextViewG;
+	private TextView mTextViewY;
 	private TextView mTextViewA;
 	private TextView mTextViewB;
 	private TextView mTextViewMessage;
@@ -84,6 +88,9 @@ public class ReceiptInfoFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View root = inflater.inflate(R.layout.fragment_receipt_info, container,
 				false);
+		mTextViewP = (TextView) root.findViewById(R.id.textview_p);
+		mTextViewG = (TextView) root.findViewById(R.id.textview_g);
+		mTextViewY = (TextView) root.findViewById(R.id.textview_y);
 		mTextViewA = (TextView) root.findViewById(R.id.textview_a);
 		mTextViewB = (TextView) root.findViewById(R.id.textview_b);
 		mTextViewMessage = (TextView) root.findViewById(R.id.textview_message);
@@ -139,6 +146,9 @@ public class ReceiptInfoFragment extends Fragment {
 		y1 = a;
 		y2 = b.divide(messageBigint).mod(p);
 
+		mTextViewP.setText(p.toString());
+		mTextViewG.setText(g.toString());
+		mTextViewY.setText(y.toString());
 		mTextViewA.setText(a.toString());
 		mTextViewB.setText(b.toString());
 		mTextViewMessage.setText(message);
