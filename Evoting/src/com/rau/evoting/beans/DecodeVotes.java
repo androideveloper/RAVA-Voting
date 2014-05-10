@@ -74,7 +74,7 @@ public class DecodeVotes {
 		for(CutVote vote : votes) {
 			answersSequence = StringHelper.converStringToInttList(vote.getAnswersSequence());
 			int ans = answersSequence.get(vote.getAnswerId()-1);
-			answers.get(ans-1).incNumberofVotes();
+			answers.get(ans-1).incNumberOfVotes();
 		}
 		ElectionAnswerDP.insertAnswers(elId, answers);
 		return;
