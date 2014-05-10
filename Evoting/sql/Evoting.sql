@@ -10,7 +10,8 @@ create table Users
 create table UserGroups
 (
 	userId int foreign key references Users(id),
-	groupId varchar(100)
+	groupId varchar(100),
+	name varchar(1024)
 );
 
 create table Elections

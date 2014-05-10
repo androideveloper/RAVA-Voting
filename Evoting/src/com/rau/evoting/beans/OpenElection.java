@@ -18,6 +18,7 @@ import com.rau.evoting.data.SqlDataProvider;
 import com.rau.evoting.models.Answer;
 import com.rau.evoting.models.Election;
 import com.rau.evoting.models.Trustee;
+import com.rau.evoting.models.UserGroup;
 import com.rau.evoting.utils.MailService;
 import com.rau.evoting.utils.Util;
 import com.restfb.types.Group;
@@ -33,7 +34,7 @@ public class OpenElection {
 	private String openningMessage;
 	private String selectedGroup;
 	private String selectedVoteMode;
-	private List<Group> groups;
+	private List<UserGroup> groups;
 
 	private String accessToken;
 
@@ -217,17 +218,17 @@ public class OpenElection {
 		this.selectedVoteMode = selectedVoteMode;
 	}
 
-	public List<Group> getGroups() {
+	public List<UserGroup> getGroups() {
 		// FacebookClient fbClient = new DefaultFacebookClient(accessToken);
 		// Connection<Group> gr = fbClient.fetchConnection("me/groups",
 		// Group.class);
 		// groups = gr.getData();
-		groups = (List<Group>) FacesContext.getCurrentInstance()
+		groups = (List<UserGroup>) FacesContext.getCurrentInstance()
 				.getExternalContext().getSessionMap().get("userGroups");
 		return groups;
 	}
 
-	public void setGroups(ArrayList<Group> groups) {
+	public void setGroups(ArrayList<UserGroup> groups) {
 		this.groups = groups;
 	}
 

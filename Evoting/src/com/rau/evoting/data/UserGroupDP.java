@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.rau.evoting.models.UserGroup;
 import com.restfb.types.Group;
 
 public class UserGroupDP {
@@ -14,8 +15,9 @@ public class UserGroupDP {
 	
 	public static final String USER_ID = "userId";
 	public static final String GROUP_ID = "groupId";
+	public static final String NAME = "name";
 	
-	public static  void insert(int userId, List<Group> groups) {
+	public static  void insert(int userId, List<UserGroup> groups) {
 		Connection con = null;
 		try {
 			con = SqlDataProvider.getInstance().getConnection();
@@ -24,11 +26,12 @@ public class UserGroupDP {
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setInt(1, userId);
 			statement.executeUpdate();
-			for (Group gr : groups) {
-				sql = "insert into " + TABLE_NAME + "(" + USER_ID + "," + GROUP_ID + ") values(?,?) ";
+			for (UserGroup gr : groups) {
+				sql = "insert into " + TABLE_NAME + "(" + USER_ID + "," + GROUP_ID + "," + NAME+ ") values(?,?,?) ";
 				statement = con.prepareStatement(sql);
 				statement.setInt(1, userId);
-				statement.setString(2, gr.getId());
+				statement.setString(2, gr.getGroupId());
+				statement.setString(3, gr.getName());
 				statement.executeUpdate();
 			}
 			con.commit();
