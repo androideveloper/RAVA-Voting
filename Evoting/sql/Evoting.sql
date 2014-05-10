@@ -59,15 +59,9 @@ create table ElectionVotes
 	auditSequence varchar(256),
 	encoded1 varchar(1024),--collate SQL_Latin1_General_CP850_CS_AS,
 	encoded2 varchar(1024),-- collate SQL_Latin1_General_CP850_CS_AS,
-	--enc1 varchar(1024),
-	--enc2 varchar(1024) ,
 	answerId int,
-	--chaumPedersen1 varchar(1024),
-	--chaumPedersen2 varchar(1024)
 	chaumPedersen varchar(max)
 );
-
---SELECT SERVERPROPERTY('Collation')
 
 create table CutVotes
 (
@@ -77,25 +71,7 @@ create table CutVotes
 	answerId int
 );
 
---create table CountVotes
---(
---	id int primary key identity(1,1),
---	electId int foreign key references Elections(id),
---	answerId int,
---	amount int
---);
 
---create table TempTrustees
---(
---	id int primary key identity(1,1),
---	electId int foreign key references Elections(id),
---	email varchar(50)
---);
-
-
-
-
---drop table TempTrustees
 drop table ElectionVoters
 drop table ElectionVotes
 drop table ElectionAnswers
