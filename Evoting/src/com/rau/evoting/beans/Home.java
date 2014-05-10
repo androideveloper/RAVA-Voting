@@ -1,5 +1,6 @@
 package com.rau.evoting.beans;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.rau.evoting.data.UserDP;
 import com.rau.evoting.data.UserGroupDP;
+import com.rau.evoting.models.UserGroup;
 import com.rau.evoting.utils.FacebookService;
 import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
@@ -42,8 +44,12 @@ public class Home {
 			Connection<Group> gr = fbClient.fetchConnection("me/groups",
 					Group.class);
 			List<Group> groups = gr.getData();
-			sessionMap.put("userGroups", groups);
-			UserGroupDP.insert(userId, groups);
+			List<UserGroup> userGroups = new ArrayList<UserGroup>();
+			for(Group g: groups) {
+				userGroups.add(new UserGroup(g.getId(),userId,g.getName()));
+			}
+			sessionMap.put("userGroups", userGroups);
+			UserGroupDP.insert(userId, userGroups);
 			sessionMap.put("userId", userId);
 			sessionMap.put("username", user.getName());
 		}
