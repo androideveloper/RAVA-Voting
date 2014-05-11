@@ -3,6 +3,12 @@
     tools:context="com.rava.voting.MainActivity" >
 
     <item
+        android:id="@+id/action_fb"
+        android:icon="@drawable/ic_action_facebook"
+        android:orderInCategory="10"
+        android:showAsAction="always|withText"
+        android:title="@string/login"/>
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never"

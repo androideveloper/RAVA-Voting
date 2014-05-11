@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">RavaVoting</string>
+    <string name="section_login_logout">Login / Logout</string>
     <string name="section_scan_receipt">Scan receipt</string>
     <string name="section_my_elections">My elections</string>
     <string name="section_vote">Vote in election</string>
@@ -10,6 +11,8 @@
     <string name="action_example">Example action</string>
     <string name="action_settings">Settings</string>
     <string name="scan">Scan</string>
+    <string name="login">Log in</string>
+    <string name="logout">Log out</string>
     <string name="a">Encryption a:</string>
     <string name="b">Encryption b:</string>
     <string name="message">Message:</string>
@@ -35,5 +38,6 @@
     <string name="next_note4">To calculate result click next</string>
     <string name="next_note5">As you can see Result1 is equals to a1 and Result2 is equals to a2</string>
     <string name="next_error">Ooops your message is wrong encoded!!!</string>
+    <string name="app_id">254740274727830</string>
 
 </resources>

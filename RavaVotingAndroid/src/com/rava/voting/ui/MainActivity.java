@@ -1,22 +1,39 @@
 package com.rava.voting.ui;
 
+import java.util.List;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rava.voting.R;
+import com.rava.voting.utils.Utils;
+import com.sromku.simple.fb.Permission;
+import com.sromku.simple.fb.SimpleFacebook;
+import com.sromku.simple.fb.entities.Group;
+import com.sromku.simple.fb.entities.Profile;
+import com.sromku.simple.fb.entities.Profile.Properties;
+import com.sromku.simple.fb.listeners.OnGroupsListener;
+import com.sromku.simple.fb.listeners.OnLoginListener;
+import com.sromku.simple.fb.listeners.OnLogoutListener;
+import com.sromku.simple.fb.listeners.OnProfileListener;
 
 public class MainActivity extends Activity implements
 		NavigationDrawerFragment.NavigationDrawerCallbacks {
+
+	public static final String TAG = "MainActivity";
 
 	/**
 	 * Fragment managing the behaviors, interactions and presentation of the
@@ -30,6 +47,9 @@ public class MainActivity extends Activity implements
 	 */
 	private CharSequence mTitle;
 
+	private SimpleFacebook mSimpleFacebook;
+	private MenuItem itemFb;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -42,6 +62,14 @@ public class MainActivity extends Activity implements
 		// Set up the drawer.
 		mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
 				(DrawerLayout) findViewById(R.id.drawer_layout));
+
+		Utils.printHashKey(this);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		mSimpleFacebook = SimpleFacebook.getInstance(this);
 	}
 
 	@Override
@@ -50,6 +78,7 @@ public class MainActivity extends Activity implements
 		FragmentManager fragmentManager = getFragmentManager();
 
 		switch (position) {
+
 		case 0:
 			Fragment fragment = fragmentManager
 					.findFragmentById(R.id.container);
@@ -64,10 +93,9 @@ public class MainActivity extends Activity implements
 			break;
 
 		case 1:
-			fragmentManager
-					.beginTransaction()
-					.replace(R.id.container,
-							ElectionsFragment.newInstance()).commit();
+			fragmentManager.beginTransaction()
+					.replace(R.id.container, ElectionsFragment.newInstance())
+					.commit();
 			break;
 
 		case 2:
@@ -111,6 +139,7 @@ public class MainActivity extends Activity implements
 			// if the drawer is not showing. Otherwise, let the drawer
 			// decide what to show in the action bar.
 			getMenuInflater().inflate(R.menu.main, menu);
+			itemFb = menu.findItem(R.id.action_fb);
 			restoreActionBar();
 			return true;
 		}
@@ -118,15 +147,196 @@ public class MainActivity extends Activity implements
 	}
 
 	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		if (itemFb != null) {
+			if (mSimpleFacebook.isLogin()) {
+				itemFb.setIcon(R.drawable.ic_action_exit);
+				itemFb.setTitle(R.string.logout);
+			} else {
+				itemFb.setIcon(R.drawable.ic_action_facebook);
+				itemFb.setTitle(R.string.login);
+			}
+			return true;
+		}
+		return super.onPrepareOptionsMenu(menu);
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
+		if (id == R.id.action_fb) {
+			if (mSimpleFacebook.isLogin()) {
+				mSimpleFacebook.logout(mOnLogoutListener);
+			} else {
+				mSimpleFacebook.login(mOnLoginListener);
+			}
+			return true;
+		}
 		if (id == R.id.action_settings) {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		mSimpleFacebook.onActivityResult(this, requestCode, resultCode, data);
+	}
+
+	public SimpleFacebook getSimpleFacebook() {
+		return mSimpleFacebook;
+	}
+
+	// Login listener
+	private OnLoginListener mOnLoginListener = new OnLoginListener() {
+
+		@Override
+		public void onFail(String reason) {
+			Log.w(TAG, "Failed to login");
+		}
+
+		@Override
+		public void onException(Throwable throwable) {
+			Log.e(TAG, "Bad thing happened", throwable);
+		}
+
+		@Override
+		public void onThinking() {
+			// show progress bar or something to the user while login is
+			// happening
+			Log.i(TAG, "Thinking...");
+		}
+
+		@Override
+		public void onLogin() {
+			Log.i(TAG, "Logged in");
+
+			invalidateOptionsMenu();
+
+			Profile.Properties properties = new Profile.Properties.Builder()
+					.add(Properties.ID).add(Properties.NAME).build();
+			mSimpleFacebook.getProfile(properties, mOnProfileListener);
+
+			mSimpleFacebook.getGroups(mOnGroupsListener);
+
+			// final Session session = ((MainActivity)
+			// getActivity()).getSimpleFacebook().getSession();
+			// if (session != null && session.isOpened()) {
+			// // If the session is open, make an API call to get user data
+			// // and define a new callback to handle the response
+			// Request request = Request.newMeRequest(session, new
+			// Request.GraphUserCallback() {
+			// @Override
+			// public void onCompleted(GraphUser user, Response response) {
+			// // If the response is successful
+			// if (session == Session.getActiveSession()) {
+			// if (user != null) {
+			// String user_ID = user.getId();//user id
+			// String profileName = user.getName();//user's profile name
+			// mTextViewContent.setText(user_ID + " / " + profileName);
+			// }
+			// }
+			// }
+			// });
+			// Request.executeBatchAsync(request);
+			// }
+		}
+
+		@Override
+		public void onNotAcceptingPermissions(Permission.Type type) {
+			toast(String
+					.format("You didn't accept %s permissions", type.name()));
+		}
+	};
+
+	// Logout listener
+	private OnLogoutListener mOnLogoutListener = new OnLogoutListener() {
+
+		@Override
+		public void onFail(String reason) {
+			Log.w(TAG, "Failed to login");
+		}
+
+		@Override
+		public void onException(Throwable throwable) {
+			Log.e(TAG, "Bad thing happened", throwable);
+		}
+
+		@Override
+		public void onThinking() {
+			Log.i(TAG, "Thinking...");
+		}
+
+		@Override
+		public void onLogout() {
+			invalidateOptionsMenu();
+			toast("You are logged out");
+		}
+
+	};
+
+	// listener for profile request
+	final OnProfileListener mOnProfileListener = new OnProfileListener() {
+
+		@Override
+		public void onFail(String reason) {
+			// insure that you are logged in before getting the profile
+			Log.w(TAG, reason);
+		}
+
+		@Override
+		public void onException(Throwable throwable) {
+			Log.e(TAG, "Bad thing happened", throwable);
+		}
+
+		@Override
+		public void onThinking() {
+			// show progress bar or something to the user while fetching
+			// profile
+			Log.i(TAG, "Thinking...");
+		}
+
+		@Override
+		public void onComplete(Profile profile) {
+			Log.i(TAG, "My profile id = " + profile.getId());
+			String name = profile.getName();
+			toast("name = " + name + "," + "id = " + profile.getId());
+		}
+	};
+
+	// listener for groups
+	final OnGroupsListener mOnGroupsListener = new OnGroupsListener() {
+
+		@Override
+		public void onFail(String reason) {
+			Log.w(TAG, reason);
+		}
+
+		@Override
+		public void onException(Throwable throwable) {
+			Log.e(TAG, "Bad thing happened", throwable);
+		}
+
+		@Override
+		public void onThinking() {
+			Log.i(TAG, "Thinking...");
+		}
+
+		@Override
+		public void onComplete(List<Group> response) {
+			Log.i(TAG, "Number of groups = " + response.size());
+			toast("Number of groups = " + response.size());
+		}
+	};
+
+	/**
+	 * Show toast
+	 * 
+	 * @param message
+	 */
+	private void toast(String message) {
+		Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 	}
 
 	/**
