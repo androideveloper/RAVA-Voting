@@ -13,13 +13,13 @@ public class GlobalParameters {
 
 	private GlobalParameters() {
 		ElGamalParametersGenerator gen = new ElGamalParametersGenerator();
-		// gen.init(500, 5, new SecureRandom());
+		// gen.init(200, 5, new SecureRandom());
 		// params = gen.generateParameters();
 		params = new ElGamalParameters(
 				new BigInteger(
-						"1481036519848617692612681570478610381651305627082483941468540276026284745564250426308497379"),
+						"1217632165455017325599107230499272850738519365493132423159259"),
 				new BigInteger(
-						"550431548021782717569146563950321500899081978637529330103028894231173207891450029000697135"));
+						"895293172683390114107043256178557962436296753020590093614515"));
 		System.out.println("p:" + params.getP());
 		System.out.println("g:" + params.getG());
 

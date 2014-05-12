@@ -17,6 +17,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.rau.evoting.ElGamal.BigIntegerTypeAdapter;
 import com.rau.evoting.ElGamal.ChaumPedersen;
+import com.rau.evoting.ElGamal.CryptoUtil;
+import com.rau.evoting.ElGamal.GlobalParameters;
 import com.rava.voting.R;
 
 public class ReceiptInfoFragment extends Fragment {
@@ -136,8 +138,8 @@ public class ReceiptInfoFragment extends Fragment {
 		b = mChaumPedersen.getB();
 		String message = mChaumPedersen.getMessage();
 		
-		p = mChaumPedersen.getP();   
-		g = mChaumPedersen.getG();
+		p =   GlobalParameters.getParams().getP();//mChaumPedersen.getP();   
+		g = GlobalParameters.getParams().getG(); //mChaumPedersen.getG();
 		y = mChaumPedersen.getY();
 		
 		Charset charset = Charset.forName("ISO-8859-1");
@@ -146,7 +148,7 @@ public class ReceiptInfoFragment extends Fragment {
 		y1 = a;
 		y2 = b.divide(messageBigint).mod(p);
 
-		mTextViewP.setText(p.toString());
+		mTextViewP.setText(p.toString());      
 		mTextViewG.setText(g.toString());
 		mTextViewY.setText(y.toString());
 		mTextViewA.setText(a.toString());
@@ -190,8 +192,9 @@ public class ReceiptInfoFragment extends Fragment {
 				mTableRowC.setVisibility(View.VISIBLE);
 				String temp = y1.toString().concat(y2.toString());
 				long t2 = temp.hashCode();
+				//String hash = CryptoUtil.getSHA256hash(temp);
 				c = BigInteger.valueOf(t2);
-				c = new BigInteger("111");
+				//c = new BigInteger(hash);
 
 				mTextViewC.setText(c.toString());
 
