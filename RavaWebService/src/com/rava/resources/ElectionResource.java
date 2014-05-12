@@ -23,6 +23,31 @@ public class ElectionResource {
 	}
 
 	@GET
+	@Path("/creator/{userid : \\d+}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Election> getUserCreatedElections(
+			@PathParam("userid") int userId) {
+		List<Election> elections = ElectionDP.getUserElections(userId);
+		return elections;
+	}
+
+	@GET
+	@Path("/user/{userid : \\d+}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Election> getUserOpenElections(@PathParam("userid") int userId) {
+		List<Election> elections = ElectionDP.getOpenElectionsforUser(userId);
+		return elections;
+	}
+
+	@GET
+	@Path("/uservoted/{userid : \\d+}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Election> getUserVotedElections(@PathParam("userid") int userId) {
+		List<Election> elections = ElectionDP.getUserVotedElections(userId);
+		return elections;
+	}
+
+	@GET
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Election getElection(@PathParam("id") int id) {

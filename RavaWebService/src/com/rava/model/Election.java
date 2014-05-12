@@ -16,6 +16,7 @@ public class Election {
 	private int creatorId;
 	private String publicKey;
 	private ArrayList<Answer> answers;
+	private ArrayList<Trustee> trustees;
 
 	public Election(int id, String name, String description) {
 		this.id = id;
@@ -96,4 +97,11 @@ public class Election {
 		this.answers = answers;
 	}
 
+	public ArrayList<Trustee> getTrustees() {
+		return trustees;
+	}
+
+	public void setTrustees(ArrayList<Trustee> trustees) {
+		this.trustees = trustees;
+	}
 }

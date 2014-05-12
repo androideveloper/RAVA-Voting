@@ -22,25 +22,20 @@ public class ElectionDP {
 
 	public static Election getElection(int elId) {
 		Connection con = null;
-		Election elect = null;
+		Election election = null;
 		ElectionState states[] = ElectionState.values();
 		try {
 			con = SqlDataProvider.getInstance().getConnection();
 
-			String sql = "select " 
-					+ ID          + ","
-					+ NAME        + ","
-					+ DESCRIPTION + ","
-					+ OPEN_STATE  + ","
-					+ CREATOR_ID  + ","
-					+ PUBLIC_KEY  
+			String sql = "select " + ID + "," + NAME + "," + DESCRIPTION + ","
+					+ OPEN_STATE + "," + CREATOR_ID + "," + PUBLIC_KEY
 					+ " from " + TABLE_NAME + " where " + ID + " = ?";
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setInt(1, elId);
 			ResultSet rs = statement.executeQuery();
 
 			while (rs.next()) {
-				elect = new Election(elId, rs.getString(NAME),
+				election = new Election(elId, rs.getString(NAME),
 						rs.getString(DESCRIPTION),
 						states[rs.getInt(OPEN_STATE)], rs.getInt(CREATOR_ID),
 						rs.getString(PUBLIC_KEY));
@@ -58,7 +53,10 @@ public class ElectionDP {
 				e.printStackTrace();
 			}
 		}
-		return elect;
+
+		election.setAnswers(ElectionAnswerDP.getElectionAnswers(elId));
+		election.setTrustees(ElectionTrusteeDP.getElectionTrustees(elId));
+		return election;
 	}
 
 	public static ArrayList<Election> loadElections() {
@@ -68,13 +66,8 @@ public class ElectionDP {
 		try {
 			con = SqlDataProvider.getInstance().getConnection();
 
-			String sql = "select " 
-					+ ID          + ","
-					+ NAME        + ","
-					+ DESCRIPTION + ","
-					+ OPEN_STATE  + ","
-					+ CREATOR_ID  + ","
-					+ PUBLIC_KEY  
+			String sql = "select " + ID + "," + NAME + "," + DESCRIPTION + ","
+					+ OPEN_STATE + "," + CREATOR_ID + "," + PUBLIC_KEY
 					+ " from " + TABLE_NAME;
 			PreparedStatement statement = con.prepareStatement(sql);
 			ResultSet rs = statement.executeQuery();
@@ -107,15 +100,9 @@ public class ElectionDP {
 		try {
 			con = SqlDataProvider.getInstance().getConnection();
 
-			String sql = "select "  
-					+ ID          + ","
-					+ NAME        + ","
-					+ DESCRIPTION + ","
-					+ OPEN_STATE  + ","
-					+ CREATOR_ID  + ","
-					+ PUBLIC_KEY  
-					+ " from " + TABLE_NAME 
-					+ " where " + OPEN_STATE + " = 1";
+			String sql = "select " + ID + "," + NAME + "," + DESCRIPTION + ","
+					+ OPEN_STATE + "," + CREATOR_ID + "," + PUBLIC_KEY
+					+ " from " + TABLE_NAME + " where " + OPEN_STATE + " = 1";
 			PreparedStatement statement = con.prepareStatement(sql);
 			ResultSet rs = statement.executeQuery();
 
@@ -140,26 +127,30 @@ public class ElectionDP {
 		return l;
 	}
 
-	public static ArrayList<Election> loadOpenElectionsforUser(int userId) {
+	public static ArrayList<Election> getOpenElectionsforUser(int userId) {
 		ArrayList<Election> l = new ArrayList<Election>();
 		Connection con = null;
 		try {
 			con = SqlDataProvider.getInstance().getConnection();
 
-			String sql = "select * from " + TABLE_NAME + " as e"
-					+ " where " + "e." + OPEN_STATE + " = 1 "
-					+ " and not exists " 
-					+ "(select * from " + ElectionVoterDP.TABLE_NAME + " where " + ElectionVoterDP.ELECTION_ID + " = e." + ID + ")"
-					+ " and not exists " 
-					+ "(select * from " + ElectionVoteDP.TABLE_NAME + " where " + ElectionVoteDP.ELECTION_ID + " = e." + ID + ")"
+			String sql = "select * from " + TABLE_NAME + " as e" + " where "
+					+ "e." + OPEN_STATE + " = 1 " + " and not exists "
+					+ "(select * from " + ElectionVoterDP.TABLE_NAME
+					+ " where " + ElectionVoterDP.ELECTION_ID + " = e." + ID
+					+ ")" + " and not exists " + "(select * from "
+					+ ElectionVoteDP.TABLE_NAME + " where "
+					+ ElectionVoteDP.ELECTION_ID + " = e." + ID + ")"
 					+ " union all select e.* from " + TABLE_NAME + " as e "
-					+ " join " +  ElectionVoterDP.TABLE_NAME + " as v "
-					+ " on(e." + ID + " = v." + ElectionVoterDP.ELECTION_ID + ") "
-					+ " join " + UserGroupDP.TABLE_NAME + " as u " 
-					+ " on(u." + UserGroupDP.USER_ID + " = ? and u." + UserGroupDP.GROUP_ID +" = v." + ElectionVoterDP.VOTER_ID + ")"
-					+ " where v." +  ElectionVoterDP.VOTER_TYPE + " = 0 and e. " + OPEN_STATE + " = 1 "
-					+ " and not exists "  
-					+ "(select * from " + ElectionVoteDP.TABLE_NAME + " where " + ElectionVoteDP.ELECTION_ID + " = e." + ID + ")";
+					+ " join " + ElectionVoterDP.TABLE_NAME + " as v "
+					+ " on(e." + ID + " = v." + ElectionVoterDP.ELECTION_ID
+					+ ") " + " join " + UserGroupDP.TABLE_NAME + " as u "
+					+ " on(u." + UserGroupDP.USER_ID + " = ? and u."
+					+ UserGroupDP.GROUP_ID + " = v." + ElectionVoterDP.VOTER_ID
+					+ ")" + " where v." + ElectionVoterDP.VOTER_TYPE
+					+ " = 0 and e. " + OPEN_STATE + " = 1 "
+					+ " and not exists " + "(select * from "
+					+ ElectionVoteDP.TABLE_NAME + " where "
+					+ ElectionVoteDP.ELECTION_ID + " = e." + ID + ")";
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setInt(1, userId);
 			ResultSet rs = statement.executeQuery();
@@ -251,13 +242,14 @@ public class ElectionDP {
 		ElectionState states[] = ElectionState.values();
 		try {
 			con = SqlDataProvider.getInstance().getConnection();
-			String sql = "select * from " + TABLE_NAME + " where " + CREATOR_ID + "= ?";
+			String sql = "select * from " + TABLE_NAME + " where " + CREATOR_ID
+					+ "= ?";
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setInt(1, userId);
 			ResultSet rs = statement.executeQuery();
 			while (rs.next()) {
-				Election el = new Election(rs.getInt(ID),
-						rs.getString(NAME), rs.getString(DESCRIPTION),
+				Election el = new Election(rs.getInt(ID), rs.getString(NAME),
+						rs.getString(DESCRIPTION),
 						states[rs.getInt(OPEN_STATE)], userId,
 						rs.getString(PUBLIC_KEY));
 				l.add(el);
@@ -277,21 +269,23 @@ public class ElectionDP {
 		}
 		return l;
 	}
-	
+
 	public static ArrayList<Election> getUserVotedElections(int userId) {
 		ArrayList<Election> l = new ArrayList<Election>();
 		Connection con = null;
 		ElectionState states[] = ElectionState.values();
 		try {
 			con = SqlDataProvider.getInstance().getConnection();
-			String sql = "select e.* from " + TABLE_NAME + " as e join " + ElectionVoteDP.TABLE_NAME + " as v " 
-				+ " on(e." + ID + " = v." + ElectionVoteDP.ELECTION_ID + " )  where v." + ElectionVoteDP.USER_ID + "= ?";
+			String sql = "select e.* from " + TABLE_NAME + " as e join "
+					+ ElectionVoteDP.TABLE_NAME + " as v " + " on(e." + ID
+					+ " = v." + ElectionVoteDP.ELECTION_ID + " )  where v."
+					+ ElectionVoteDP.USER_ID + "= ?";
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setInt(1, userId);
 			ResultSet rs = statement.executeQuery();
 			while (rs.next()) {
-				Election el = new Election(rs.getInt(ID),
-						rs.getString(NAME), rs.getString(DESCRIPTION),
+				Election el = new Election(rs.getInt(ID), rs.getString(NAME),
+						rs.getString(DESCRIPTION),
 						states[rs.getInt(OPEN_STATE)], userId,
 						rs.getString(PUBLIC_KEY));
 				l.add(el);
@@ -311,17 +305,19 @@ public class ElectionDP {
 		}
 		return l;
 	}
-	
+
 	public static Election getTrusteeElection(int id) {
 		Connection con = null;
 		Election el = null;
 		ElectionState states[] = ElectionState.values();
 		try {
-			con =  SqlDataProvider.getInstance().getConnection();
-			String sql = "select e." + ID + " as " + ID + "," 
-					+ NAME + "," + DESCRIPTION + "," + OPEN_STATE + "," + CREATOR_ID 
-					+ " from (select * from " + ElectionTrusteeDP.TABLE_NAME + " where " + ElectionTrusteeDP.ID + " = ?) as tr ";
-			sql += " join " + TABLE_NAME + " as e on tr." + ElectionTrusteeDP.ELECTION_ID + " = e." + ID;
+			con = SqlDataProvider.getInstance().getConnection();
+			String sql = "select e." + ID + " as " + ID + "," + NAME + ","
+					+ DESCRIPTION + "," + OPEN_STATE + "," + CREATOR_ID
+					+ " from (select * from " + ElectionTrusteeDP.TABLE_NAME
+					+ " where " + ElectionTrusteeDP.ID + " = ?) as tr ";
+			sql += " join " + TABLE_NAME + " as e on tr."
+					+ ElectionTrusteeDP.ELECTION_ID + " = e." + ID;
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setInt(1, id);
 			ResultSet rs = statement.executeQuery();
@@ -329,8 +325,8 @@ public class ElectionDP {
 			if (rs.next()) {
 				el = new Election(rs.getInt(ID), rs.getString(NAME),
 						rs.getString(DESCRIPTION),
-						states[rs.getInt(OPEN_STATE)],
-						rs.getInt(CREATOR_ID), rs.getString(PUBLIC_KEY));
+						states[rs.getInt(OPEN_STATE)], rs.getInt(CREATOR_ID),
+						rs.getString(PUBLIC_KEY));
 			}
 			rs.close();
 		} catch (SQLException e) {
