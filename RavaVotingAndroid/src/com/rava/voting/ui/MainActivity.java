@@ -214,11 +214,12 @@ public class MainActivity extends Activity implements
 
 			invalidateOptionsMenu();
 
-			Profile.Properties properties = new Profile.Properties.Builder()
-					.add(Properties.ID).add(Properties.NAME).build();
-			mSimpleFacebook.getProfile(properties, mOnProfileListener);
-
-			mSimpleFacebook.getGroups(mOnGroupsListener);
+			Log.i(TAG, mSimpleFacebook.getSession().getAccessToken());
+//			Profile.Properties properties = new Profile.Properties.Builder()
+//					.add(Properties.ID).add(Properties.NAME).build();
+//			mSimpleFacebook.getProfile(properties, mOnProfileListener);
+//
+//			mSimpleFacebook.getGroups(mOnGroupsListener);
 
 			// final Session session = ((MainActivity)
 			// getActivity()).getSimpleFacebook().getSession();

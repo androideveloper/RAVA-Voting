@@ -21,7 +21,7 @@ public class RavaApplication extends Application {
 
 		// initialize facebook configuration
 		Permission[] permissions = new Permission[] { Permission.BASIC_INFO,
-				Permission.USER_GROUPS, Permission.PUBLISH_STREAM };
+				Permission.EMAIL, Permission.USER_GROUPS };
 
 		SimpleFacebookConfiguration configuration = new SimpleFacebookConfiguration.Builder()
 				.setAppId(APP_ID).setNamespace(APP_NAMESPACE)
