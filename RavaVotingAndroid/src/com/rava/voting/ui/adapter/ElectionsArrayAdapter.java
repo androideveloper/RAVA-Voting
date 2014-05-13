@@ -1,5 +1,6 @@
 package com.rava.voting.ui.adapter;
 
+import java.util.Collections;
 import java.util.List;
 
 import android.content.Context;
@@ -14,7 +15,7 @@ import com.rava.voting.model.Election;
 
 public class ElectionsArrayAdapter extends ArrayAdapter<Election> {
 
-	private List<Election> mElections;
+	private List<Election> mElections = Collections.emptyList();
 	private LayoutInflater mInflater;
 
 	public ElectionsArrayAdapter(Context context, int resource,
@@ -22,6 +23,11 @@ public class ElectionsArrayAdapter extends ArrayAdapter<Election> {
 		super(context, resource, objects);
 		mElections = objects;
 		mInflater = LayoutInflater.from(context);
+	}
+
+	public void setElections(List<Election> elections) {
+		mElections = elections;
+		notifyDataSetChanged();
 	}
 
 	@Override

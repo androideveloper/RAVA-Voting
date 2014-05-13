@@ -2,6 +2,9 @@ package com.rava.voting.ui;
 
 import java.util.List;
 
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
@@ -19,6 +22,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rava.voting.R;
+import com.rava.voting.RavaApplication;
+import com.rava.voting.api.ElectionService;
+import com.rava.voting.api.LoginService;
+import com.rava.voting.model.Election;
+import com.rava.voting.model.User;
 import com.rava.voting.utils.Utils;
 import com.sromku.simple.fb.Permission;
 import com.sromku.simple.fb.SimpleFacebook;
@@ -48,7 +56,13 @@ public class MainActivity extends Activity implements
 	private CharSequence mTitle;
 
 	private SimpleFacebook mSimpleFacebook;
-	private MenuItem itemFb;
+	private MenuItem mItemFb;
+
+	private User mUser;
+
+	public User getUser() {
+		return mUser;
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -139,7 +153,7 @@ public class MainActivity extends Activity implements
 			// if the drawer is not showing. Otherwise, let the drawer
 			// decide what to show in the action bar.
 			getMenuInflater().inflate(R.menu.main, menu);
-			itemFb = menu.findItem(R.id.action_fb);
+			mItemFb = menu.findItem(R.id.action_fb);
 			restoreActionBar();
 			return true;
 		}
@@ -148,13 +162,13 @@ public class MainActivity extends Activity implements
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		if (itemFb != null) {
+		if (mItemFb != null) {
 			if (mSimpleFacebook.isLogin()) {
-				itemFb.setIcon(R.drawable.ic_action_exit);
-				itemFb.setTitle(R.string.logout);
+				mItemFb.setIcon(R.drawable.ic_action_exit);
+				mItemFb.setTitle(R.string.logout);
 			} else {
-				itemFb.setIcon(R.drawable.ic_action_facebook);
-				itemFb.setTitle(R.string.login);
+				mItemFb.setIcon(R.drawable.ic_action_facebook);
+				mItemFb.setTitle(R.string.login);
 			}
 			return true;
 		}
@@ -215,11 +229,13 @@ public class MainActivity extends Activity implements
 			invalidateOptionsMenu();
 
 			Log.i(TAG, mSimpleFacebook.getSession().getAccessToken());
-//			Profile.Properties properties = new Profile.Properties.Builder()
-//					.add(Properties.ID).add(Properties.NAME).build();
-//			mSimpleFacebook.getProfile(properties, mOnProfileListener);
-//
-//			mSimpleFacebook.getGroups(mOnGroupsListener);
+			login(mSimpleFacebook.getSession().getAccessToken());
+
+			// Profile.Properties properties = new Profile.Properties.Builder()
+			// .add(Properties.ID).add(Properties.NAME).build();
+			// mSimpleFacebook.getProfile(properties, mOnProfileListener);
+			//
+			// mSimpleFacebook.getGroups(mOnGroupsListener);
 
 			// final Session session = ((MainActivity)
 			// getActivity()).getSimpleFacebook().getSession();
@@ -251,6 +267,27 @@ public class MainActivity extends Activity implements
 		}
 	};
 
+	private void login(String token) {
+		RavaApplication app = (RavaApplication) getApplication();
+		LoginService loginService = app.getLoginService();
+		loginService.login(token, new Callback<User>() {
+
+			@Override
+			public void success(User user, Response arg1) {
+				Toast.makeText(MainActivity.this, "success " + user.getId(),
+						Toast.LENGTH_SHORT).show();
+				mUser = user;
+			}
+
+			@Override
+			public void failure(RetrofitError arg0) {
+				Toast.makeText(MainActivity.this, "error ", Toast.LENGTH_SHORT)
+						.show();
+
+			}
+		});
+	}
+
 	// Logout listener
 	private OnLogoutListener mOnLogoutListener = new OnLogoutListener() {
 
@@ -272,6 +309,7 @@ public class MainActivity extends Activity implements
 		@Override
 		public void onLogout() {
 			invalidateOptionsMenu();
+			mUser = null;
 			toast("You are logged out");
 		}
 

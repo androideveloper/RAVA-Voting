@@ -1,6 +1,10 @@
 package com.rava.voting;
 
+import retrofit.RestAdapter;
+
 import com.facebook.SessionDefaultAudience;
+import com.rava.voting.api.ElectionService;
+import com.rava.voting.api.LoginService;
 import com.sromku.simple.fb.Permission;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.SimpleFacebookConfiguration;
@@ -11,6 +15,11 @@ import android.app.Application;
 public class RavaApplication extends Application {
 	private static final String APP_ID = "254740274727830";
 	private static final String APP_NAMESPACE = "ravavoting";
+
+	private static final String WEB_SERVICE = "http://192.168.4.225:8080/RavaWebService/api";
+
+	private ElectionService electionService;
+	private LoginService loginService;
 
 	@Override
 	public void onCreate() {
@@ -30,6 +39,19 @@ public class RavaApplication extends Application {
 				.setAskForAllPermissionsAtOnce(false).build();
 
 		SimpleFacebook.setConfiguration(configuration);
+
+		RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(
+				WEB_SERVICE).build();
+		electionService = restAdapter.create(ElectionService.class);
+		loginService = restAdapter.create(LoginService.class);
+	}
+
+	public ElectionService getElectionService() {
+		return electionService;
+	}
+
+	public LoginService getLoginService() {
+		return loginService;
 	}
 
 }
