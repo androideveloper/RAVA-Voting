@@ -35,6 +35,8 @@ public class LoginService {
 			return Response.status(401).entity("Token null or empty").build();
 		}
 
+		System.out.println(fbAccessToken);
+		
 		FacebookClient fbClient = new DefaultFacebookClient(fbAccessToken);
 		User user;
 		try {

@@ -39,6 +39,9 @@ public class ElectionDP {
 						rs.getString(DESCRIPTION),
 						states[rs.getInt(OPEN_STATE)], rs.getInt(CREATOR_ID),
 						rs.getString(PUBLIC_KEY));
+				election.setAnswers(ElectionAnswerDP.getElectionAnswers(elId));
+				election.setTrustees(ElectionTrusteeDP
+						.getElectionTrustees(elId));
 			}
 			rs.close();
 
@@ -54,8 +57,6 @@ public class ElectionDP {
 			}
 		}
 
-		election.setAnswers(ElectionAnswerDP.getElectionAnswers(elId));
-		election.setTrustees(ElectionTrusteeDP.getElectionTrustees(elId));
 		return election;
 	}
 

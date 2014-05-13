@@ -14,20 +14,21 @@ public class UserDP {
 	public static final String ID = "id";
 	public static final String FB_ID = "fbId";
 	public static final String EMAIL = "email";
-	
+
 	public static int insert(String fbId, String email) {
 		int id = 0;
 		Connection con = null;
 		try {
 			con = SqlDataProvider.getInstance().getConnection();
-			String sql = "select "  + ID + "," + FB_ID + "," + EMAIL + " from " + TABLE_NAME  + " where " + FB_ID + " = ?";
+			String sql = "select " + ID + "," + FB_ID + "," + EMAIL + " from "
+					+ TABLE_NAME + " where " + EMAIL + " = ?";
 			PreparedStatement statement = con.prepareStatement(sql);
-			statement.setString(1, fbId);
+			statement.setString(1, email);
 			ResultSet rs = statement.executeQuery();
 			if (rs.next()) {
 				id = rs.getInt(ID);
 			} else {
-				sql = "insert into " + TABLE_NAME + "(" + FB_ID + "," +  EMAIL 
+				sql = "insert into " + TABLE_NAME + "(" + FB_ID + "," + EMAIL
 						+ ") values(?,?) select SCOPE_IDENTITY() as " + ID;
 				statement = con.prepareStatement(sql);
 				statement.setString(1, fbId);
@@ -54,21 +55,22 @@ public class UserDP {
 		}
 		return id;
 	}
-	
+
 	public static User getUser(int id) {
 		Connection con = null;
 		User user = null;
 		try {
 			con = SqlDataProvider.getInstance().getConnection();
 
-			String sql = "select "  + ID + "," + FB_ID + "," + EMAIL + " from " + TABLE_NAME + " where " + ID + " = ?";
+			String sql = "select " + ID + "," + FB_ID + "," + EMAIL + " from "
+					+ TABLE_NAME + " where " + ID + " = ?";
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setInt(1, id);
 			ResultSet rs = statement.executeQuery();
 
 			if (rs.next()) {
-				user = new User(rs.getInt(ID),
-						rs.getString(FB_ID), rs.getString(EMAIL));
+				user = new User(rs.getInt(ID), rs.getString(FB_ID),
+						rs.getString(EMAIL));
 			}
 			rs.close();
 
@@ -85,5 +87,5 @@ public class UserDP {
 		}
 		return user;
 	}
-	
+
 }
