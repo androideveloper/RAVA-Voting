@@ -126,6 +126,7 @@ public class UserOpenElectionsFragment extends ListFragment implements
 
 					@Override
 					public void failure(RetrofitError error) {
+						mRefreshLayout.setRefreshing(false);
 						Utils.parseError(error, getActivity());
 					}
 				});
