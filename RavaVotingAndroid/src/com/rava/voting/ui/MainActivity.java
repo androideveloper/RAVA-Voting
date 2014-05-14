@@ -107,16 +107,17 @@ public class MainActivity extends Activity implements
 			break;
 
 		case 1:
-			fragmentManager.beginTransaction()
-					.replace(R.id.container, ElectionsFragment.newInstance())
-					.commit();
+			fragmentManager
+					.beginTransaction()
+					.replace(R.id.container,
+							UserElectionsFragment.newInstance()).commit();
 			break;
 
 		case 2:
 			fragmentManager
 					.beginTransaction()
 					.replace(R.id.container,
-							PlaceholderFragment.newInstance(position)).commit();
+							UserOpenElectionsFragment.newInstance()).commit();
 			break;
 
 		default:
@@ -131,10 +132,10 @@ public class MainActivity extends Activity implements
 			mTitle = getString(R.string.section_scan_receipt);
 			break;
 		case 1:
-			mTitle = getString(R.string.section_my_elections);
+			mTitle = getString(R.string.section_user_elections);
 			break;
 		case 2:
-			mTitle = getString(R.string.section_vote);
+			mTitle = getString(R.string.section_user_open_elections);
 			break;
 		}
 	}

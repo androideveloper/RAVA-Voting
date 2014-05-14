@@ -24,18 +24,16 @@ import com.rava.voting.model.Election;
 import com.rava.voting.model.User;
 import com.rava.voting.ui.adapter.ElectionsArrayAdapter;
 
-public class ElectionsFragment extends ListFragment implements
+public class UserElectionsFragment extends ListFragment implements
 		OnRefreshListener {
 
-	public static final String TAG = "ElectionsFragment";
+	public static final String TAG = "UserElectionsFragment";
 
 	private ElectionsArrayAdapter mAdapter;
-	// private ListView mListView;
-	// private TextView mEmptyView;
 	private SwipeRefreshLayout mRefreshLayout;
 
-	public static ElectionsFragment newInstance() {
-		ElectionsFragment fragment = new ElectionsFragment();
+	public static UserElectionsFragment newInstance() {
+		UserElectionsFragment fragment = new UserElectionsFragment();
 		Bundle args = new Bundle();
 		fragment.setArguments(args);
 		return fragment;
