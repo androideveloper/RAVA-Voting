@@ -3,6 +3,8 @@ package com.rava.voting.utils;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -13,6 +15,7 @@ import android.graphics.Bitmap;
 import android.util.Base64;
 import android.util.Log;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 public class Utils {
 	/**
@@ -52,5 +55,17 @@ public class Utils {
 		} catch (NoSuchAlgorithmException e) {
 
 		}
+	}
+
+	public static void parseError(RetrofitError error, Context context) {
+		String errorString = error.getMessage();
+		if (errorString == null) {
+			Response response = error.getResponse();
+			errorString = response.getReason();
+			if (errorString == null) {
+				errorString = "error";
+			}
+		}
+		Toast.makeText(context, errorString, Toast.LENGTH_SHORT).show();
 	}
 }

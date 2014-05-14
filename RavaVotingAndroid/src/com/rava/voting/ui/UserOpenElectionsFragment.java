@@ -23,6 +23,8 @@ import com.rava.voting.api.ElectionService;
 import com.rava.voting.model.Election;
 import com.rava.voting.model.User;
 import com.rava.voting.ui.adapter.ElectionsArrayAdapter;
+import com.rava.voting.utils.SettingsManager;
+import com.rava.voting.utils.Utils;
 
 public class UserOpenElectionsFragment extends ListFragment implements
 		OnRefreshListener {
@@ -104,7 +106,7 @@ public class UserOpenElectionsFragment extends ListFragment implements
 
 	private void load() {
 		mRefreshLayout.setRefreshing(true);
-		User user = ((MainActivity) getActivity()).getUser();
+		User user = SettingsManager.getUser();
 		if (user == null) {
 			mRefreshLayout.setRefreshing(false);
 			mAdapter.setElections(new ArrayList<Election>());
@@ -118,22 +120,13 @@ public class UserOpenElectionsFragment extends ListFragment implements
 					@Override
 					public void success(List<Election> elections,
 							Response response) {
-						Toast.makeText(getActivity(),
-								"success " + elections.size(),
-								Toast.LENGTH_SHORT).show();
 						mRefreshLayout.setRefreshing(false);
 						mAdapter.setElections(elections);
 					}
 
 					@Override
 					public void failure(RetrofitError error) {
-						String errorString = error.getMessage();
-						if (errorString == null) {
-							errorString = "error";
-						}
-						Toast.makeText(getActivity(), errorString,
-								Toast.LENGTH_SHORT).show();
-						mRefreshLayout.setRefreshing(false);
+						Utils.parseError(error, getActivity());
 					}
 				});
 	}

@@ -3,8 +3,12 @@ package com.rava.voting.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.rava.voting.R;
+import com.rava.voting.model.User;
 import com.rava.voting.ui.PreferencesActivity;
 
 /**
@@ -14,6 +18,8 @@ public class SettingsManager {
 
 	private static Context sContext;
 	private static SharedPreferences sPreferences;
+
+	private static final String KEY_USER = "key_user";
 
 	private SettingsManager() {
 	}
@@ -44,5 +50,30 @@ public class SettingsManager {
 		} catch (NumberFormatException e) {
 		}
 		return port;
+	}
+
+	public static void saveUser(User user) {
+		Gson gson = new GsonBuilder().create();
+		String userJson = gson.toJson(user);
+		Log.i("user to prefs", userJson);
+		SharedPreferences.Editor editor = sPreferences.edit();
+		editor.putString(KEY_USER, userJson);
+		editor.commit();
+	}
+
+	public static void clearUser() {
+		SharedPreferences.Editor editor = sPreferences.edit();
+		editor.remove(KEY_USER);
+		editor.commit();
+	}
+
+	public static User getUser() {
+		Gson gson = new GsonBuilder().create();
+		String userJson = sPreferences.getString(KEY_USER, "");
+		Log.i("user from prefs", userJson);
+		if (userJson.isEmpty())
+			return null;
+		User user = gson.fromJson(userJson, User.class);
+		return user;
 	}
 }

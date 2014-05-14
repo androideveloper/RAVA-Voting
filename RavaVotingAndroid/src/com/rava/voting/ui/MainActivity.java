@@ -25,6 +25,7 @@ import com.rava.voting.R;
 import com.rava.voting.RavaApplication;
 import com.rava.voting.api.LoginService;
 import com.rava.voting.model.User;
+import com.rava.voting.utils.SettingsManager;
 import com.rava.voting.utils.Utils;
 import com.sromku.simple.fb.Permission;
 import com.sromku.simple.fb.SimpleFacebook;
@@ -55,12 +56,6 @@ public class MainActivity extends Activity implements
 	private SimpleFacebook mSimpleFacebook;
 	private MenuItem mItemFb;
 
-	private User mUser;
-
-	public User getUser() {
-		return mUser;
-	}
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -81,7 +76,7 @@ public class MainActivity extends Activity implements
 	public void onResume() {
 		super.onResume();
 		mSimpleFacebook = SimpleFacebook.getInstance(this);
-		if (mSimpleFacebook.isLogin() && mUser == null) {
+		if (mSimpleFacebook.isLogin() && SettingsManager.getUser() == null) {
 			login(mSimpleFacebook.getSession().getAccessToken());
 		}
 	}
@@ -279,17 +274,12 @@ public class MainActivity extends Activity implements
 			public void success(User user, Response arg1) {
 				Toast.makeText(MainActivity.this, "success " + user.getId(),
 						Toast.LENGTH_SHORT).show();
-				mUser = user;
+				SettingsManager.saveUser(user);
 			}
 
 			@Override
-			public void failure(RetrofitError arg0) {
-				String errorString = arg0.getMessage();
-				if (errorString == null) {
-					errorString = "error";
-				}
-				Toast.makeText(MainActivity.this, errorString,
-						Toast.LENGTH_SHORT).show();
+			public void failure(RetrofitError error) {
+				Utils.parseError(error, MainActivity.this);
 			}
 		});
 	}
@@ -315,7 +305,7 @@ public class MainActivity extends Activity implements
 		@Override
 		public void onLogout() {
 			invalidateOptionsMenu();
-			mUser = null;
+			SettingsManager.clearUser();
 			toast("You are logged out");
 		}
 
