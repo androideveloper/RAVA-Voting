@@ -39,5 +39,6 @@
     <string name="next_note5">As you can see Result1 is equals to a1 and Result2 is equals to a2</string>
     <string name="next_error">Ooops your message is wrong encoded!!!</string>
     <string name="app_id">254740274727830</string>
+    <string name="no_data">No Data</string>
 
 </resources>

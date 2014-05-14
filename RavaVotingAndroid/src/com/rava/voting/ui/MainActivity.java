@@ -23,16 +23,13 @@ import android.widget.Toast;
 
 import com.rava.voting.R;
 import com.rava.voting.RavaApplication;
-import com.rava.voting.api.ElectionService;
 import com.rava.voting.api.LoginService;
-import com.rava.voting.model.Election;
 import com.rava.voting.model.User;
 import com.rava.voting.utils.Utils;
 import com.sromku.simple.fb.Permission;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.entities.Group;
 import com.sromku.simple.fb.entities.Profile;
-import com.sromku.simple.fb.entities.Profile.Properties;
 import com.sromku.simple.fb.listeners.OnGroupsListener;
 import com.sromku.simple.fb.listeners.OnLoginListener;
 import com.sromku.simple.fb.listeners.OnLogoutListener;
@@ -84,6 +81,9 @@ public class MainActivity extends Activity implements
 	public void onResume() {
 		super.onResume();
 		mSimpleFacebook = SimpleFacebook.getInstance(this);
+		if (mSimpleFacebook.isLogin() && mUser == null) {
+			login(mSimpleFacebook.getSession().getAccessToken());
+		}
 	}
 
 	@Override
