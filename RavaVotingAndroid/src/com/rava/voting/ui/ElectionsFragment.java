@@ -49,10 +49,11 @@ public class ElectionsFragment extends ListFragment implements
 		mRefreshLayout = (SwipeRefreshLayout) root
 				.findViewById(R.id.swipe_container);
 		mRefreshLayout.setOnRefreshListener(this);
-		mRefreshLayout.setColorScheme(android.R.color.holo_blue_bright,
-				android.R.color.holo_green_light,
-				android.R.color.holo_orange_light,
-				android.R.color.holo_red_light);
+		mRefreshLayout
+				.setColorScheme(android.R.color.holo_blue_dark,
+						android.R.color.holo_green_dark,
+						android.R.color.holo_orange_dark,
+						android.R.color.holo_red_dark);
 		return root;
 	}
 
@@ -71,10 +72,10 @@ public class ElectionsFragment extends ListFragment implements
 		// ElectionState.TWO));
 
 		setList();
-		load();
 		mAdapter = new ElectionsArrayAdapter(getActivity(), 0,
 				new ArrayList<Election>());
 		setListAdapter(mAdapter);
+		load();
 	}
 
 	@Override
@@ -106,13 +107,14 @@ public class ElectionsFragment extends ListFragment implements
 	private void load() {
 		mRefreshLayout.setRefreshing(true);
 		User user = ((MainActivity) getActivity()).getUser();
-		int userId = 0;
-		if (user != null) {
-			userId = user.getId();
+		if (user == null) {
+			mRefreshLayout.setRefreshing(false);
+			mAdapter.setElections(new ArrayList<Election>());
+			return;
 		}
 		RavaApplication app = (RavaApplication) getActivity().getApplication();
 		ElectionService electionService = app.getElectionService();
-		electionService.getUserCreatedElections(userId,
+		electionService.getUserCreatedElections(user.getId(),
 				new Callback<List<Election>>() {
 
 					@Override
