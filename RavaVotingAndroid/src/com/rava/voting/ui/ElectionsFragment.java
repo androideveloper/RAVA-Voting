@@ -129,7 +129,11 @@ public class ElectionsFragment extends ListFragment implements
 
 					@Override
 					public void failure(RetrofitError error) {
-						Toast.makeText(getActivity(), "error",
+						String errorString = error.getMessage();
+						if (errorString == null) {
+							errorString = "error";
+						}
+						Toast.makeText(getActivity(), errorString,
 								Toast.LENGTH_SHORT).show();
 						mRefreshLayout.setRefreshing(false);
 					}

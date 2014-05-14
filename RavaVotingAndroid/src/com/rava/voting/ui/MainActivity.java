@@ -187,6 +187,8 @@ public class MainActivity extends Activity implements
 			return true;
 		}
 		if (id == R.id.action_settings) {
+			Intent intent = new Intent(this, PreferencesActivity.class);
+			startActivity(intent);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -281,9 +283,12 @@ public class MainActivity extends Activity implements
 
 			@Override
 			public void failure(RetrofitError arg0) {
-				Toast.makeText(MainActivity.this, "error ", Toast.LENGTH_SHORT)
-						.show();
-
+				String errorString = arg0.getMessage();
+				if (errorString == null) {
+					errorString = "error";
+				}
+				Toast.makeText(MainActivity.this, errorString,
+						Toast.LENGTH_SHORT).show();
 			}
 		});
 	}

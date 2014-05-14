@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preference-headers xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <header
+        android:fragment="com.rava.voting.ui.PreferencesActivity$PrefsConnectionFragment"
+        android:icon="@drawable/ic_action_cloud"
+        android:title="@string/connection_config" />
+    <header
+        android:fragment="com.rava.voting.ui.PreferencesActivity$PrefsAboutFragment"
+        android:icon="@drawable/ic_action_info"
+        android:title="@string/about" />
+
+</preference-headers>

@@ -40,5 +40,12 @@
     <string name="next_error">Ooops your message is wrong encoded!!!</string>
     <string name="app_id">254740274727830</string>
     <string name="no_data">No Data</string>
+    <string name="please_input_server_name">Please input server name</string>
+    <string name="please_input_server_port">Please input server port</string>
+    <string name="connection_config">Connection</string>
+    <string name="about">About</string>
+    <string name="server">Server</string>
+    <string name="port">Port</string>
+    <string name="program_version">Version %1$s</string>
 
 </resources>
