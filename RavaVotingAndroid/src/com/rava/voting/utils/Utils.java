@@ -66,6 +66,7 @@ public class Utils {
 				errorString = "error";
 			}
 		}
-		Toast.makeText(context, errorString, Toast.LENGTH_SHORT).show();
+		if (context != null)
+			Toast.makeText(context, errorString, Toast.LENGTH_SHORT).show();
 	}
 }
