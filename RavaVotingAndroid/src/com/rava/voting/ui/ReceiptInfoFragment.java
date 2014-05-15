@@ -52,10 +52,12 @@ public class ReceiptInfoFragment extends Fragment {
 	private TableRow mTableRowB;
 	private TableRow mTableRowMessage;
 	private TableRow mTableRowMessageBigInt;
-	private TableRow mTableRowStep2;
+	private TableRow mTableRowA1;
+	private TableRow mTableRowA2;
 	private TableRow mTableRowC;
 	private TableRow mTableRowS;
-	private TableRow mTableRowRes;
+	private TableRow mTableRowRes1;
+	private TableRow mTableRowRes2;
 
 	private int clicks = 0;
 
@@ -116,10 +118,12 @@ public class ReceiptInfoFragment extends Fragment {
 		mTableRowMessage = (TableRow) root.findViewById(R.id.tablerow_message);
 		mTableRowMessageBigInt = (TableRow) root
 				.findViewById(R.id.tablerow_message_bigint);
-		mTableRowStep2 = (TableRow) root.findViewById(R.id.tablerow_step2);
+		mTableRowA1 = (TableRow) root.findViewById(R.id.tablerow_a1);
+		mTableRowA2 = (TableRow) root.findViewById(R.id.tablerow_a2);
 		mTableRowC = (TableRow) root.findViewById(R.id.tablerow_c);
 		mTableRowS = (TableRow) root.findViewById(R.id.tablerow_s);
-		mTableRowRes = (TableRow) root.findViewById(R.id.tablerow_result);
+		mTableRowRes1 = (TableRow) root.findViewById(R.id.tablerow_result1);
+		mTableRowRes2 = (TableRow) root.findViewById(R.id.tablerow_result2);
 		return root;
 	}
 
@@ -172,7 +176,8 @@ public class ReceiptInfoFragment extends Fragment {
 				mTableRowB.setVisibility(View.GONE);
 				mTableRowMessage.setVisibility(View.GONE);
 				mTableRowMessageBigInt.setVisibility(View.GONE);
-				mTableRowStep2.setVisibility(View.VISIBLE);
+				mTableRowA1.setVisibility(View.VISIBLE);
+				mTableRowA2.setVisibility(View.VISIBLE);
 
 				// change to random
 				//k = new BigInteger("1231365");
@@ -195,7 +200,7 @@ public class ReceiptInfoFragment extends Fragment {
 				//String hash = CryptoUtil.getSHA256hash(temp);
 				c = BigInteger.valueOf(t2);
 				//c = new BigInteger(hash);
-
+				c = new BigInteger("111");
 				mTextViewC.setText(c.toString());
 
 				mTextViewNote.setVisibility(View.GONE);
@@ -219,7 +224,8 @@ public class ReceiptInfoFragment extends Fragment {
 				break;
 			case 4:
 				mButtonNext.setVisibility(View.GONE);
-				mTableRowRes.setVisibility(View.VISIBLE);
+				mTableRowRes1.setVisibility(View.VISIBLE);
+				mTableRowRes2.setVisibility(View.VISIBLE);
 
 				res1 = g.modPow(s, p).multiply(y1.modPow(c, p)).mod(p);
 				res2 = y.modPow(s, p).multiply(y2.modPow(c, p)).mod(p);

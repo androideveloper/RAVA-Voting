@@ -13,10 +13,10 @@
     <string name="scan">Scan</string>
     <string name="login">Log in</string>
     <string name="logout">Log out</string>
-    <string name="a">Encryption a:</string>
-    <string name="b">Encryption b:</string>
+    <string name="a">a:</string>
+    <string name="b">b:</string>
     <string name="message">Message:</string>
-    <string name="message_bigint">Number representation of message:</string>
+    <string name="message_bigint">Message number:</string>
     <string name="receipt_info">Receipt info</string>
     <string name="next">Next</string>
     <string name="y1">y1:</string>
@@ -32,7 +32,7 @@
     <string name="s">s:</string>
     <string name="note1">Note that <b>  y1 </b> = a and <b>  y2 </b>= b/m</string>
     <string name="note2">Note that a1 = g^k and a2 = y^k </string>
-    <string name="next_note1">To generate random k and calculate a1 and a2 click next</string>
+    <string name="next_note1">To get k and calculate a1 and a2 click next</string>
     <string name="next_note2">To calculate <b>  c </b> click next</string>
     <string name="next_note3">To get <b>  s </b> click next</string>
     <string name="next_note4">To calculate result click next</string>

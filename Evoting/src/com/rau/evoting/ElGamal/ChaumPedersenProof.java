@@ -54,7 +54,7 @@ public class ChaumPedersenProof implements Serializable{
 		System.out.println("res1:" + res1);
 		System.out.println("res2:" + res2);
 		
-		ChaumPedersen cp = new ChaumPedersen(p, g, y, null, null, null, a1, a2, s);
+		ChaumPedersen cp = new ChaumPedersen(null, null, y, null, null, null, a1, a2, s);
 		return cp;
 	}
 
