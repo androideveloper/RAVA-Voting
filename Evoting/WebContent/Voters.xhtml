@@ -41,7 +41,7 @@
 
 			<h:selectOneMenu value="#{election.selectedGroup}" id="selectGroup">
 				<c:forEach items="#{election.groups}" var="gr">
-					<f:selectItem itemLabel="#{gr.name}" itemValue="#{gr.id}"></f:selectItem>
+					<f:selectItem itemLabel="#{gr.name}" itemValue="#{gr.groupId}"></f:selectItem>
 				</c:forEach>
 			</h:selectOneMenu>
 
