@@ -7,7 +7,7 @@ import com.rau.evoting.models.Answer;
 
 public class StringHelper {
 
-	private static String delimiter = ".";
+	private static String delimiter = "\\.";
 	
 	public static String convertIntArrayToString(int[] array) {	
 		StringBuilder stringBuilder = new StringBuilder();
@@ -53,8 +53,9 @@ public class StringHelper {
 		for (int i = 0; i < res.length; ++i) {
 			Integer x;
 			try {
-				x = Integer.parseInt(res[i]);
+				x = Integer.parseInt(res[i]);				
 			} catch (NumberFormatException ex) {
+				System.out.println(ex.getMessage());
 				continue;
 			}
 			list.add(x);

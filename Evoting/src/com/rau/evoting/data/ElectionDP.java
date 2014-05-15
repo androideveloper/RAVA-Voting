@@ -346,4 +346,29 @@ public class ElectionDP {
 		}
 		return el;
 	}
+	
+
+	public static void setElectionCounted(int elId) {
+		Connection con = null;
+		try {
+			con = SqlDataProvider.getInstance().getConnection();
+
+			String sql = "update " + TABLE_NAME + " set " + OPEN_STATE
+					+ "= 3 " + " where " + ID + " = ?";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setInt(1, elId);
+			statement.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }

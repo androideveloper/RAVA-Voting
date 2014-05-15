@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
@@ -13,38 +13,26 @@
 <script src="scripts/vendor/modernizr.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>My Voted Elections</title>
+<title>Election</title>
 </head>
+<f:metadata>
+	<f:viewParam name="elId" value="#{counted.elId}"></f:viewParam>
+</f:metadata>
 <body>
-
 	<h:form>
 		<ui:insert name="header">
 			<ui:include src="/template/CommonHeader.xhtml"></ui:include>
 		</ui:insert>
 
-		<ui:repeat var="el" value="#{votedEl.els}">
-			<div class="highlight-box-margin">
-				<h:link value="#{el.name}"
-					outcome="Election?faces-redirect=true"
-					rendered="#{el.state == 'ONE'}">
-					<f:param name="elId" value="#{el.id}"></f:param>
-				</h:link>
-				<h:link value="#{el.name}" outcome="ClosedElection?faces-redirect=true"
-					rendered="#{el.state == 'TWO'}">
-					<f:param name="elId" value="#{el.id}"></f:param>
-				</h:link>
-				<h:link value="#{el.name}" outcome="CountedElection?faces-redirect=true"
-					rendered="#{el.state == 'THREE'}">
-					<f:param name="elId" value="#{el.id}"></f:param>
-				</h:link>
-				<div class="algnRight">
-					<h:outputLabel value="#{el.state.stateName}"></h:outputLabel>
-				</div>
-				<br /> #{el.description}
-			</div>
+		<div id="info" class="margin20">
+			<h1>#{counted.election.name}</h1>
+			<p >#{counted.election.description}</p>
+			<h:dataTable value="#{counted.answers}" var="ans" >
+				<h:column> #{ans.answer} </h:column>
+				<h:column> #{ans.numberOfVotes} </h:column>
+			</h:dataTable>
+		</div>
 
-		</ui:repeat>
-		<p></p>
 	</h:form>
 
 	<div class="footer" id="footer">

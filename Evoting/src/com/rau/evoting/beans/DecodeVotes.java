@@ -29,7 +29,7 @@ public class DecodeVotes {
 		Map<String, String> reqMap = FacesContext.getCurrentInstance()
 				.getExternalContext().getRequestParameterMap();
 		validToken = true;
-		if (reqMap.containsKey("trId")) {
+		if (reqMap.containsKey("token")) {
 			electId = Integer.valueOf(reqMap.get("elId"));
 			int trId = Integer.valueOf(reqMap.get("trId"));
 			String token = reqMap.get("token");
@@ -64,6 +64,7 @@ public class DecodeVotes {
 		ElectionVoteDP.updateCutVotes(votes, election.getId());
 		if(ElectionTrusteeDP.setTrusteeDecoded(trId, electId)) {
 			countVotes(votes, electId);
+			ElectionDP.setElectionCounted(electId);
 		}
 		return "ThankYou?faces-redirect=true";
 	}

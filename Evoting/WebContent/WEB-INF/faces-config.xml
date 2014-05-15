@@ -57,6 +57,18 @@
         <managed-bean-class>com.rau.evoting.beans.UserVotedElections</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
+
+     <managed-bean>
+        <managed-bean-name>counted</managed-bean-name>
+        <managed-bean-class>com.rau.evoting.beans.CountedElection</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+      <managed-bean>
+        <managed-bean-name>closed</managed-bean-name>
+        <managed-bean-class>com.rau.evoting.beans.ClosedElection</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
     
     <managed-bean>
         <managed-bean-name>vote</managed-bean-name>
