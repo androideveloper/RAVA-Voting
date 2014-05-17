@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -17,7 +18,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.rau.evoting.ElGamal.BigIntegerTypeAdapter;
 import com.rau.evoting.ElGamal.ChaumPedersen;
-import com.rau.evoting.ElGamal.CryptoUtil;
 import com.rau.evoting.ElGamal.GlobalParameters;
 import com.rava.voting.R;
 
@@ -29,7 +29,6 @@ public class ReceiptInfoFragment extends Fragment {
 	// public static final String KEY_B = "KEY_B";
 	// public static final String KEY_MESSAGE = "KEY_MESSAGE";
 
-	
 	private TextView mTextViewP;
 	private TextView mTextViewG;
 	private TextView mTextViewY;
@@ -47,6 +46,7 @@ public class ReceiptInfoFragment extends Fragment {
 	private TextView mTextViewRes2;
 	private TextView mTextViewNote;
 	private TextView mTextViewNextNote;
+	private TextView mtextViewWrongQrcode;
 	private Button mButtonNext;
 	private TableRow mTableRowA;
 	private TableRow mTableRowB;
@@ -58,25 +58,28 @@ public class ReceiptInfoFragment extends Fragment {
 	private TableRow mTableRowS;
 	private TableRow mTableRowRes1;
 	private TableRow mTableRowRes2;
-
+	private TableLayout mTableLayoutReceiptInfo;
+	
+	
+	
 	private int clicks = 0;
 
-	private BigInteger p ;
-	private BigInteger g ;
+	private BigInteger p;
+	private BigInteger g;
 	private BigInteger y;
-	//private BigInteger r = new BigInteger("43245626364");
+	// private BigInteger r = new BigInteger("43245626364");
 	private BigInteger a;
 	private BigInteger b;
 	private BigInteger y1;
 	private BigInteger y2;
 	private BigInteger a1;
 	private BigInteger a2;
-	private BigInteger k;
+	//private BigInteger k;
 	private BigInteger c;
 	private BigInteger s;
 	private BigInteger res1;
 	private BigInteger res2;
-	
+
 	private ChaumPedersen mChaumPedersen;
 
 	public static ReceiptInfoFragment newInstance(String content) {
@@ -111,6 +114,7 @@ public class ReceiptInfoFragment extends Fragment {
 		mTextViewNote = (TextView) root.findViewById(R.id.textview_note);
 		mTextViewNextNote = (TextView) root
 				.findViewById(R.id.textview_next_note);
+		mtextViewWrongQrcode = (TextView) root.findViewById(R.id.textview_wrong_qrcode);
 		mButtonNext = (Button) root.findViewById(R.id.button_next);
 		mButtonNext.setOnClickListener(new NextClick());
 		mTableRowA = (TableRow) root.findViewById(R.id.tablerow_a);
@@ -124,6 +128,7 @@ public class ReceiptInfoFragment extends Fragment {
 		mTableRowS = (TableRow) root.findViewById(R.id.tablerow_s);
 		mTableRowRes1 = (TableRow) root.findViewById(R.id.tablerow_result1);
 		mTableRowRes2 = (TableRow) root.findViewById(R.id.tablerow_result2);
+		mTableLayoutReceiptInfo = (TableLayout) root.findViewById(R.id.tablelayout_receipt_info);
 		return root;
 	}
 
@@ -133,26 +138,37 @@ public class ReceiptInfoFragment extends Fragment {
 
 		Bundle args = getArguments();
 		String content = args.getString("content");
-		
+
 		Gson gson = new GsonBuilder().registerTypeAdapter(BigInteger.class,
 				new BigIntegerTypeAdapter()).create();
-		mChaumPedersen = gson.fromJson(content, ChaumPedersen.class);
-		
+		try {
+			mChaumPedersen = gson.fromJson(content, ChaumPedersen.class);
+			calculate();
+		} catch (Exception ex) {
+			mTableLayoutReceiptInfo.setVisibility(View.GONE);
+			mTextViewNextNote.setVisibility(View.GONE);
+			mtextViewWrongQrcode.setVisibility(View.VISIBLE);
+		}
+
+	}
+
+	private void calculate() {
+
 		a = mChaumPedersen.getA();
 		b = mChaumPedersen.getB();
 		String message = mChaumPedersen.getMessage();
-		
-		p =   GlobalParameters.getParams().getP();//mChaumPedersen.getP();   
-		g = GlobalParameters.getParams().getG(); //mChaumPedersen.getG();
+
+		p = GlobalParameters.getParams().getP();// mChaumPedersen.getP();
+		g = GlobalParameters.getParams().getG(); // mChaumPedersen.getG();
 		y = mChaumPedersen.getY();
-		
+
 		Charset charset = Charset.forName("ISO-8859-1");
 		byte[] bytes = message.getBytes(charset);
 		BigInteger messageBigint = new BigInteger(bytes);
 		y1 = a;
 		y2 = b.divide(messageBigint).mod(p);
 
-		mTextViewP.setText(p.toString());      
+		mTextViewP.setText(p.toString());
 		mTextViewG.setText(g.toString());
 		mTextViewY.setText(y.toString());
 		mTextViewA.setText(a.toString());
@@ -161,6 +177,55 @@ public class ReceiptInfoFragment extends Fragment {
 		mTextViewMessageBigInt.setText(messageBigint.toString());
 		mTextViewY1.setText(y1.toString());
 		mTextViewY2.setText(y2.toString());
+		
+		
+		
+		// change to random
+		// k = new BigInteger("1231365");
+		a1 = mChaumPedersen.getA1();// g.modPow(k, p);
+		a2 = mChaumPedersen.getA2(); // y.modPow(k, p);
+
+		mTextViewA1.setText(a1.toString());
+		mTextViewA2.setText(a2.toString());
+
+		mTextViewNote.setText(getResources().getString(R.string.note2));
+		mTextViewNextNote
+				.setText(getResources().getString(R.string.next_note2));
+
+		String temp = y1.toString().concat(y2.toString());
+		long t2 = temp.hashCode();
+		c = BigInteger.valueOf(t2).mod(p);
+		// c = new BigInteger("111");
+		mTextViewC.setText(c.toString());
+
+		mTextViewNextNote
+				.setText(getResources().getString(R.string.next_note3));
+
+		mTableRowS.setVisibility(View.VISIBLE);
+
+		// BigInteger temp2 = c.multiply(r).mod(p);
+		s = mChaumPedersen.getS(); // k.subtract(temp2).mod(p);
+
+		mTextViewS.setText(s.toString());
+
+		mTextViewNextNote
+				.setText(getResources().getString(R.string.next_note4));
+
+		res1 = g.modPow(s, p).multiply(y1.modPow(c, p)).mod(p);
+		res2 = y.modPow(s, p).multiply(y2.modPow(c, p)).mod(p);
+
+		mTextViewRes1.setText(res1.toString());
+		mTextViewRes2.setText(res2.toString());
+
+		if (a1.equals(res1) && a2.equals(res2)) {
+			mTextViewNextNote.setText(getResources().getString(
+					R.string.next_note5));
+		} else {
+			mTextViewNextNote.setText(getResources().getString(
+					R.string.next_error));
+			mTextViewNextNote.setTextColor(getResources().getColor(
+					android.R.color.holo_red_dark));
+		}
 
 	}
 
@@ -180,9 +245,9 @@ public class ReceiptInfoFragment extends Fragment {
 				mTableRowA2.setVisibility(View.VISIBLE);
 
 				// change to random
-				//k = new BigInteger("1231365");
+				// k = new BigInteger("1231365");
 				a1 = mChaumPedersen.getA1();// g.modPow(k, p);
-				a2 = mChaumPedersen.getA2(); //y.modPow(k, p);
+				a2 = mChaumPedersen.getA2(); // y.modPow(k, p);
 
 				mTextViewA1.setText(a1.toString());
 				mTextViewA2.setText(a2.toString());
@@ -197,10 +262,10 @@ public class ReceiptInfoFragment extends Fragment {
 				mTableRowC.setVisibility(View.VISIBLE);
 				String temp = y1.toString().concat(y2.toString());
 				long t2 = temp.hashCode();
-				//String hash = CryptoUtil.getSHA256hash(temp);
-				c = BigInteger.valueOf(t2);
-				//c = new BigInteger(hash);
-				c = new BigInteger("111");
+				// String hash = CryptoUtil.getSHA256hash(temp);
+				c = BigInteger.valueOf(t2).mod(p);
+				// c = new BigInteger(hash);
+				// c = new BigInteger("111");
 				mTextViewC.setText(c.toString());
 
 				mTextViewNote.setVisibility(View.GONE);
@@ -212,8 +277,8 @@ public class ReceiptInfoFragment extends Fragment {
 			case 3:
 				mTableRowS.setVisibility(View.VISIBLE);
 
-				//BigInteger temp2 = c.multiply(r).mod(p);
-				s = mChaumPedersen.getS(); //k.subtract(temp2).mod(p);
+				// BigInteger temp2 = c.multiply(r).mod(p);
+				s = mChaumPedersen.getS(); // k.subtract(temp2).mod(p);
 
 				mTextViewS.setText(s.toString());
 

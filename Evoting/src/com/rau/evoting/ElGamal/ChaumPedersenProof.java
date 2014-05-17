@@ -77,8 +77,8 @@ public class ChaumPedersenProof implements Serializable{
 	public BigInteger VerifierIteration1() {
 		String temp = y1.toString().concat(y2.toString());
 		long t2 = temp.hashCode();
-		c = BigInteger.valueOf(t2);
-		c = new BigInteger("111");
+		c = BigInteger.valueOf(t2).mod(p);
+		//c = new BigInteger("111");
 		// RandomHelper.randomNonZeroBigInteger(pubKey.getParameters().getP()
 		// .subtract(new BigInteger("1")));
 		return c;

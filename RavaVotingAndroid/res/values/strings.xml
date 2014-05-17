@@ -13,6 +13,7 @@
     <string name="scan">Scan</string>
     <string name="login">Log in</string>
     <string name="logout">Log out</string>
+    <string name="wrong_qrcode">The qrcode format is wrong</string>
     <string name="a">a:</string>
     <string name="b">b:</string>
     <string name="message">Message:</string>
