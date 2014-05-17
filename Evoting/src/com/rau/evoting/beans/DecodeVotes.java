@@ -47,8 +47,6 @@ public class DecodeVotes {
 				.getExternalContext().getRequestParameterMap().get("elId"));
 		trId = Integer.valueOf(FacesContext.getCurrentInstance()
 				.getExternalContext().getRequestParameterMap().get("trId"));
-		System.out.println("private key is: " + privateKey);
-		System.out.println("election id is: " + electId);
 		Election election = ElectionDP.getElection(electId);
 		ElGamalHelper gamal = new ElGamalHelper(election.getPublicKey(),
 				privateKey);

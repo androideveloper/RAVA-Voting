@@ -1,4 +1,4 @@
-   package com.rau.evoting.utils;
+package com.rau.evoting.utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import com.rau.evoting.models.Answer;
 
 public class StringHelper {
 
-	private static String delimiter = "\\.";
+	private static String delimiter = ".";
 	
 	public static String convertIntArrayToString(int[] array) {	
 		StringBuilder stringBuilder = new StringBuilder();
@@ -48,7 +48,7 @@ public class StringHelper {
 	public static List<Integer> converStringToInttList(String s) {
 
 		List<Integer> list = new ArrayList<Integer>();
-
+		delimiter = "\\.";
 		String[] res = s.split(delimiter);
 		for (int i = 0; i < res.length; ++i) {
 			Integer x;
