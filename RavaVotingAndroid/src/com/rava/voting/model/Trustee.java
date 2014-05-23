@@ -8,25 +8,24 @@ public class Trustee {
 	private String publicKey;
 	private int electId;
 	private String token;
-
+	private boolean decoded;
+	
 	public Trustee(int userId, String email, boolean isGenerated, String token) {
 		this.userId = userId;
 		this.email = email;
 		this.generated = isGenerated;
 		this.token = token;
 	}
-
-	public Trustee(int userId, String email, boolean isGenerated,
-			String publicKey, int electId) {
+	
+	public Trustee(int userId, String email, boolean isGenerated, String publicKey, int electId) {
 		this.userId = userId;
 		this.email = email;
 		this.generated = isGenerated;
 		this.publicKey = publicKey;
 		this.electId = electId;
 	}
-
-	public Trustee(int userId, String email, boolean isGenerated,
-			String publicKey, int electId, String token) {
+	
+	public Trustee(int userId, String email, boolean isGenerated, String publicKey, int electId, String token) {
 		this.userId = userId;
 		this.email = email;
 		this.generated = isGenerated;
@@ -34,9 +33,8 @@ public class Trustee {
 		this.electId = electId;
 		this.token = token;
 	}
-
-	public Trustee(int id, int userId, String email, boolean isGenerated,
-			String publicKey, int electId, String token) {
+	
+	public Trustee(int id,int userId, String email, boolean isGenerated, String publicKey, int electId, String token) {
 		this.id = id;
 		this.userId = userId;
 		this.email = email;
@@ -44,6 +42,17 @@ public class Trustee {
 		this.publicKey = publicKey;
 		this.electId = electId;
 		this.token = token;
+	}
+	
+	public Trustee(int id,int userId, String email, boolean isGenerated, String publicKey, int electId, String token, boolean decoded) {
+		this.id = id;
+		this.userId = userId;
+		this.email = email;
+		this.generated = isGenerated;
+		this.publicKey = publicKey;
+		this.electId = electId;
+		this.token = token;
+		this.decoded = decoded;
 	}
 
 	public int getId() {
@@ -100,6 +109,14 @@ public class Trustee {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public boolean isDecoded() {
+		return decoded;
+	}
+
+	public void setDecoded(boolean decoded) {
+		this.decoded = decoded;
 	}
 
 }

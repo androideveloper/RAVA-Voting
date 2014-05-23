@@ -112,6 +112,13 @@ public class MainActivity extends Activity implements
 			fragmentManager
 					.beginTransaction()
 					.replace(R.id.container,
+							UserVotedElectionsFragment.newInstance()).commit();
+			break;
+
+		case 3:
+			fragmentManager
+					.beginTransaction()
+					.replace(R.id.container,
 							UserOpenElectionsFragment.newInstance()).commit();
 			break;
 
@@ -130,6 +137,9 @@ public class MainActivity extends Activity implements
 			mTitle = getString(R.string.section_user_elections);
 			break;
 		case 2:
+			mTitle = getString(R.string.section_user_voted_elections);
+			break;
+		case 3:
 			mTitle = getString(R.string.section_user_open_elections);
 			break;
 		}

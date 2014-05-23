@@ -6,6 +6,7 @@
     <string name="section_scan_receipt">Scan receipt</string>
     <string name="section_user_elections">My elections</string>
     <string name="section_user_open_elections">Open elections</string>
+    <string name="section_user_voted_elections">My voted elections</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
@@ -48,5 +49,6 @@
     <string name="server">Server</string>
     <string name="port">Port</string>
     <string name="program_version">Version %1$s</string>
+    <string name="election_details">Election details</string>
 
 </resources>

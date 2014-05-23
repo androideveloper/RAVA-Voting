@@ -1,7 +1,7 @@
 package com.rava.voting.model;
 
 public enum ElectionState {
-	ZERO("Not Opened"), ONE("Opened"), TWO("Closed");
+	ZERO("Not Opened"), ONE("Opened"), TWO("Closed"), THREE("Counted");
 
 	private final String stateName;
 

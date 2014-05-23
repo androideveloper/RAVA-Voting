@@ -38,6 +38,10 @@
             android:name="com.rava.voting.ui.PreferencesActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/action_settings" />
+        <activity
+            android:name="com.rava.voting.ui.ElectionDetailActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/election_details" />
     </application>
 
 </manifest>

@@ -7,6 +7,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import android.app.ListFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
@@ -15,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.rava.voting.R;
 import com.rava.voting.RavaApplication;
@@ -81,8 +81,12 @@ public class UserElectionsFragment extends ListFragment implements
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		Toast.makeText(getActivity(), mAdapter.getItem(position).getName(),
-				Toast.LENGTH_SHORT).show();
+		Intent intent = new Intent(getActivity(), ElectionDetailActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putInt(ElectionDetailActivity.KEY_ELECTION,
+				mAdapter.getItem(position).getId());
+		intent.putExtras(bundle);
+		startActivity(intent);
 	}
 
 	private void setList() {
