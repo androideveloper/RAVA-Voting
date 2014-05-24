@@ -55,7 +55,7 @@ public class MixNode {
 		
 		ElGamalHelper gamal = new ElGamalHelper(trustee.getPublicKey());
 		for (CutVote vote : votes) {
-			vote.setAnswersSequence(gamal.encodeBigInt(vote
+			vote.setAnswersSequence(gamal.reEncodeBigInt(vote
 					.getAnswersSequence())); // change to reencrypt
 		}
 		ElectionVoteDP.updateCutVotes(votes, election.getId(), trustee.getMixServer()-1);

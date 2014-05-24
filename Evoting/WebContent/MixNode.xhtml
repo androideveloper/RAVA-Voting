@@ -19,15 +19,19 @@
 	<h:form>
 		<h:panelGroup rendered="#{mix.validToken}">
 			<h:panelGroup rendered="#{!mix.showThankYou}">
-				<div class="algnCenter">
+			<div class="row">
+				<div class="large-5 columns large-centered">
+					<a href="/Evoting"><img border="0" height="500" width="474"
+						src="/Evoting/images/rava_logo.png" /></a>
 					<h:commandButton value="Shuffle votes" styleClass="button tiny"
 						action="#{mix.shuffle}" style="margin: 50px;">
 					</h:commandButton>
 					<h:commandButton value="Re-Encrypt votes" styleClass="button tiny"
 						action="#{mix.reencrypt}" rendered="#{mix.showReEncrypt}"></h:commandButton>
 				</div>
+			</div>
 			</h:panelGroup>
-			<h:outputText rendered="#{mix.showThankYou}" styleClass="center">Thank you</h:outputText>
+			<h1>Thank you.</h1>
 		</h:panelGroup>
 		<h:outputText rendered="#{!mix.validToken}" styleClass="center">Invalid url</h:outputText>
 	</h:form>

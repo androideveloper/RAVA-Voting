@@ -33,12 +33,16 @@
 					rendered="#{el.state == 'ONE'}">
 					<f:param name="elId" value="#{el.id}"></f:param>
 				</h:link>
-				<h:link value="#{el.name}" outcome="ClosedElection?faces-redirect=true"
+				<h:link value="#{el.name}" outcome=""
 					rendered="#{el.state == 'TWO'}">
 					<f:param name="elId" value="#{el.id}"></f:param>
 				</h:link>
-				<h:link value="#{el.name}" outcome="CountedElection?faces-redirect=true"
+				<h:link value="#{el.name}" outcome="ClosedElection?faces-redirect=true"
 					rendered="#{el.state == 'THREE'}">
+					<f:param name="elId" value="#{el.id}"></f:param>
+				</h:link>
+				<h:link value="#{el.name}" outcome="CountedElection?faces-redirect=true"
+					rendered="#{el.state == 'FOUR'}">
 					<f:param name="elId" value="#{el.id}"></f:param>
 				</h:link>
 				<div class="algnRight">
