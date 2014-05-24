@@ -192,7 +192,7 @@ public class ReceiptInfoFragment extends Fragment {
 		mTextViewNextNote
 				.setText(getResources().getString(R.string.next_note2));
 
-		String temp = y1.toString().concat(y2.toString());
+		String temp = a1.toString().concat(a2.toString());
 		long t2 = temp.hashCode();
 		c = BigInteger.valueOf(t2).mod(p);
 		// c = new BigInteger("111");
@@ -260,7 +260,7 @@ public class ReceiptInfoFragment extends Fragment {
 
 			case 2:
 				mTableRowC.setVisibility(View.VISIBLE);
-				String temp = y1.toString().concat(y2.toString());
+				String temp = a1.toString().concat(a2.toString());
 				long t2 = temp.hashCode();
 				// String hash = CryptoUtil.getSHA256hash(temp);
 				c = BigInteger.valueOf(t2).mod(p);

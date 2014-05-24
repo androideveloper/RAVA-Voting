@@ -45,5 +45,16 @@ public class CryptoUtil {
 		Pair<BigInteger, BigInteger> res = new Pair<BigInteger, BigInteger>(a, b);
 		return res;
 	}
+	
+	public static String bigIntegerToString(BigInteger bg){
+		byte[] b = bg.toByteArray();
+		String res = new String(b, charset);
+		return res;
+	}
 
+	public static BigInteger stringToBigInteger(String s){
+		byte[] b = s.getBytes(charset);
+		BigInteger res = new BigInteger(b);
+		return res;
+	}
 }

@@ -26,9 +26,9 @@ public class ElGamalHelper {
 		pubKeyParams = new ElGamalPublicKeyParameters(params.getG().modPow(
 				prKeyParams.getX(), params.getP()), params);
 		
-		System.out.println("public:" + pubKeyParams.getY());
-		System.out.println("public:" + pubKeyParams.getY().toString());
-		System.out.println("private:" + prKeyParams.getX());
+		//System.out.println("public:" + pubKeyParams.getY());
+		//System.out.println("public:" + pubKeyParams.getY().toString());
+		//System.out.println("private:" + prKeyParams.getX());
 	}
 
 	public ElGamalHelper(String pubKey) {
@@ -36,7 +36,7 @@ public class ElGamalHelper {
 		pubKeyParams = new ElGamalPublicKeyParameters(new BigInteger(pubKey),
 				params);
 		
-		System.out.println("public:" + pubKeyParams.getY());
+		//System.out.println("public:" + pubKeyParams.getY());
 		//System.out.println("public:" + pubKeyParams.getY().toString());
 		//System.out.println("private:" + prKeyParams.getX());
 	}
@@ -48,9 +48,9 @@ public class ElGamalHelper {
 		pubKeyParams = new ElGamalPublicKeyParameters(new BigInteger(pubKey),
 				params);
 		
-		System.out.println("public:" + pubKeyParams.getY());
+		//System.out.println("public:" + pubKeyParams.getY());
 		//System.out.println("public:" + pubKeyParams.getY().toString());
-		System.out.println("private:" + prKeyParams.getX());
+		//System.out.println("private:" + prKeyParams.getX());
 	}
 
 	public String encode(String text) {
@@ -69,6 +69,16 @@ public class ElGamalHelper {
 		eng.initForEncrypt(pubKeyParams);
 		byte[] in = text.getBytes(charset);
 		byte[] b = eng.encode(in, 0, in.length);
+		r = eng.getR();
+		String encoded = (new BigInteger(b)).toString();
+		return encoded;
+	}
+	
+	public String reEncodeBigInt(String text) {
+		EncryptEngine eng = new EncryptEngine();
+		eng.initForEncrypt(pubKeyParams);
+		byte[] in =   new BigInteger(text).toByteArray(); //text.getBytes(charset);
+		byte[] b = eng.reEncode(in, 0, in.length);
 		r = eng.getR();
 		String encoded = (new BigInteger(b)).toString();
 		return encoded;
