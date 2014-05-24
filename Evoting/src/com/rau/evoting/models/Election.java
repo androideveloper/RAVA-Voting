@@ -15,6 +15,7 @@ public class Election {
 	// private int state;
 	private int creatorId;
 	private String publicKey;
+	private int mixStage;
 	private ArrayList<Answer> answers;
 
 	public Election(int id, String name, String description) {
@@ -31,13 +32,14 @@ public class Election {
 	}
 
 	public Election(int id, String name, String description,
-			ElectionState state, int creatorId, String key) {
+			ElectionState state, int creatorId, String key, int mixStage) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.state = state;
 		this.creatorId = creatorId;
 		this.publicKey = key;
+		this.mixStage = mixStage;
 	}
 
 	public int getId() {
@@ -94,6 +96,14 @@ public class Election {
 
 	public void setAnswers(ArrayList<Answer> answers) {
 		this.answers = answers;
+	}
+
+	public int getMixStage() {
+		return mixStage;
+	}
+
+	public void setMixStage(int mixStage) {
+		this.mixStage = mixStage;
 	}
 
 }
