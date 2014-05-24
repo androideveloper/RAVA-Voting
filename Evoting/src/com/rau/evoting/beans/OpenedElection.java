@@ -66,11 +66,11 @@ public class OpenedElection {
 		ElectionVoteDP.cutVotes(elId);
 		election = ElectionDP.getElection(elId);
 		//send mail to all trustees make async!!!!!
-		List<Trustee> trustees = ElectionTrusteeDP.getElectionTrustees(elId);
-		String message = "Please follow this link to upload your private key and decode election votes: \n";
+		//List<Trustee> trustees = ElectionTrusteeDP.getElectionTrustees(elId);
+		//String message = "Please follow this link to upload your private key and decode election votes: \n";
 		String title = "Trustee for " + election.getName() + " election";
-		String url = "http://localhost:8080/Evoting/DecodeVotes.xhtml?elId=" + elId;
-		for(Trustee tr : trustees) {
+		//String url = "http://localhost:8080/Evoting/DecodeVotes.xhtml?elId=" + elId;
+		/*for(Trustee tr : trustees) {
 			url += "&trId=" + tr.getId() + "&token=" + tr.getToken();
 			message += url;
 			try {
@@ -78,6 +78,16 @@ public class OpenedElection {
 			} catch (MessagingException e) {
 				e.printStackTrace();
 			}
+		}*/
+		Trustee trustee = ElectionTrusteeDP.getTrusteeByMixServer(elId, 1);
+		String message = "Please follow this link to open your mix node: \n";
+		String url ="http://localhost:8080/Evoting/MixNode.xhtml?trId=" + trustee.getId() + "&token=" + trustee.getToken();
+		message += url;
+		try {
+			MailService.sendMessage(trustee.getEmail(), title, message);
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return "Home?faces-redirect=true";
 	}

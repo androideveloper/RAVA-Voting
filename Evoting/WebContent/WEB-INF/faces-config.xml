@@ -119,6 +119,12 @@
     </managed-bean>
     
     <managed-bean>
+        <managed-bean-name>mix</managed-bean-name>
+        <managed-bean-class>com.rau.evoting.beans.MixNode</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
         <managed-bean-name>back</managed-bean-name>
         <managed-bean-class>com.rau.evoting.beans.BackNavigationBean</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>

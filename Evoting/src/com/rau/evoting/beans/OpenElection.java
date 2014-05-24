@@ -109,7 +109,7 @@ public class OpenElection {
 				+ " election\n Please, generate your key: \n";
 		String token = Util.generateRandomToken();
 		int trId = ElectionTrusteeDP.insertTrustee(election.getId(),
-				new Trustee(0, trusteeEmail, false, token));
+				new Trustee(0, trusteeEmail, false, token, false, trustees.size() + 1));
 		String url = "http://localhost:8080/Evoting/TrusteeHome.xhtml?trId="
 				+ trId + "&token=" + token;
 		String encodedUrl = url;

@@ -9,23 +9,30 @@ public class Trustee {
 	private int electId;
 	private String token;
 	private boolean decoded;
-	
-	public Trustee(int userId, String email, boolean isGenerated, String token) {
+	private boolean mixDone;
+	private int mixServer;
+
+	public Trustee(int userId, String email, boolean isGenerated, String token,
+			boolean mixDone, int mixServer) { System.out.println("mix server: " + mixServer );
 		this.userId = userId;
 		this.email = email;
 		this.generated = isGenerated;
 		this.token = token;
+		this.mixDone = mixDone;
+		this.mixServer = mixServer;
 	}
-	
-	public Trustee(int userId, String email, boolean isGenerated, String publicKey, int electId) {
+
+	public Trustee(int userId, String email, boolean isGenerated,
+			String publicKey, int electId) {
 		this.userId = userId;
 		this.email = email;
 		this.generated = isGenerated;
 		this.publicKey = publicKey;
 		this.electId = electId;
 	}
-	
-	public Trustee(int userId, String email, boolean isGenerated, String publicKey, int electId, String token) {
+
+	public Trustee(int userId, String email, boolean isGenerated,
+			String publicKey, int electId, String token) {
 		this.userId = userId;
 		this.email = email;
 		this.generated = isGenerated;
@@ -33,8 +40,9 @@ public class Trustee {
 		this.electId = electId;
 		this.token = token;
 	}
-	
-	public Trustee(int id,int userId, String email, boolean isGenerated, String publicKey, int electId, String token) {
+
+	public Trustee(int id, int userId, String email, boolean isGenerated,
+			String publicKey, int electId, String token) {
 		this.id = id;
 		this.userId = userId;
 		this.email = email;
@@ -43,8 +51,10 @@ public class Trustee {
 		this.electId = electId;
 		this.token = token;
 	}
-	
-	public Trustee(int id,int userId, String email, boolean isGenerated, String publicKey, int electId, String token, boolean decoded) {
+
+	public Trustee(int id, int userId, String email, boolean isGenerated,
+			String publicKey, int electId, String token, boolean decoded,
+			boolean mixDone, int mixServer) {
 		this.id = id;
 		this.userId = userId;
 		this.email = email;
@@ -53,6 +63,8 @@ public class Trustee {
 		this.electId = electId;
 		this.token = token;
 		this.decoded = decoded;
+		this.mixDone = mixDone;
+		this.mixServer = mixServer;
 	}
 
 	public int getId() {
@@ -117,6 +129,22 @@ public class Trustee {
 
 	public void setDecoded(boolean decoded) {
 		this.decoded = decoded;
+	}
+
+	public boolean isMixDone() {
+		return mixDone;
+	}
+
+	public void setMixDone(boolean mixDone) {
+		this.mixDone = mixDone;
+	}
+
+	public int getMixServer() {
+		return mixServer;
+	}
+
+	public void setMixServer(int mixServer) {
+		this.mixServer = mixServer;
 	}
 
 }

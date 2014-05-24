@@ -51,7 +51,7 @@ public class DecodeVotes {
 		ElGamalHelper gamal = new ElGamalHelper(election.getPublicKey(),
 				privateKey);
 
-		ArrayList<CutVote> votes = ElectionVoteDP.getCutVotes(election.getId());
+		ArrayList<CutVote> votes = ElectionVoteDP.getCutVotes(election.getId(), election.getMixStage());
 		for (CutVote vote : votes) {
 			System.out.println("encoded answer sequence: "
 					+ vote.getAnswersSequence());
@@ -59,7 +59,7 @@ public class DecodeVotes {
 					.getAnswersSequence()));
 			System.out.println("answer sequence: " + vote.getAnswersSequence());
 		}
-		ElectionVoteDP.updateCutVotes(votes, election.getId());
+		ElectionVoteDP.updateCutVotes(votes, election.getId(), election.getMixStage());
 		if(ElectionTrusteeDP.setTrusteeDecoded(trId, electId)) {
 			countVotes(votes, electId);
 			ElectionDP.setElectionCounted(electId);

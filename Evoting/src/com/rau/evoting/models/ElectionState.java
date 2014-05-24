@@ -1,7 +1,7 @@
 package com.rau.evoting.models;
 
 public enum ElectionState {
-	ZERO("Not Opened"), ONE("Opened"), TWO("Closed"), THREE("Counted");
+	ZERO("Not Opened"), ONE("Opened"), TWO("Mix Net"), THREE("Decode"), FOUR("Counted");
 	
 	private final String stateName;
 

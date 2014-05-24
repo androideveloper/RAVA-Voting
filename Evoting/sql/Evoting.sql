@@ -21,7 +21,8 @@ create table Elections
 	descript varchar(4096),
 	openState tinyint,   
 	creatorId int foreign key references Users(id),
-	publicKey varchar(max) 
+	publicKey varchar(max),
+	mixStage int 
 ); 
 
 create table ElectionTrustees
@@ -33,7 +34,9 @@ create table ElectionTrustees
 	isGenerated bit,
 	publicKey varchar(max),
 	token varchar(50),
-	isDecoded bit
+	isDecoded bit, 
+	mixDone bit,
+	mixServer int
 );
 
 create table ElectionAnswers
@@ -69,7 +72,8 @@ create table CutVotes
 	id int primary key identity(1,1),
 	electId int foreign key references Elections(id),
 	answersSequence varchar(1024),
-	answerId int
+	answerId int,
+	mixStage int 
 );
 
 

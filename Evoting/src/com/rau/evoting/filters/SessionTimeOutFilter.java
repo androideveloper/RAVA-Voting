@@ -43,7 +43,7 @@ public class SessionTimeOutFilter implements Filter {
 		}
 		
 		if(!req.getRequestURI().equals("/Evoting/Login.xhtml") && !req.getRequestURI().equals("/Evoting/") 
-				&& !req.getRequestURI().equals("/Evoting/TrusteeHome.xhtml") && !req.getRequestURI().equals("/Evoting/DecodeVotes.xhtml")) {
+				&& !req.getRequestURI().equals("/Evoting/TrusteeHome.xhtml") && !req.getRequestURI().equals("/Evoting/DecodeVotes.xhtml") && !req.getRequestURI().equals("/Evoting/MixNode.xhtml")) {
 		
 			if(isSessionInvalid(req)) {
 				System.out.println("Session is invalid");
