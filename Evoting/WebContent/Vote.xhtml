@@ -126,27 +126,31 @@
 
 		</div>
 
-		<h:panelGroup rendered="#{vote.showDecode}" styleClass="margin20">
-			<h:outputText> Select auditing ballot: </h:outputText>
-			<h:selectOneMenu id="selectList" value="#{vote.selectedDecodedList}"
-				style="margin: 10px;">
-				<f:selectItem itemLabel="1" itemValue="1"></f:selectItem>
-				<f:selectItem itemLabel="2" itemValue="2"></f:selectItem>
-			</h:selectOneMenu>
-			<h:commandButton value="next" styleClass="button tiny">
-				<f:ajax event="click" listener="#{vote.decode}" render="voteForm"
-					execute="selectList"></f:ajax>
-			</h:commandButton>
+		<h:panelGroup rendered="#{vote.showDecode}">
+			<div class="algnCenter">
+				<h:outputText> Select auditing ballot: </h:outputText>
+				<h:selectOneMenu id="selectList" value="#{vote.selectedDecodedList}"
+					style="margin: 10px;">
+					<f:selectItem itemLabel="1" itemValue="1"></f:selectItem>
+					<f:selectItem itemLabel="2" itemValue="2"></f:selectItem>
+				</h:selectOneMenu>
+				<h:commandButton value="next" styleClass="button tiny">
+					<f:ajax event="click" listener="#{vote.decode}" render="voteForm"
+						execute="selectList"></f:ajax>
+				</h:commandButton>
+			</div>
 		</h:panelGroup>
 
-		<h:commandButton value="shuffle" styleClass="button tiny"
-			style="margin: 20px;" rendered="#{vote.showShuffle}">
-			<f:ajax event="click" listener="#{vote.shuffle}" render="voteForm"></f:ajax>
-		</h:commandButton>
-		<h:commandButton value="encode" rendered="#{vote.showEncode}"
-			styleClass="button tiny">
-			<f:ajax event="click" listener="#{vote.encode}" render="voteForm"></f:ajax>
-		</h:commandButton>
+		<div class="algnCenter">
+			<h:commandButton value="shuffle" styleClass="button tiny"
+				style="margin: 20px;" rendered="#{vote.showShuffle}">
+				<f:ajax event="click" listener="#{vote.shuffle}" render="voteForm"></f:ajax>
+			</h:commandButton>
+			<h:commandButton value="encode" rendered="#{vote.showEncode}"
+				styleClass="button tiny">
+				<f:ajax event="click" listener="#{vote.encode}" render="voteForm"></f:ajax>
+			</h:commandButton>
+		</div>
 
 		<h:panelGroup rendered="#{vote.showDecoded1 or vote.showDecoded2}"
 			styleClass="margin20">
@@ -159,8 +163,10 @@
 						itemValue="#{ans.id}" itemLabel="#{ans.id}"></f:selectItems>
 				</h:selectOneMenu>
 			</ui:remove>
+			<div class="algnCenter">
 			<h:commandButton value="vote" action="#{vote.vote}"
 				styleClass="button tiny"></h:commandButton>
+			</div>
 		</h:panelGroup>
 
 	</h:form>
