@@ -16,7 +16,8 @@
 
     <HorizontalScrollView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:paddingRight="10dp" >
 
         <TableLayout
             android:id="@+id/tablelayout_receipt_info"
@@ -24,7 +25,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp" >
+            android:layout_marginTop="10dp"
+            android:paddingRight="10dp" >
 
             <TableRow android:id="@+id/tablerow_p" >
 

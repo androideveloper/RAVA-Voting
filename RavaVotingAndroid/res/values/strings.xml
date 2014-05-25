@@ -38,8 +38,8 @@
     <string name="next_note2">To calculate <b>  c </b> click next</string>
     <string name="next_note3">To get <b>  s </b> click next</string>
     <string name="next_note4">To calculate result click next</string>
-    <string name="next_note5">As you can see Result1 is equals to a1 and Result2 is equals to a2</string>
-    <string name="next_error">Ooops your message is wrong encoded!!!</string>
+    <string name="next_note5">As you can see Result1 is equals to a1 and Result2 is equals to a2 \n hence the message was correctly encoded</string>
+    <string name="next_error">Sorry your message is wrong encoded!!!</string>
     <string name="app_id">254740274727830</string>
     <string name="no_data">No Data</string>
     <string name="please_input_server_name">Please input server name</string>

@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.rau.evoting.ElGamal.BigIntegerTypeAdapter;
 import com.rau.evoting.ElGamal.ChaumPedersen;
+import com.rau.evoting.ElGamal.CryptoUtil;
 import com.rau.evoting.ElGamal.GlobalParameters;
 import com.rava.voting.R;
 
@@ -164,7 +165,7 @@ public class ReceiptInfoFragment extends Fragment {
 
 		Charset charset = Charset.forName("ISO-8859-1");
 		byte[] bytes = message.getBytes(charset);
-		BigInteger messageBigint = new BigInteger(bytes);
+		BigInteger messageBigint =  CryptoUtil.stringToBigInteger(message);// new BigInteger(bytes);
 		y1 = a;
 		y2 = b.divide(messageBigint).mod(p);
 
@@ -210,7 +211,7 @@ public class ReceiptInfoFragment extends Fragment {
 
 		mTextViewNextNote
 				.setText(getResources().getString(R.string.next_note4));
-
+		mTextViewNote.setVisibility(View.GONE);
 		res1 = g.modPow(s, p).multiply(y1.modPow(c, p)).mod(p);
 		res2 = y.modPow(s, p).multiply(y2.modPow(c, p)).mod(p);
 
