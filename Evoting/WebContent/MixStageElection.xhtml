@@ -13,30 +13,41 @@
 <script src="scripts/vendor/modernizr.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Mix Node</title>
+<title>Election</title>
 </head>
+<f:metadata>
+	<f:viewParam name="elId" value="#{elect.elId}"></f:viewParam>
+</f:metadata>
 <body>
 	<h:form>
-		<h:panelGroup rendered="#{mix.validToken}">
-			<h:panelGroup rendered="#{!mix.showThankYou}">
-			<div class="row">
-				<div class="large-5 columns large-centered">
-					<a href="/Evoting"><img border="0" height="500" width="474"
-						src="/Evoting/images/rava_logo.png" /></a>
-					<h:commandButton value="Shuffle votes" styleClass="button tiny"
-						action="#{mix.shuffle}" style="margin: 50px;">
-					</h:commandButton>
-					<h:commandButton value="Re-Encrypt votes" styleClass="button tiny"
-						action="#{mix.reencrypt}" rendered="#{mix.showReEncrypt}"></h:commandButton>
-				</div>
-			</div>
-			</h:panelGroup>
-			<h:panelGroup rendered="#{mix.showThankYou}"><h1>Thank you.</h1> > </h:panelGroup>
-		</h:panelGroup>
-		<h:outputText rendered="#{!mix.validToken}" styleClass="center">Invalid url</h:outputText>
+		<ui:insert name="header">
+			<ui:include src="/template/CommonHeader.xhtml"></ui:include>
+		</ui:insert>
+		<div id="info" class="margin20">
+			<h1>#{elect.election.name}</h1>
+			<p>#{elect.election.description}</p>
+			<p>Election public key is: #{elect.election.publicKey}</p>
+			<p>Trustees:</p>
+			<ul>
+				<ui:repeat var="tr" value="#{elect.trustees}">
+					<li><h:outputText value="#{tr.email}"></h:outputText></li>
+				</ui:repeat>
+			</ul>			
+
+		</div>
+
+		
+		<h:commandButton value="View Votes" action="ViewVotes"
+				styleClass="button tiny" style="margin-left: 20px;">
+				<f:param name="elId" value="#{elect.election.id}"></f:param>
+		</h:commandButton>
+		
 	</h:form>
 
-
+	<div class="footer" id="footer">
+		logged in as &#160;
+		<h:outputText value="#{home.username}" style="font-weight:bold" />
+	</div>
 
 	<script src="scripts/vendor/jquery.js"></script>
 	<script src="scripts/vendor/fastclick.js"></script>

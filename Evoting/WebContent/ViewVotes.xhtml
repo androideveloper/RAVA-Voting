@@ -17,26 +17,24 @@
 </head>
 <body>
 	<h:form>
-		<h:panelGroup rendered="#{mix.validToken}">
-			<h:panelGroup rendered="#{!mix.showThankYou}">
-			<div class="row">
-				<div class="large-5 columns large-centered">
-					<a href="/Evoting"><img border="0" height="500" width="474"
-						src="/Evoting/images/rava_logo.png" /></a>
-					<h:commandButton value="Shuffle votes" styleClass="button tiny"
-						action="#{mix.shuffle}" style="margin: 50px;">
-					</h:commandButton>
-					<h:commandButton value="Re-Encrypt votes" styleClass="button tiny"
-						action="#{mix.reencrypt}" rendered="#{mix.showReEncrypt}"></h:commandButton>
-				</div>
-			</div>
-			</h:panelGroup>
-			<h:panelGroup rendered="#{mix.showThankYou}"><h1>Thank you.</h1> > </h:panelGroup>
-		</h:panelGroup>
-		<h:outputText rendered="#{!mix.validToken}" styleClass="center">Invalid url</h:outputText>
+		<ui:insert name="header">
+			<ui:include src="/template/CommonHeader.xhtml"></ui:include>
+		</ui:insert>
+		<c:forEach var="i" begin="0" end="#{votes.election.mixStage}">
+			<h:commandButton value="Mix node #{i}" styleClass="button tiny"
+				style="margin-left: 30px;" action="#{votes.showVotes}">
+				<f:param name="elId" value="#{votes.election.id}"></f:param>
+				<f:param name="stage" value="#{i}"></f:param>
+			</h:commandButton> <br/>
+		</c:forEach>
+
+		<ul>
+			<ui:repeat var="vote" value="#{votes.votes}">
+				<li>#{vote}</li>
+			</ui:repeat>
+		</ul>
+
 	</h:form>
-
-
 
 	<script src="scripts/vendor/jquery.js"></script>
 	<script src="scripts/vendor/fastclick.js"></script>

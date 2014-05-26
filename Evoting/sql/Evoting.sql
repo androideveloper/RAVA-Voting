@@ -93,7 +93,7 @@ insert into Users(fbId) values ('123')
 insert into ElectionTrustees (electId,trusteeId,email,isGenerated) values(2,'','aaa',0)
 
 select * from Users   
-select * from ElectionTrustees
+select * from ElectionTrusteesinch
 select * from UserGroups
 
 select * from Elections

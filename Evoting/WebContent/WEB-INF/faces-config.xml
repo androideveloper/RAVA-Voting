@@ -113,6 +113,12 @@
     </managed-bean>
     
     <managed-bean>
+        <managed-bean-name>votes</managed-bean-name>
+        <managed-bean-class>com.rau.evoting.beans.ViewVotes</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
         <managed-bean-name>generate</managed-bean-name>
         <managed-bean-class>com.rau.evoting.beans.Generate</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>

@@ -33,7 +33,7 @@
 					rendered="#{el.state == 'ONE'}">
 					<f:param name="elId" value="#{el.id}"></f:param>
 				</h:link>
-				<h:link value="#{el.name}" outcome=""
+				<h:link value="#{el.name}" outcome="MixStageElection?faces-redirect=true"
 					rendered="#{el.state == 'TWO'}">
 					<f:param name="elId" value="#{el.id}"></f:param>
 				</h:link>

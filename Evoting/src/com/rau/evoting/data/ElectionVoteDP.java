@@ -219,5 +219,36 @@ public class ElectionVoteDP {
 		}
 		return;
 	}
+	
+	public static void insertCutVotes(ArrayList<CutVote> votes, int elId, int stage) {
+		Connection con = null;
+		try {
+			con = SqlDataProvider.getInstance().getConnection();
+			
+			String sql = "insert into " + CUT_TABLE_NAME + "(" + ELECTION_ID
+					+ "," + ANSWER_SEQUENCE + "," + ANSWER_ID + "," + MIX_STAGE
+					+ ") values(?,?,?,?)";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setInt(1, elId);
+			for (CutVote vote : votes) {
+				statement.setString(2, vote.getAnswersSequence());
+				statement.setInt(3, vote.getAnswerId());
+				statement.setInt(4, stage);
+				statement.executeUpdate();
+			}
+			con.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return;
+	}
 
 }

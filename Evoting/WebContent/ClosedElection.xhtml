@@ -25,8 +25,8 @@
 		</ui:insert>
 
 		<div id="info" class="margin20">
-			<h1>#{counted.election.name}</h1>
-			<p>#{counted.election.description}</p>
+			<h1>#{closed.election.name}</h1>
+			<p>#{closed.election.description}</p>
 			<table class="margLeft">
 				<ui:repeat var="tr" value="#{closed.trustees}">
 					<tr>
@@ -39,6 +39,10 @@
 			</table>
 		</div>
 
+		<h:commandButton value="View Votes" action="ViewVotes"
+			styleClass="button tiny" style="margin-left: 20px;">
+			<f:param name="elId" value="#{closed.election.id}"></f:param>
+		</h:commandButton>
 	</h:form>
 
 	<div class="footer" id="footer">

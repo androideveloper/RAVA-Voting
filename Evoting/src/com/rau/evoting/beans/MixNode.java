@@ -58,7 +58,7 @@ public class MixNode {
 			vote.setAnswersSequence(gamal.reEncodeBigInt(vote
 					.getAnswersSequence())); // change to reencrypt
 		}
-		ElectionVoteDP.updateCutVotes(votes, election.getId(), trustee.getMixServer()-1);
+		ElectionVoteDP.insertCutVotes(votes, election.getId(), trustee.getMixServer());
 		
 		ElectionDP.setElectionMixStage(election.getId(), trustee.getMixServer());
 		

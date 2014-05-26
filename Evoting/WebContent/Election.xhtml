@@ -17,7 +17,7 @@
 </head>
 <f:metadata>
 	<f:viewParam name="elId" value="#{elect.elId}"></f:viewParam>
-<!-- 	<f:event listener="#{elect.preRender}" type="preRenderView"></f:event> -->
+	<!-- 	<f:event listener="#{elect.preRender}" type="preRenderView"></f:event> -->
 </f:metadata>
 <body>
 	<h:form>
@@ -26,20 +26,22 @@
 		</ui:insert>
 		<div id="info" class="margin20">
 			<h1>#{elect.election.name}</h1>
-			<p >#{elect.election.description}</p>
-			<p >Election public key is: #{elect.election.publicKey} </p>
-			<p>Trustees: </p>
+			<p>#{elect.election.description}</p>
+			<p>Election public key is: #{elect.election.publicKey}</p>
+			<p>Trustees:</p>
 			<ul>
-			<ui:repeat var="tr" value="#{elect.trustees}">
-				<li><h:outputText value="#{tr.email}"></h:outputText> </li>
-			</ui:repeat>
-			</ul>
+				<ui:repeat var="tr" value="#{elect.trustees}">
+					<li><h:outputText value="#{tr.email}"></h:outputText></li>
+				</ui:repeat>
+			</ul>			
+
 		</div>
-		
+
 		<h:commandButton value="Vote" action="#{vote.fromElection()}"
 			styleClass="button tiny" style="margin-left: 20px;">
 			<f:param name="elId" value="#{elect.election.id}"></f:param>
 		</h:commandButton>
+				
 	</h:form>
 
 	<div class="footer" id="footer">
