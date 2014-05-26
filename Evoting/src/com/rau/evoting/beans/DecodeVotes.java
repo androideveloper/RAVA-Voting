@@ -48,9 +48,12 @@ public class DecodeVotes {
 		trId = Integer.valueOf(FacesContext.getCurrentInstance()
 				.getExternalContext().getRequestParameterMap().get("trId"));
 		Election election = ElectionDP.getElection(electId);
+		privateKey = privateKey.trim();
 		ElGamalHelper gamal = new ElGamalHelper(election.getPublicKey(),
 				privateKey);
 
+		ArrayList<CutVote> beforeV = ElectionVoteDP.getCutVotes(election.getId(), 0);
+		System.out.println("initial enc ans seq: " + gamal.decodeBigInt(beforeV.get(0).getAnswersSequence()));
 		ArrayList<CutVote> votes = ElectionVoteDP.getCutVotes(election.getId(), election.getMixStage());
 		for (CutVote vote : votes) {
 			System.out.println("encoded answer sequence: "
@@ -71,6 +74,7 @@ public class DecodeVotes {
 		ArrayList<Answer> answers = ElectionAnswerDP.getElectionAnswers(elId);
 		List<Integer> answersSequence;
 		for(CutVote vote : votes) {
+			System.out.println("decoded vote is: " + vote.getAnswersSequence());
 			answersSequence = StringHelper.converStringToInttList(vote.getAnswersSequence());
 			int ans = answersSequence.get(vote.getAnswerId()-1);
 			answers.get(ans-1).incNumberOfVotes();
